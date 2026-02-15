@@ -1,0 +1,174 @@
+.cards-wrapper {
+  display: grid;
+  // 電腦版：7 欄平鋪
+  grid-template-columns: repeat(7, 1fr);
+  gap: 12px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+
+  // 手機版：2 欄 1 行 (自動換列)
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 10px;
+  }
+}
+
+.day-card {
+  border: 1px solid #e0ddd5;
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+
+  // 今日樣式
+  &.is-today {
+    border: 1px solid #538369;
+    .card-top .date-num {
+      background: #3e5e4d;
+      color: #fff;
+    }
+  }
+
+  // 沒有任務的樣式
+  &.is-empty {
+    background: #fcfcfc;
+    .empty-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b5b2a9;
+      font-size: 14px;
+    }
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    .day-name {
+      font-size: 16px;
+      color: #74613e;
+      font-weight: 700;
+    }
+
+    .date-num {
+      width: 28px;
+      height: 28px;
+      background: #a69880;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+  }
+
+  .task-stats {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 10px 0;
+    border-bottom: 1px dashed #e0ddd5;
+    padding-bottom: 8px;
+    min-height: 72px;
+
+    .task-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      line-height: 24px;
+      color: #7a756d;
+      height: 24px;
+
+      .item-text {
+        display: flex;
+        align-items: center;
+        color: #666666;
+        font-weight: 700;
+
+        &::before {
+          content: "•";
+          font-size: 30px;
+          margin-right: -2px;
+          line-height: 1;
+          display: inline-flex;
+          align-items: center;
+        }
+      }
+
+      .item-num {
+        color: #74613e;
+        font-weight: 500;
+      }
+
+      &:empty::before {
+        content: "";
+        display: inline-block;
+        height: 24px;
+      }
+    }
+  }
+
+  .plant-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex-grow: 1;
+
+    .tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      height: 28px;
+
+      .tag-icon {
+        width: 14px;
+        height: 14px;
+        object-fit: contain;
+      }
+
+      .tag-name {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      &.water {
+        border: 1px solid #49c0ec;
+        color: #222222;
+        font-weight: 700;
+      }
+
+      &.fertilizer {
+        border: 1px solid #538369;
+        color: #222222;
+        font-weight: 700;
+      }
+
+      &.repot {
+        border: 1px solid #d8cbb3;
+        color: #222222;
+        font-weight: 700;
+      }
+    }
+
+    .more-link {
+      font-size: 12px;
+      font-weight: 700;
+      color: #a69880;
+      text-align: center;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+  }
+}
