@@ -1,18 +1,7 @@
 //從你的生活場景開始
-.place .card {
-  overflow: hidden;
-  isolation: isolate;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  z-index: 1;
-  border: none;
-}
-.place img {
-  object-fit: cover;
-  transition: transform 0.5s ease;
-}
-
-.place:hover img {
-  transform: translateZ(0) scale(1.1);
+.modal-width {
+  max-width: 1920px;
+  margin: 0 auto;
 }
 
 //最適合新手的植物清單
@@ -82,8 +71,8 @@
 }
 
 /* 圖片：不做 scale / 不做位移 */
-.logo__mark {
-}
+// .logo__mark {
+// }
 
 /* 文字底線動畫（最穩：用 ::after 做） */
 .text-underline {
@@ -114,6 +103,16 @@
   display: block;
   text-decoration: none;
   color: inherit;
+}
+
+//裝飾線
+
+.decoration-line::before,
+.decoration-line::after {
+  content: "";
+  flex: 1; // 左右線自動延伸
+  height: 1px; // 線條粗細
+  background: #a69880;
 }
 
 /* 卡片：用 ring 當 hover 提示，不用陰影、不位移 */
@@ -172,11 +171,6 @@
 
 .phone {
   max-width: 224px;
-}
-
-.backgroud_blur {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(7.5px);
 }
 
 .carousel-text {

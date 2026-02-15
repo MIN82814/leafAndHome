@@ -1,0 +1,31 @@
+.place .card {
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+  z-index: 1;
+  border: none;
+}
+.place .img {
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.place:hover .img {
+  transform: translateZ(0) scale(1.1);
+}
+.place .text {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(7.5px);
+}
+.place .icon {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  outline: 5px solid #f9f7f5;
+}
+.place .tag {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px);
+  top: 12px;
+  left: 12px;
+}

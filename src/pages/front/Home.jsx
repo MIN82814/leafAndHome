@@ -1,6 +1,10 @@
 import { NavLink } from "react-router";
 
-import place_image from "/place.png";
+// Place icon
+import iconHouse from "/iconHouse.svg";
+import iconBed from "/iconBed.svg";
+import iconOffice from "/iconOffice.svg";
+import iconBalcony from "/iconBalcony.svg";
 
 import Card_place from "../../component/Card_place";
 import product from "/product.png";
@@ -14,7 +18,7 @@ import Title from "../../component/Title";
 function Home() {
   return (
     <>
-      <section>
+      <section className="modal-width">
         <div id="carouselExampleIndicators" className="carousel slide">
           <div className="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
@@ -83,16 +87,16 @@ function Home() {
           </div>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-6">
             <div className="col">
-              <Card_place image={place_image} title="租屋小套房" content="小空間也能綠意盎然" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689650010.jpg" title="租屋小套房" content="小空間也能綠意盎然" icon={iconHouse} kind="6" />
             </div>
             <div className="col">
-              <Card_place image={place_image} title="辦公桌增綠" content="工作環境更舒心" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689691671.jpg" title="辦公桌增綠" content="工作環境更舒心" icon={iconOffice} kind="11" />
             </div>
             <div className="col">
-              <Card_place image={place_image} title="臥室療癒角" content="助眠淨化好夥伴" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689720473.jpg" title="臥室療癒角" content="助眠淨化好夥伴" icon={iconBed} kind="8" />
             </div>
             <div className="col">
-              <Card_place image={place_image} title="陽台小花園" content="戶外綠化好選擇" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689734990.jpg" title="陽台小花園" content="戶外綠化好選擇" icon={iconBalcony} kind="5" />
             </div>
           </div>
         </div>
@@ -105,22 +109,22 @@ function Home() {
               <p className="h6 text-neutral-700">我們根據新手最常見的需求，先幫你整理幾組『不容易失敗』的推薦清單</p>
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-xl-3">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
             <div className="col">
-              <Card_list title="幾乎沒日照也能活" subTitle="適合幾乎沒日照空間的植物 TOP 5" />
+              <Card_list title="幾乎沒日照也能活" subTitle="適合幾乎沒日照空間的植物 TOP 5" tag="耐陰好養" color="secondary-500" />
             </div>
             <div className="col">
-              <Card_list title="常常忘記澆水也沒關係" subTitle="最不怕你忘記澆水的植物 Top 5" />
+              <Card_list title="常常忘記澆水也沒關係" subTitle="最不怕你忘記澆水的植物 Top 5" tag="懶人植物" color="primary-700" />
             </div>
             <div className="col">
-              <Card_list title="桌上只放得下一點點綠" subTitle="小桌面也放得下的迷你植栽 Top 5" />
+              <Card_list title="桌上只放得下一點點綠" subTitle="小桌面也放得下的迷你植栽 Top 5" tag="迷你盆栽" color="neutral-700" />
             </div>
           </div>
         </div>
       </section>
-      <section className="py-14 bg-neutral-100">
+      <section className="py-14 bg-neutral-100 px-6 px-md-10 px-xl-14">
+        <h4 className="h4 d-flex align-items-center justify-content-around gap-6 text-secondary-500 mb-12 decoration-line w-100">想單純滑滑看最近的新朋友和人氣款？從這裡開始逛就好。</h4>
         <div className="container">
-          <h2 className="h4 text-center text-secondary-500 mb-12">想單純滑滑看最近的新朋友和人氣款？從這裡開始逛就好。</h2>
           <div>
             <h4 className="h4">新品上架</h4>
             <p className="mb-6">本週最新到貨，搶先擁有最美的綠意</p>

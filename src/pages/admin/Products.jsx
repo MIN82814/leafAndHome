@@ -104,6 +104,7 @@ function Products() {
       await getProducts();
     })(); //確認正確後取得產品列表內容
   }, []);
+
   // 透過useRef控制 Modal
   const openModal = (type, product) => {
     //現有資料->寫入產品的資料

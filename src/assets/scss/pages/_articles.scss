@@ -1,0 +1,94 @@
+.articles-hero-section {
+  height: 500px;
+  width: 100%;
+  position: relative;
+  /* 確保你有設定背景圖，否則毛玻璃看不出效果 */
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770557287817.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: "#6a7a69";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+  z-index: 1;
+  overflow: hidden; /* 防止毛玻璃邊緣溢出 */
+}
+/* 毛玻璃遮罩層 */
+.articles-hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  /* 使用 rgba 調整亮度：最後一個數值 0.4 代表 40% 透明度 */
+  background: rgba(225, 225, 225, 0.2);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  z-index: -1; /* 確保在內容文字下方 */
+}
+
+/* 確保內容文字清晰 */
+.articles-hero-section .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* 如果你的文字原本是白色，毛玻璃太亮會看不清，可以微調陰影 */
+.custom-txt-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.btn-category-min {
+  min-width: 100px; /* 根據字數最多的標籤微調，例如 100px ~ 120px */
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap; /* 確保文字絕對不段行 */
+}
+/* secondary-100 按鈕 (基礎狀態) */
+.btn-secondary-100 {
+  background-color: #f7efe79d !important;
+  border-color: #f3ede7 !important;
+  /* 淺色背景建議配深色文字，這裡建議用你的 primary-700 或預設深色 */
+  color: #3e5e4d !important;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+}
+
+/* 懸停狀態：顏色稍微深一點，增加視覺回饋 */
+.btn-secondary-100:hover {
+  background-color: #fffbf6 !important; /* 比原本顏色深一點 */
+  border-color: #e8e0d7 !important;
+  color: #3e5e4d !important;
+}
+
+/* 點擊狀態：再深一點點，並維持下沉效果 */
+.btn-secondary-100:active {
+  background-color: #ddd2c7 !important;
+  transform: translateY(1px);
+}
+
+/* 焦點光暈：使用 secondary-100 的 RGBA 版本 */
+.btn-secondary-100:focus-visible,
+.btn-secondary-100:focus {
+  outline: 0;
+  /* rgba(243, 237, 231, 0.6) 對應 #F3EDE7 */
+  box-shadow: 0 0 0 0.1rem rgba(243, 237, 231, 0.6) !important;
+}
+@media (min-width: 768px) {
+}
+
+.custom-search-group {
+  background-color: #f9f7f5;
+}
+
+.custom-search-group .form-control:focus {
+  background-color: transparent; /* 避免 focus 時背景閃爍 */
+}
+.custom-search-group input::placeholder {
+  color: #a69880;
+}

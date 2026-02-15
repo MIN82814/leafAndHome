@@ -1,0 +1,266 @@
+.content-limit {
+  max-width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (min-width: 768px) {
+  .content-limit {
+    max-width: 1076px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+/* 強制描述文字固定為兩行 */
+.line-clamp-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.6;
+}
+.italic {
+  font-style: italic;
+}
+
+.hover-up:hover {
+  transform: translateY(-8px);
+  transition: 0.3s;
+}
+.hover-up-small:hover {
+  transform: translateY(-3px);
+  transition: 0.3s;
+}
+/* 使用者頭像 */
+.avatar-circle {
+  object-fit: cover;
+  background-color: #f8f9fa;
+  height: 40px;
+  width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  border: 1.5px solid #538369;
+  flex-shrink: 0;
+}
+.avatar-img {
+  object-fit: contain;
+  height: 80%;
+  width: 80%;
+}
+@media (min-width: 768px) {
+  .avatar-circle {
+    object-fit: cover;
+    height: 60px;
+    width: 60px;
+  }
+  .avatar-img {
+    object-fit: cover;
+    height: auto;
+    width: 35px;
+  }
+}
+
+.hero-section {
+  height: 500px;
+  width: 100%;
+  /* 關鍵：讓背景圖片固定，不隨捲軸滾動 */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770003050852.png");
+  background-color: "#6a7a69";
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: relative;
+}
+@media (min-width: 768px) {
+  .hero-section {
+    height: 550px;
+    width: 100%;
+    background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770003050852.png");
+  }
+}
+
+/* 加上一個深色遮罩，避免圖片太亮看不到字 */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.hero-section .container {
+  position: relative;
+  z-index: 2; /* 讓文字在遮罩上面 */
+}
+.card-img {
+  height: 230px;
+  width: 327px; /* 建議加上寬度確保填滿容器 */
+  object-fit: cover;
+}
+@media (min-width: 768px) {
+  .card-img {
+    height: 250px;
+    width: 100%; /* 建議加上寬度確保填滿容器 */
+    object-fit: cover;
+  }
+}
+
+.article-content {
+  /* 保留空白、保留換行，且當內容過長時會自動折行 */
+  white-space: pre-wrap;
+}
+
+.share-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rounded-custom {
+  border-radius: 8px 40px 8px 8px;
+}
+.custom-txt-shadow {
+  /* 第一組：X:0, Y:4, Blur:65, #000000 40% */
+  /* 第二組：X:0, Y:0, Blur:12, #000000 35% */
+  text-shadow:
+    0px 4px 65px rgba(0, 0, 0, 0.4),
+    0px 0px 12px rgba(0, 0, 0, 0.35);
+}
+.bottom-section {
+  padding-top: 52px; /* 給上方留出空間 */
+}
+.rec-articles-wrapper {
+  padding-top: 52px;
+  padding-bottom: 300px;
+}
+/*電子報*/
+.newsletter-wrapper {
+  margin: 0 auto;
+  margin-top: -250px;
+  position: relative;
+  z-index: 10;
+}
+.newsletter-left {
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1771057954022.png");
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+ background-size: cover; /* 如果希望完全填滿但不留白 */
+  background-position: center left; /* 讓圖片靠左對齊，確保左側盆栽出現 */
+  background-repeat: no-repeat;
+}
+.newsletter-right {
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+@media (min-width: 768px) {
+  .bottom-section {
+    padding-top: 120px; /* 給上方留出空間 */
+  }
+  .rec-articles-wrapper {
+    padding-top: 80px;
+    padding-bottom: 280px;
+  }
+  .newsletter-wrapper {
+    margin: 0 auto;
+    max-width: 1296px;
+    margin-top: -240px;
+    position: relative;
+    z-index: 10;
+  }
+  .newsletter-card {
+    border: none;
+    overflow: hidden;
+  }
+  .newsletter-left {
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 0px;
+      background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770286789726.png");
+  }
+  .newsletter-right {
+    border-top-right-radius: 8px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+/*白框+primary700文字按鈕*/
+.btn-outline-light-primary700 {
+  color: #f8f9fa;
+  border-color: #f8f9fa;
+  background-color: transparent;
+  transition: all 0.3s ease; /* 增加過渡動畫，視覺更平滑 */
+}
+
+/* 確保 hover, active, focus 狀態下顏色都一致 */
+.btn-outline-light-primary700:hover,
+.btn-outline-light-primary700:active {
+  background-color: #f8f9fa;
+  color: #3e5e4d;
+  border-color: #f8f9fa;
+  box-shadow: none; /* 移除點擊時的陰影藍圈 */
+}
+.btn-outline-light-primary700:focus-visible,
+.btn-outline-light-primary700:focus {
+  background-color: #f8f9fa;
+  color: #3e5e4d;
+  border-color: #f8f9fa;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(248, 249, 250, 0.5) !important;
+}
+
+.btn-secondary-500 {
+  background-color: #a69880;
+  border-color: #a69880;
+  color: #ffffff; /* 淺褐色背景通常搭配白色文字 */
+  transition: all 0.2s ease-in-out;
+}
+
+/*secondary-500按鈕*/
+.btn-secondary-500:hover {
+  background-color: #968972; /* 比原本顏色深一點點 */
+  border-color: #968972;
+  color: #ffffff;
+}
+
+.btn-secondary-500:active {
+  background-color: #8a7d68;
+  transform: translateY(1px); /* 點擊時下沉的小視覺效果 */
+}
+
+.btn-secondary-500:focus-visible,
+.btn-secondary-500:focus {
+  outline: 0;
+  /* 使用 50% 透明度的 secondary-500 顏色作為光暈 */
+  box-shadow: 0 0 0 0.25rem rgba(166, 152, 128, 0.5) !important;
+}
+.content-wrapper {
+  padding-top: 52px;
+  padding-bottom: 52px;
+}
+
+@media (min-width: 768px) {
+  .content-wrapper {
+    padding-top: 80px;
+    padding-bottom: 120px;
+  }
+}
+
+.border-top.border-success-500 {
+  border-color: #a69880;
+}
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+

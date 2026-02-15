@@ -304,6 +304,12 @@ $neutral-500: #999999;
 $neutral-700: #666666;
 $neutral-900: #222222;
 
+$hightlite: #ffaa00;
+$water: #48c0ec;
+
+$background-100: #f9f7f5;
+$background-200: #f3ede7;
+
 $primary-500: #538369;
 $primary-700: #3e5e4d;
 
@@ -353,6 +359,12 @@ $theme-colors: (
   "secondary-300": $secondary-300,
   "secondary-500": $secondary-500,
   "secondary-700": $secondary-700,
+
+  "background-100": $background-100,
+  "background-200": $background-200,
+
+  "hightlite": $hightlite,
+  "water": $water,
 
   "neutral-100": $neutral-100,
   "neutral-200": $neutral-200,
@@ -755,7 +767,8 @@ $font-sizes: (
 $headings-margin-bottom: 0;
 $headings-font-family: null !default;
 $headings-font-style: null !default;
-$headings-font-weight: 500 !default;
+// $headings-font-weight: 500 !default;
+$headings-font-weight: 700;
 // $headings-line-height: 1.2 !default;
 $headings-line-height: 1.4;
 $headings-color: inherit !default;
