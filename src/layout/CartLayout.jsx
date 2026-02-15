@@ -1,5 +1,5 @@
 import { Outlet, NavLink, useOutletContext } from "react-router";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router";
 import Footer from "./Footer.jsx";
 import CartHeader from "./CartHeader.jsx";
 
