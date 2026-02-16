@@ -15,6 +15,8 @@ import Products from "./pages/front/Products.jsx";
 import Product from "./pages/front/Product.jsx";
 import Personal from "./pages/front/Personal.jsx";
 import Cart from "./pages/front/Cart.jsx";
+import Checkout from "./pages/front/Checkout.jsx";
+import OrderSuccess from "./pages/front/OrderSuccess.jsx";
 
 //後台
 import AdminCoupon from "./pages/admin/Coupon.jsx";
@@ -43,7 +45,11 @@ const routes = [
       {
         path: "cart",
         element: <CartLayout />,
-        children: [{ path: "/cart", element: <Cart /> }],
+        children: [
+          { path: "", element: <Cart /> },
+          { path: "checkout", element: <Checkout /> },
+          { path: "order-success/:id", element: <OrderSuccess /> },
+        ],
       },
     ],
   },

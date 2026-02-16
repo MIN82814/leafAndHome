@@ -1,0 +1,38 @@
+/* components/_checkout-step.scss */
+
+.step-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: $neutral-200;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.step-circle.active {
+  background: $primary-500;
+}
+
+.step-circle.completed {
+  background: $neutral-200;
+}
+
+.step-line {
+  width: 40px;
+  height: 2px;
+  background: $secondary-300;
+}
+
+.cart-header {
+  margin-bottom: 80px;
+}
+
+@media (max-width: 991.98px) {
+  .cart-header {
+    margin-bottom: 40px;
+  }
+}

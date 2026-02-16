@@ -1,0 +1,146 @@
+.cart-table {
+  --bs-table-bg: #ffffff;
+  --bs-table-hover-bg: $neutral-100;
+  td {
+    vertical-align: middle; // 讓文字垂直置中
+    &.qty-td {
+      padding-left: 0 !important; // 取消左右 padding
+      padding-right: 0 !important;
+      width: 160px; // 固定寬度
+    }
+    &.action-td {
+      padding-bottom: 1rem; // 增加底部空間
+    }
+  }
+}
+
+.cart-table tr {
+  border-bottom: 1px solid $secondary-300;
+}
+.cart-table tbody tr:last-child {
+  border-bottom: none;
+}
+// .cart-table td:first-child,
+// th:first-child {
+//   padding-left: 1.5rem;
+// }
+.cart-table th {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border: none;
+}
+
+.cart-table td {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border: none;
+}
+.cart-table .section {
+  border-radius: 16px; // 整個區塊圓角
+  overflow: hidden; // 防止內部背景或 table 超出圓角
+}
+.cart-table .h6 {
+  color: $neutral-900;
+}
+.cart-table .titleEn {
+  color: $secondary-700;
+  font-size: 12px;
+}
+.cart-table .titleZh {
+  color: $neutral-900;
+  font-size: 18px;
+  font-weight: bold;
+}
+.cart-table td.price {
+  color: $neutral-700;
+  font-size: 16px;
+  font-weight: bold;
+}
+.cart-table td.total {
+  color: $neutral-900;
+  font-size: 20px;
+  font-weight: bold;
+}
+.cart-table td.price,
+.cart-table td.quantity,
+.cart-table td.total {
+  width: 160px;
+}
+.cart-table td.function {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center; // 垂直置中
+  //   align-items: flex-end; // 靠右
+  //   height: 100%;
+  display: table-cell; // 確保是 table-cell
+  vertical-align: middle; // 讓按鈕垂直置中
+  text-align: center; // 水平置中，如果要靠右用 right
+}
+.cart-table td.function .btn {
+  white-space: nowrap; // 不換行
+  display: inline-block; // 確保按鈕是 inline-block
+  //   text-align: center;
+}
+
+.cart-table td.quantity .form-control {
+  width: 100%; // 撐滿父 td
+  box-sizing: border-box; // 避免 padding 讓寬度超過 td
+}
+
+.cart-table .btn-custom-link-dark {
+  // 原本 btn btn-link 的樣式
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: $primary-700; // 對應 text-primary-700
+  text-decoration: underline;
+  font-weight: bold; // fw-bold
+}
+
+.cart-table .btn-custom-link-light {
+  // 原本 btn btn-link 的樣式
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: $primary-500; // 對應 text-primary-700
+  text-decoration: underline;
+  font-weight: bold; // fw-bold
+}
+.cart-table .qty-input-group {
+  display: flex;
+  width: 150px;
+  border-radius: 8px; // 你原本 input-group 有 rounded
+  border: 1px solid #ccc; // 整組邊框
+
+  .cart-table td .function .btn {
+    border: none; // 如果不想要按鈕邊框也可以加
+    width: 120px; // 固定寬度按鈕
+    white-space: nowrap;
+  }
+
+  input.form-control {
+    border: none; // 取消 input 自帶邊框
+    box-shadow: none; // 防止 focus 有陰影
+    text-align: center;
+    flex: 1; // 撐滿剩餘空間
+  }
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.cart-table .subHeading {
+  font-size: 18px;
+  color: $neutral-700;
+}

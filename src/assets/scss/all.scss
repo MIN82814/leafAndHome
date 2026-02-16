@@ -11,6 +11,8 @@
 
 //Component
 @import "./components/title.scss";
+@import "./components/checkout-step";
+@import "./components/cart-table";
 @import "./components/card_place.scss";
 @import "./components/card_list.scss";
 @import "./components/btn.scss";
@@ -20,3 +22,4 @@
 @import "./pages/article";
 @import "./pages/articles";
 @import "./pages/product.scss";
+@import "./pages/personal.scss";
