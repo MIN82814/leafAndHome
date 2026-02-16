@@ -55,12 +55,12 @@ function Articles() {
     if (tagUrl) {
       setSelectedTag(tagUrl);
     }
-window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
+    window.scrollTo({ top: 0, behavior: "smooth" }); // 捲回頂部
   }, [tagUrl]);
   useEffect(() => {
-  setCurrentPage(1);
-  window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
-}, [selectedTag, search])
+    setCurrentPage(1);
+    window.scrollTo({ top: 0, behavior: "smooth" }); // 捲回頂部
+  }, [selectedTag]);
   const filteredArticles = articles
     .filter((item) => {
       // 如果文章的 tag 陣列包含選中的標籤
@@ -123,7 +123,7 @@ window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
         </div>
       </header>
 
-      <section className=" bg-neutral-200">
+      <section className="bg-background-200">
         <div className="container content-wrapper">
           {/* 1. 確保外層有一個 row */}
           <div className="row mb-8 justify-content-md-end">
@@ -170,7 +170,7 @@ window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
                           {item.tag?.map((tag) => (
                             <span
                               key={tag}
-                              className="badge  bg-secondary-100 text-secondary-700 px-3 py-2 fw-semibold  "
+                              className="badge  bg-background-200 text-secondary-700 px-3 py-2 fw-semibold  "
                             >
                               # {tag}
                             </span>
@@ -194,7 +194,7 @@ window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
                   className={`page-item ${!paginationData.has_pre ? "disabled" : ""}`}
                 >
                   <button
-                    className="btn btn-outline-primary-700 px-3"
+                    className="btn btn-outline-primary-700 page-square"
                     onClick={() => {
                       setCurrentPage(currentPage - 1);
                       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -209,7 +209,7 @@ window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
                 {[...Array(totalPages)].map((_, i) => (
                   <li key={i} className="page-item">
                     <button
-                      className={`btn ${currentPage === i + 1 ? "btn-primary-700" : "btn-outline-primary-700"}`}
+                      className={`btn page-square  ${currentPage === i + 1 ? "btn-primary-700" : "btn-outline-primary-700"}`}
                       onClick={() => {
                         setCurrentPage(i + 1);
                         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -225,7 +225,7 @@ window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
                   className={`page-item ${!paginationData.has_next ? "disabled" : ""}`}
                 >
                   <button
-                    className="btn btn-outline-primary-700 px-3"
+                    className="btn btn-outline-primary-700 page-square"
                     onClick={() => {
                       setCurrentPage(currentPage + 1);
                       window.scrollTo({ top: 0, behavior: "smooth" });

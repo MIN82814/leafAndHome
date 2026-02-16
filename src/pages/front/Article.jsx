@@ -4,7 +4,7 @@ import { useOutletContext, useParams } from "react-router";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Link } from "react-router";
 import Title from "../../component/Title";
-import LeafIcon  from "../../component/LeafIcon";
+import { LeafIcon, FaceBook, Line, LinkIcon } from "../../component/LeafIcon";
 
 function Article() {
   // 💡 如果你是用路由 (Route)，這裡會用 useParams 取得網址上的 id
@@ -59,11 +59,11 @@ function Article() {
     const loadPageData = async () => {
       //設定狀態
       setArticle(null);
-      window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
+      window.scrollTo({ top: 0, behavior: "smooth" }); // 捲回頂部
 
       //等待資料抓取完成
       await articlesData();
-      window.scrollTo({ top: 0, behavior: "smooth" });// 捲回頂部
+      window.scrollTo({ top: 0, behavior: "smooth" }); // 捲回頂部
     };
     loadPageData(); // 執行它
   }, [articleId]);
@@ -200,10 +200,10 @@ function Article() {
       {/* hero區塊 */}
       <header className="hero-section">
         <div className="container text-md-center px-7 px-md-0">
-          <h1
+          <h2
             className="fw-bold mb-5 custom-txt-shadow"
             dangerouslySetInnerHTML={{ __html: article?.title }}
-          ></h1>
+          ></h2>
           <p className="fw-bold h5 custom-txt-shadow">
             作者:{article?.author}{" "}
             <span className="d-none d-md-inline-block mx-2">|</span>
@@ -216,7 +216,7 @@ function Article() {
       </header>
 
       {/*前言區 */}
-      <section className="background-100">
+      <section className="bg-background-100">
         <div className="container py-11 pt-md-14 pb-md-15">
           <div className="content-limit">
             <p className="lead text-dark opacity-75 fs-7  mb-8 mb-md-12 pb-4 pb-md-8  border-bottom text-center lh-lg italic">
@@ -302,19 +302,19 @@ function Article() {
                     className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
                     onClick={() => handleShare("fb")}
                   >
-                    <i className="bi bi-facebook"></i>
+                    <FaceBook className="text-white" />
                   </button>
                   <button
                     className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
                     onClick={() => handleShare("line")}
                   >
-                    <i className="bi bi-line"></i>
+                    <Line className="text-white" />
                   </button>
                   <button
                     className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
                     onClick={() => handleShare("copy")}
                   >
-                    <i className="bi bi-link-45deg"></i>
+                    <LinkIcon className="text-white" />
                   </button>
                 </div>
               </div>
@@ -322,7 +322,7 @@ function Article() {
           </div>
         </div>
       </section>
-      <section className=" background-200 py-11 py-md-14">
+      <section className="bg-background-200 py-11 py-md-14">
         <div className="container">
           <div className="content-limit">
             {article.contentBlocks?.map((block, index) => {
@@ -331,11 +331,12 @@ function Article() {
                   return (
                     <div key={index}>
                       {/* 相關商品區 */}
-                       <div className="d-flex d-flex align-items-center mb-9">
-                       <LeafIcon className="me-2" />
-                      <h4 className="fw-bold text-primary-700">
-                        {block.title}
-                      </h4></div>
+                      <div className="d-flex d-flex align-items-center mb-9">
+                        <LeafIcon className="me-2 text-primary-500" />
+                        <h4 className="fw-bold text-primary-700">
+                          {block.title}
+                        </h4>
+                      </div>
                       <div className="row gy-5">
                         {block.products?.map((product) => {
                           return (
@@ -372,15 +373,16 @@ function Article() {
         </div>
       </section>
       {/* 推薦文章區 */}
-      <section className=" background-100 rec-articles-wrapper">
+      <section className="bg-background-100 rec-articles-wrapper">
         <div className="container">
           <div className="content-limit">
             <div className="row">
               <div className="d-flex d-flex align-items-center mb-9">
-               <LeafIcon className="me-2" />
-              <h4 className="fw-bold text-primary-700">
-                更多成為綠手指的小祕訣
-              </h4></div>
+                <LeafIcon className="me-2 text-primary-500" />
+                <h4 className="fw-bold text-primary-700">
+                  更多成為綠手指的小祕訣
+                </h4>
+              </div>
               {relatedArticles.map((item) => (
                 <div key={item.id} className="col-md-4 mb-3 d-flex">
                   <Link
@@ -396,7 +398,7 @@ function Article() {
 
                       <div className="card-content mt-4 d-flex flex-column flex-grow-1">
                         <div>
-                          <h5 className="fw-bold mb-1">
+                          <h5 className="fw-bold mb-1 text-primary-700">
                             {formatPlainTitle(item.title)}
                           </h5>
                         </div>
@@ -415,7 +417,7 @@ function Article() {
         </div>
       </section>
       {/* --- 留言/電子報 --- */}
-      <section className=" background-200  bottom-section">
+      <section className="bg-background-200  bottom-section">
         {/* 電子報 */}
         <div className="container mb-11 mb-md-14">
           <div className="card mb-3 newsletter-wrapper">
@@ -480,11 +482,12 @@ function Article() {
           <div className="content-limit">
             <div className="text-center">
               <div className="fw-bold mb-6 mb-md-12">
-                 <Title title="留言與討論" className="fw-bold"/></div>
+                <Title title="留言與討論" className="fw-bold" />
+              </div>
             </div>
             {/* --- 8. 留言輸入表單 (條件渲染) --- */}
             {/*篩選出留言區塊*/}
-            <div className="background-white rounded-4">
+            <div className="bg-white rounded-4">
               {article.contentBlocks
                 ?.find((block) => block.type === "commentSection")
                 ?.comments?.map((c, index) => (
