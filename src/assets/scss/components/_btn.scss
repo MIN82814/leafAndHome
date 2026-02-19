@@ -1,0 +1,86 @@
+/* secondary-100 按鈕*/
+.btn-secondary-100 {
+  background-color: #f7efe79d;
+  border-color: #f3ede7;
+  color: #3e5e4d;
+  transition: all 0.2s ease-in-out;
+  font-weight: 600;
+}
+
+.btn-secondary-100:hover {
+  background-color: #fffbf6;
+  border-color: #e8e0d7;
+  color: #3e5e4d;
+}
+
+/* 點擊狀態 */
+.btn-secondary-100:active {
+  background-color: #ddd2c7;
+  color: #3e5e4d !important;
+  transform: translateY(1px);
+}
+
+/* 焦點光暈*/
+.btn-secondary-100:focus-visible,
+.btn-secondary-100:focus {
+  color: #3e5e4d !important;
+  outline: 0;
+  box-shadow: 0 0 0 0.1rem rgba(243, 237, 231, 0.6);
+}
+
+/*白框+primary700文字按鈕*/
+.btn-outline-light-primary700 {
+  color: #f8f9fa;
+  border-color: #f8f9fa;
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+/* 確保 hover, active, focus 狀態下顏色都一致 */
+.btn-outline-light-primary700:hover {
+  background-color: #f8f9fa;
+  color: #3e5e4d;
+  border-color: #f8f9fa;
+  box-shadow: none;
+}
+
+.btn-outline-light-primary700:active {
+  background-color: #f8f9fa;
+  color: #538369;
+  border-color: #f8f9fa;
+  box-shadow: none;
+}
+.btn-outline-light-primary700:focus-visible,
+.btn-outline-light-primary700:focus {
+  background-color: #f8f9fa;
+  color: #3e5e4d;
+  border-color: #f8f9fa;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(248, 249, 250, 0.5) !important;
+}
+
+/*secondary-500按鈕*/
+.btn-secondary-500 {
+  background-color: #a69880;
+  border-color: #a69880;
+  color: #ffffff;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-secondary-500:hover {
+  background-color: #968972;
+  border-color: #968972;
+  color: #ffffff;
+}
+
+.btn-secondary-500:active {
+  background-color: #8a7d68;
+  transform: translateY(1px);
+  color: #ffffff;
+}
+
+.btn-secondary-500:focus-visible,
+.btn-secondary-500:focus {
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(166, 152, 128, 0.5) !important;
+}
