@@ -12,6 +12,7 @@ import Newsletter from "../../component/Newsletter";
 import CommentSection from "../../component/CommentSection";
 import ArticleContent from "../../component/ArticleContent";
 import Loading from "../../component/Loading";
+import { showErrorAlert } from '../../utils/alert';
 
 function Article() {
   // 💡 如果你是用路由 (Route)，這裡會用 useParams 取得網址上的 id
@@ -41,9 +42,8 @@ function Article() {
       setArticle(resDetail.data.article);
       setArticles(resList.data.articles);
     } catch (err) {
-      console.error("載入失敗", err);
+     showErrorAlert('文章載入失敗', err, '載入失敗，請稍後再試');
     } finally {
-      //管成功或失敗，最後一定要把 Loading 關掉，否則畫面會永遠卡在載入中
       setIsLoading(false);
     }
   };
@@ -111,7 +111,12 @@ function Article() {
     //   setComment(""); // 清空留言處文字
     //   alert("留言成功！");
     // } catch (err) {
-    //   console.error("儲存失敗", err);
+    //   Swal.fire({
+        // icon: 'error',
+        // title: '留言失敗',
+        // text: '留言失，請稍後再試', 
+        // confirmButtonColor: '#d33',
+        // });
     // }
     setArticle(updatedData);
     setComment(""); // 清空留言處文字

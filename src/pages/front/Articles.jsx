@@ -7,6 +7,7 @@ import Loading from "../../component/Loading";
 import { formatPlainTitle } from "../../utils/articleHelpers";
 import SearchBar from "../../component/SearchBar";
 import NoResults from "../../component/NoResults";
+import { showErrorAlert } from '../../utils/alert';
 
 const categories = [
   "全部",
@@ -41,10 +42,10 @@ function Articles() {
       // const sortedData = [...res.data.articles].sort(
       //   (a, b) => Number(b.create_at) - Number(a.create_at),
       // );
-      // console.log("排序後的首筆日期:", sortedData[0]?.create_at);
+
       setArticles(res.data.articles);
     } catch (err) {
-      console.error("載入失敗", err);
+     showErrorAlert('文章列表載入失敗', err, '載入失敗，請稍後再試');
     } finally {
       setIsLoading(false);
     }
