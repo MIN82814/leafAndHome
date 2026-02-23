@@ -31,28 +31,24 @@
   z-index: -1; /* 確保在內容文字下方 */
 }
 
-/* 確保內容文字清晰 */
 .articles-hero-section .container {
   position: relative;
   z-index: 2;
 }
 
-/* 如果你的文字原本是白色，毛玻璃太亮會看不清，可以微調陰影 */
-.custom-txt-shadow {
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+/*hero標籤*/
 .btn-category-min {
-  min-width: 100px; /* 根據字數最多的標籤微調，例如 100px ~ 120px */
+  min-width: 100px; 
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  white-space: nowrap; /* 確保文字絕對不段行 */
+  white-space: nowrap; 
 }
 
 @media (min-width: 768px) {
 }
-
+/*文章搜尋*/
 .custom-search-group {
   background-color: #f9f7f5;
 }
@@ -62,12 +58,4 @@
 }
 .custom-search-group input::placeholder {
   color: #a69880;
-}
-/*頁碼*/
-.page-square {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }

@@ -1,3 +1,4 @@
+/* 內縮區塊 */
 .content-limit {
   max-width: auto;
   margin-left: auto;
@@ -112,11 +113,6 @@
   }
 }
 
-.article-content {
-  /* 保留空白、保留換行，且當內容過長時會自動折行 */
-  white-space: pre-wrap;
-}
-
 .share-btn {
   width: 35px;
   height: 35px;
@@ -126,16 +122,11 @@
   align-items: center;
   justify-content: center;
 }
+/*文章圖片*/
 .rounded-custom {
   border-radius: 8px 40px 8px 8px;
 }
-.custom-txt-shadow {
-  /* 第一組：X:0, Y:4, Blur:65, #000000 40% */
-  /* 第二組：X:0, Y:0, Blur:12, #000000 35% */
-  text-shadow:
-    0px 4px 65px rgba(0, 0, 0, 0.4),
-    0px 0px 12px rgba(0, 0, 0, 0.35);
-}
+
 .bottom-section {
   padding-top: 52px;
 }
@@ -162,6 +153,8 @@
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
 }
+
+
 @media (min-width: 768px) {
   .bottom-section {
     padding-top: 120px;
@@ -204,17 +197,14 @@
   }
 }
 
+
 .border-top.border-success-500 {
   border-color: #a69880;
 }
 
-.text-truncate {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
+
 
 .form-control:focus {
-  border-color: #538369;
-  box-shadow: 0 0 0 0.25rem #53836949;
+  border-color: #809286;
+  box-shadow: 0 0 0 0.20rem #53836949;
 }

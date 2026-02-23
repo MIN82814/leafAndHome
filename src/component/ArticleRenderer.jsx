@@ -1,3 +1,4 @@
+
 function ArticleRenderer({ blocks }) {
   // 防錯處理：如果沒資料就不要渲染
   if (!blocks) return null;
@@ -10,7 +11,7 @@ function ArticleRenderer({ blocks }) {
               return (
                 <h3
                   key={index}
-                  className="fw-bold h4 mb-6 px-md-9 article-content text-neutral-900"
+                  className="fw-bold h4 mb-6 px-md-9  text-neutral-900"
                   dangerouslySetInnerHTML={{ __html: block.content }}
                 ></h3>
               );
@@ -19,7 +20,7 @@ function ArticleRenderer({ blocks }) {
                 return (
                   <div
                     key={index}
-                    className="article-content px-md-9"
+                    className="px-md-9"
                     style={{ height: "2em" }}
                   />
                 );
@@ -30,7 +31,7 @@ function ArticleRenderer({ blocks }) {
               return (
                 <p
                   key={index}
-                  className="article-content px-md-9 text-neutral-700 fw-medium"
+                  className="px-md-9 text-neutral-700 fw-medium"
                   dangerouslySetInnerHTML={{ __html: block.content }}
                   style={{ whiteSpace: "pre-wrap" }}
                 />
