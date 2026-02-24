@@ -1,0 +1,115 @@
+.weekly-care-section {
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100%;
+
+  .care-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    height: 100%;
+  }
+}
+
+.care-card {
+  flex: 1;
+  min-width: 0;
+  border-radius: 12px;
+  padding: 12px;
+
+  .card-status-top {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    padding-right: 6px;
+
+    @media (min-width: 400px) {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-label {
+      white-space: nowrap;
+    }
+  }
+
+  .divider {
+    height: 1px;
+    background-color: $secondary-100;
+    margin: 6px 0;
+  }
+
+  .care-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .care-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    padding-right: 8px;
+
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+
+      .care-icon {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .item-name {
+        line-height: 1;
+        display: inline-block;
+      }
+    }
+
+    .item-value {
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+}
+
+.weekly-care-section {
+  .care-icon {
+    display: inline-block;
+    background-color: currentColor;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+
+    &.icon-water {
+      background-color: $water;
+      mask-image: url("/water.svg");
+    }
+    &.icon-grass {
+      background-color: $primary-700;
+      mask-image: url("/grass.svg");
+    }
+    &.icon-plant {
+      background-color: $secondary-500;
+      mask-image: url("/plant.svg");
+    }
+    &.icon-check {
+      background-color: $secondary-500;
+      mask-image: url("/checkCircle.svg");
+    }
+    &.icon-care {
+      background-color: $secondary-500;
+      mask-image: url("/care.svg");
+    }
+  }
+}

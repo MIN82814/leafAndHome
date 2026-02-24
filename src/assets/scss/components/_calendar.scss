@@ -1,13 +1,11 @@
 .cards-wrapper {
   display: grid;
-  // 電腦版：7 欄平鋪
   grid-template-columns: repeat(7, 1fr);
   gap: 12px;
   background: #fff;
   padding: 16px;
   border-radius: 12px;
 
-  // 手機版：2 欄 1 行 (自動換列)
   @media (max-width: 768px) {
     grid-template-columns: repeat(2, 1fr);
     padding: 10px;
