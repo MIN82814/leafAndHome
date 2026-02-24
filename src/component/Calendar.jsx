@@ -1,69 +1,59 @@
-import axios from "axios";
-import { useEffect, useState, useMemo } from "react";
+import { useMemo } from "react";
 
 import grass from "/grass.svg";
 import plant from "/plant.svg";
 import water from "/water.svg";
 
-import "../assets/scss/components/_calendar.scss"
-
+import useMyPlants from "../hooks/useMyPlants";
 
 function Calendar() {
-  const API_BASE = import.meta.env.VITE_API_BASE;
-  const API_PATH = import.meta.env.VITE_API_PATH;
-
-  const [myPlants, setMyplants] = useState({});
-
-  useEffect(() => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexTokenAPI\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
-    );
-
-    if (!token) return;
-    axios.defaults.headers.common["Authorization"] = token;
-
-    const getMyPlants = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/api/${API_PATH}/admin/orders`);
-        const result = res.data.orders.find(
-          (item) => item.message === "植物狀態取用",
-        );
-        setMyplants(result.custom.myPlants);
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    };
-
-    getMyPlants();
-  }, []);
+  const { myPlants } = useMyPlants();
 
   const groupedByDate = useMemo(() => {
+    if (!myPlants) return {};
+
     return Object.keys(myPlants).reduce((acc, id) => {
       const plant = myPlants[id];
+      const tasks = [
+        {
+          type: "water",
+          last: plant.lastWateringTime,
+          cycle: plant.waterCycle,
+        },
+        {
+          type: "fertilizer",
+          last: plant.lastFertilizingTime,
+          cycle: plant.fertilizerCycle,
+        },
+        {
+          type: "repot",
+          last: plant.lastRepottingTime,
+          cycle: plant.repotCycle || 365,
+        },
+      ];
 
-      const dateStr = new Date(plant.lastActionAt * 1000)
-        .toISOString()
-        .split("T")[0];
+      tasks.forEach((t) => {
+        if (!t.cycle) return;
+        const deadlineUnix = t.last + t.cycle * 86400;
+        const dateStr = new Date(deadlineUnix * 1000)
+          .toISOString()
+          .split("T")[0];
 
-      if (!acc[dateStr]) {
-        acc[dateStr] = {
-          plants: [],
-          stats: { water: 0, fertilizer: 0, repot: 0 },
-        };
-      }
+        if (!acc[dateStr]) {
+          acc[dateStr] = {
+            plants: [],
+            stats: { water: 0, fertilizer: 0, repot: 0 },
+            plantIds: new Set(), 
+          };
+        }
 
-      acc[dateStr].plants.push({ id, ...plant });
+        acc[dateStr].stats[t.type]++;
 
-      // 統計當天各項任務數
-      if (plant.lastWateringTime === plant.lastActionAt)
-        acc[dateStr].stats.water++;
-      if (plant.lastFertilizingTime === plant.lastActionAt)
-        acc[dateStr].stats.fertilizer++;
-      if (plant.lastRepottingTime === plant.lastActionAt)
-        acc[dateStr].stats.repot++;
-
+        if (!acc[dateStr].plantIds.has(id)) {
+          acc[dateStr].plants.push({ id, ...plant });
+          acc[dateStr].plantIds.add(id);
+        }
+      });
       return acc;
     }, {});
   }, [myPlants]);
@@ -129,7 +119,9 @@ function Calendar() {
                     {day.stats.fertilizer > 0 ? (
                       <>
                         <span className="item-text">施肥</span>
-                        <span className="item-num">x {day.stats.fertilizer}</span>
+                        <span className="item-num">
+                          x {day.stats.fertilizer}
+                        </span>
                       </>
                     ) : null}
                   </li>
@@ -148,8 +140,18 @@ function Calendar() {
                   {(() => {
                     const allTags = [];
                     day.plants.forEach((p) => {
-                      
-                      if (p.lastWateringTime === p.lastActionAt) {
+                      // 輔助函式：判斷這株植物的某項任務死線是不是今天
+                      const isDueToday = (last, cycle) => {
+                        if (!cycle) return false;
+                        return (
+                          new Date((last + cycle * 86400) * 1000)
+                            .toISOString()
+                            .split("T")[0] === day.fullDate
+                        );
+                      };
+
+                      // 同一株植物 (p)，如果兩項任務都到期，就推入兩個不同的 Tag 資料
+                      if (isDueToday(p.lastWateringTime, p.waterCycle)) {
                         allTags.push({
                           id: `${p.id}-w`,
                           name: p.title,
@@ -157,7 +159,9 @@ function Calendar() {
                           icon: water,
                         });
                       }
-                      if (p.lastFertilizingTime === p.lastActionAt) {
+                      if (
+                        isDueToday(p.lastFertilizingTime, p.fertilizerCycle)
+                      ) {
                         allTags.push({
                           id: `${p.id}-f`,
                           name: p.title,
@@ -165,7 +169,9 @@ function Calendar() {
                           icon: grass,
                         });
                       }
-                      if (p.lastRepottingTime === p.lastActionAt) {
+                      if (
+                        isDueToday(p.lastRepottingTime, p.repotCycle || 365)
+                      ) {
                         allTags.push({
                           id: `${p.id}-r`,
                           name: p.title,
@@ -175,7 +181,6 @@ function Calendar() {
                       }
                     });
 
-                    // 渲染前2個標籤
                     const visibleTags = allTags.slice(0, 2);
                     const moreCount = allTags.length - 2;
 
@@ -191,7 +196,6 @@ function Calendar() {
                             <span className="tag-name">{tag.name}</span>
                           </div>
                         ))}
-
                         {moreCount > 0 && (
                           <div className="more-link">+{moreCount} 更多</div>
                         )}

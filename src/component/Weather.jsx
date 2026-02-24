@@ -5,7 +5,6 @@ import clearDay from "/clearDay.svg";
 import partlyCloudyDay from "/partlyCloudyDay.svg";
 import rainyDay from "/rainyDay.svg";
 
-import "../assets/scss/components/_weatherIcon.scss"
 
 function Weather() {
   const [weatherData, setWeatherData] = useState([]);
