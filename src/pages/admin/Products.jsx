@@ -2,11 +2,8 @@ import { useOutletContext } from "react-router";
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import * as bootstrap from "bootstrap"; //引入 Bootstrap
-import { useSelector, useDispatch } from "react-redux";
-import { getAdminProducts, setAdminProducts } from "../../slice/adminProductSlice";
 
 function Products() {
-  const dispatch = useDispatch();
   const { token, API_BASE, API_PATH } = useOutletContext();
   const INITIAL_TEMPLATE_DATA = {
     id: "",
@@ -31,21 +28,16 @@ function Products() {
   const productModalRef = useRef(null);
   const [modalType, setModalType] = useState(""); // "create", "edit", "delete"
   const [templateData, setTemplateData] = useState(INITIAL_TEMPLATE_DATA);
-  const adminProducts = useSelector(getAdminProducts);
   //API 取得產品列表
   const getProducts = async () => {
     try {
       const response = await axios.get(`${API_BASE}/api/${API_PATH}/admin/products`);
       console.log(response.data.products);
       setProduct(response.data.products);
-      dispatch(setAdminProducts(response.data.products));
     } catch (error) {
       console.log(error.response.data.message);
     }
   };
-  useEffect(() => {
-    console.log("這是adminProducts", adminProducts);
-  }, [adminProducts]);
 
   // 新增、編輯產品
   const updateProduct = async (id) => {

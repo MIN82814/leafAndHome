@@ -14,10 +14,16 @@ function Footer() {
             <p className="text-secondary-100">讓養植物這件事，不只是「買一盆回家」，而是一步一步，把生活慢慢長成你喜歡的樣子，為城市生活打造的綠色角落，簡單、安心、有質感。</p>
           </div>
           <div className="col">
-            <div className="row row-cols-2 row-cols-md-3">
-              <div className="col">購物指南</div>
-              <div className="col">森活誌</div>
-              <div className="col">聯絡我們</div>
+            <div className="d-flex gap-6">
+              <NavLink to="products" className="px-4 py-2 h6">
+                <span className="text-underline">森活選物</span>
+              </NavLink>
+              <NavLink to="articles" className="px-4 py-2 h6">
+                <span className="text-underline">森活日常誌</span>
+              </NavLink>
+              <NavLink to="about" className="px-4 py-2 h6">
+                <span className="text-underline">關於觀葉森活</span>
+              </NavLink>
             </div>
           </div>
         </div>

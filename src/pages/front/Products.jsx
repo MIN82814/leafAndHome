@@ -1,16 +1,13 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
-
-const API_BASE = import.meta.env.VITE_API_BASE;
-const API_PATH = import.meta.env.VITE_API_PATH;
+import { getProductsApi } from "../../services/product";
 
 function Products() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const response = await axios.get(`${API_BASE}/api/${API_PATH}/products`);
+        const response = await getProductsApi(1, "all");
         console.log(response.data.products);
         setProducts(response.data.products);
       } catch (error) {
