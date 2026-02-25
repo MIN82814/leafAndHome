@@ -3,9 +3,18 @@ import Footer from "./Footer";
 import mark from "/mark.svg";
 import cart from "/cart.svg";
 import personal from "/personal.svg";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createAsyncGetCart } from "../slice/cartSlice";
 
 function Layout() {
   const { isAuth, setIsAuth } = useOutletContext();
+  const carts = useSelector((state) => state.cart.carts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(createAsyncGetCart());
+  }, [dispatch]);
 
   return (
     <>
@@ -28,8 +37,12 @@ function Layout() {
               </NavLink>
             </div>
             <div className="d-flex align-items-center">
-              <NavLink to="cart" className="me-3">
-                <img src={cart} alt="購物車" className="icon-hover p-3 rounded-circle" />
+              <NavLink to="cart" className="me-3 position-relative">
+                <img src={cart} alt="購物車" className="icon-hover rounded-circle p-2" />
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger">
+                  {carts.length}
+                  <span className="visually-hidden">unread messages</span>
+                </span>
               </NavLink>
               {!isAuth ? (
                 <NavLink
