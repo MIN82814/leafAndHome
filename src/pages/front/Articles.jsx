@@ -7,6 +7,7 @@ import Loading from "../../component/Loading";
 import { formatPlainTitle } from "../../utils/articleHelpers";
 import SearchBar from "../../component/SearchBar";
 import NoResults from "../../component/NoResults";
+import ArticlesHero from "../../component/ArticlesHero";
 import { showErrorAlert } from '../../utils/alert';
 
 const categories = [
@@ -91,26 +92,9 @@ function Articles() {
     return <Loading text={"🌿正在為您搬運植物..."} />;
   }
   return (
-    <>
-      <header className="articles-hero-section">
-        <div className="container text-md-center px-7 px-md-0">
-          <h1 className="fw-bold mb-5 custom-txt-shadow">生活日常誌</h1>
-          <p className="fw-bold h5 custom-txt-shadow">
-            探索​植物​的​療癒​力量，​給​新手​的​養植​指南
-          </p>
-          <div className="d-flex gap-2 justify-content-md-center mt-5 flex-wrap">
-            {categories.map((tag) => (
-              <button
-                key={tag}
-                className={`btn px-2  px-md-4 btn-category-min ${selectedTag === tag ? "btn-primary-700" : "btn-secondary-100 "}`}
-                onClick={() => setSelectedTag(tag)}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
-      </header>
+    <>   <ArticlesHero categories={categories} 
+        selectedTag={selectedTag} 
+        setSelectedTag={setSelectedTag} />
 
       <section className="bg-background-200">
         <div className="container content-wrapper">
