@@ -1,40 +1,14 @@
-.articles-hero-section {
-  height: 500px;
-  width: 100%;
-  position: relative;
-  /* 確保你有設定背景圖，否則毛玻璃看不出效果 */
-  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770557287817.jpg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  background-color: "#6a7a69";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  position: relative;
-  z-index: 1;
-  overflow: hidden; /* 防止毛玻璃邊緣溢出 */
-}
-/* 毛玻璃遮罩層 */
-.articles-hero-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* 使用 rgba 調整亮度：最後一個數值 0.4 代表 40% 透明度 */
+/* 列表頁特有 Hero 遮罩 (毛玻璃) */
+.articles-hero-blur::before {
   background: rgba(225, 225, 225, 0.2);
-  -webkit-backdrop-filter: blur(3px);
-  backdrop-filter: blur(3px);
-  z-index: -1; /* 確保在內容文字下方 */
+  backdrop-filter: blur(2.8px);
+  -webkit-backdrop-filter: blur(2.8px);
+}
+.hero-articles {
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772247567913.png");
+  background-attachment: fixed;
 }
 
-.articles-hero-section .container {
-  position: relative;
-  z-index: 2;
-}
 
 /*hero標籤*/
 .btn-category-min {

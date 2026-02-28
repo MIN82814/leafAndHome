@@ -1,9 +1,9 @@
 //大頭照判斷邏輯
 export const AVATARS = [
-  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770437920064.png",
-  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770437961135.png",
-  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770437893922.png",
-  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770437938518.png",
+  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772248035796.png",
+  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772248110679.png",
+  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772247976514.png",
+  "https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772248086350.png",
 ];
 // 根據名字計算固定頭像索引的工具
 export const getFixedIndex = (str, length) => {

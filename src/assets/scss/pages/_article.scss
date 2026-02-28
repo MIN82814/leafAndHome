@@ -61,44 +61,11 @@
   }
 }
 
-.hero-section {
-  height: 500px;
-  width: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770003050852.png");
-  background-color: "#6a7a69";
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  position: relative;
-}
-@media (min-width: 768px) {
-  .hero-section {
-    height: 550px;
-    width: 100%;
-    background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770003050852.png");
-  }
+.hero-article-detail {
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772246558147.png");
 }
 
-/* 加上一個深色遮罩，避免圖片太亮看不到字 */
-.hero-section::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
 
-.hero-section .container {
-  position: relative;
-  z-index: 2;
-}
 .card-img {
   height: 230px;
   width: 327px;
@@ -127,6 +94,7 @@
   border-radius: 8px 40px 8px 8px;
 }
 
+/*電子報*/
 .bottom-section {
   padding-top: 52px;
 }
@@ -134,7 +102,6 @@
   padding-top: 52px;
   padding-bottom: 300px;
 }
-/*電子報*/
 .newsletter-wrapper {
   margin: 0 auto;
   margin-top: -250px;
@@ -142,7 +109,7 @@
   z-index: 10;
 }
 .newsletter-left {
-  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1771057954022.png");
+  background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772247714020.png");
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   background-size: cover;
@@ -177,7 +144,7 @@
   .newsletter-left {
     border-bottom-left-radius: 8px;
     border-top-right-radius: 0px;
-    background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770286789726.png");
+    background-image: url("https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1772247742273.png");
   }
   .newsletter-right {
     border-top-right-radius: 8px;
