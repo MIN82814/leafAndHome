@@ -182,9 +182,20 @@
 .carousel-item img {
   height: 736px; //預留Indicator下方空隙
 }
-.carousel-flex-image {
+
+.carousel-flex-image-container {
   max-width: 33%;
+}
+
+.carousel-flex-image {
   object-fit: cover;
+}
+.carousel-flex-image-text {
+  width: 120px;
+  height: 120px;
+  bottom: 20px;
+  background-color: rgba(249, 247, 245, 0.5);
+  backdrop-filter: blur(20px);
 }
 
 .bg-blur {

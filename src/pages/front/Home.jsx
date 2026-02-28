@@ -14,8 +14,36 @@ import Card_article from "../../component/Card_Article";
 import Pill from "../../component/Pill";
 import Card_list from "../../component/Card_list";
 import Title from "../../component/Title";
+import { getProductsApi } from "../../services/product";
+import { getArticlesApi } from "../../services/article";
+import { useEffect, useState } from "react";
 
 function Home() {
+  const [products, setProducts] = useState([]);
+  const [articles, setArticles] = useState([]);
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const response = await getProductsApi(1, "all");
+        console.log(response.data.products);
+        setProducts(response.data.products);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    const getArticles = async () => {
+      try {
+        const response = await getArticlesApi(1);
+        console.log(response.data.articles);
+        setArticles(response.data.articles);
+      } catch (error) {
+        console.log(error.response);
+      }
+    };
+    getProducts();
+    getArticles();
+  }, []);
+
   return (
     <>
       <section className="modal-width">
@@ -33,17 +61,49 @@ function Home() {
                   <h1 className="h1 mb-5">把一點綠，種進你的日常森活</h1>
                   <h4 className="h4">依照光線、空間與好養程度精選觀葉植物，</h4>
                   <h4 className="h4 mb-9">從租屋小套房到辦公桌，一起長出屬於你的綠意角落。</h4>
-                  <NavLink to="/products" className="btn btn-neutral-100">
+                  <NavLink to="/products" className="btn btn-neutral-100 text-primary-700 px-10 py-4 fs-5 fw-bold">
                     逛逛森活選物
                   </NavLink>
                 </div>
               </div>
             </div>
             <div className="carousel-item">
-              <div className="d-flex justify-content-between bg-neutral-100">
-                <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770182996909.png" className="carousel-flex-image" alt="..." />
-                <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183024147.png" className="carousel-flex-image" alt="..." />
-                <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183041746.png" className="carousel-flex-image" alt="..." />
+              <div className="d-flex justify-content-between bg-neutral-100 position-relative">
+                <div className="carousel-flex-image-container position-relative">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770182996909.png" alt="玄關植物" />
+                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                    <h4 className="text-neutral-900 mb-2 h4">低光</h4>
+                    <p className="fs-7 text-neutral-900">適合玄關</p>
+                  </div>
+                </div>
+                <div className="carousel-flex-image-container position-relative">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183024147.png" className="carousel-flex-image" alt="書桌植物" />
+                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                    <h4 className="text-neutral-900 mb-2 h4">中光</h4>
+                    <p className="fs-7 text-neutral-900">適合書桌</p>
+                  </div>
+                </div>
+                <div className="carousel-flex-image-container position-relative">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183041746.png" className="carousel-flex-image" alt="窗邊植物" />
+                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                    <h4 className="text-neutral-900 mb-2 h4">高光</h4>
+                    <p className="fs-7 text-neutral-900">適合窗邊</p>
+                  </div>
+                </div>
+                <div className="w-100 position-absolute z-1 top-50  start-50 translate-middle d-flex justify-content-center">
+                  <div className="carousel-text text-center text-white">
+                    <h2 className="h1">為你的空間挑一盆剛剛好的植物</h2>
+                    <h4 className="h4 mb-4">給每個角落，一盆剛剛好的綠</h4>
+                    <ul className="d-flex gap-3 justify-content-center mb-6">
+                      <li className="bg-secondary-700 px-4 py-2 rounded-pill">依光線條件推薦</li>
+                      <li className="bg-secondary-700 px-4 py-2 rounded-pill">新手也養得活</li>
+                      <li className="bg-secondary-700 px-4 py-2 rounded-pill">對應坪數與用途</li>
+                    </ul>
+                    <NavLink to="/products" className="btn btn-neutral-100 text-primary-700 px-10 py-4 fs-5 fw-bold">
+                      為我的空間配盆栽植物
+                    </NavLink>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="carousel-item">
@@ -52,7 +112,7 @@ function Home() {
                 <div className="carousel-text text-center text-white">
                   <h1 className="h1 mb-5">不會養植物也沒關係</h1>
                   <h4 className="h4 mb-9">從每篇森活誌開始就好</h4>
-                  <NavLink to="/products" className="btn btn-neutral-100">
+                  <NavLink to="/articles" className="btn btn-neutral-100 text-primary-700 px-10 py-4 fs-5 fw-bold">
                     閱讀最新生活誌
                   </NavLink>
                 </div>
