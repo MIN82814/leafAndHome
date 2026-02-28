@@ -313,7 +313,7 @@ export default function Cart() {
                       <td style={{ width: "400px" }}>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                            src="/leafAndHome/pot.png"
                             style={{
                               height: "100px",
                               width: "100px",
@@ -368,7 +368,7 @@ export default function Cart() {
                       <td style={{ width: "400px" }}>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                            src="/leafAndHome/wrap.png"
                             style={{
                               height: "100px",
                               width: "100px",
@@ -423,7 +423,7 @@ export default function Cart() {
                       <td style={{ width: "400px" }}>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                            src="/leafAndHome/newbbie.png"
                             style={{
                               height: "100px",
                               width: "100px",
@@ -483,7 +483,7 @@ export default function Cart() {
                     {/* 上：商品資訊 */}
                     <div className="d-flex gap-3 mb-3">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/pot.png"
                         style={{
                           width: "64px",
                           height: "64px",
@@ -537,7 +537,7 @@ export default function Cart() {
                   <div className="addon-card border rounded p-3 mb-3 bg-white">
                     <div className="d-flex gap-3 mb-3">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/wrap.png"
                         style={{
                           width: "64px",
                           height: "64px",
@@ -587,7 +587,7 @@ export default function Cart() {
                   <div className="addon-card border rounded p-3 mb-3 bg-white">
                     <div className="d-flex gap-3 mb-3">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/newbbie.png"
                         style={{
                           width: "64px",
                           height: "64px",
@@ -655,7 +655,7 @@ export default function Cart() {
                       <td style={{ width: "400px" }}>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                            src="/leafAndHome/spiderPlant.png"
                             style={{
                               height: "100px",
                               width: "100px",
@@ -708,7 +708,7 @@ export default function Cart() {
                       <td style={{ width: "400px" }}>
                         <div className="d-flex align-items-center gap-2">
                           <img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                            src="/leafAndHome/bostonFern.png"
                             style={{
                               height: "100px",
                               width: "100px",
@@ -766,7 +766,7 @@ export default function Cart() {
                     {/* 上：商品資訊 */}
                     <div className="d-flex gap-3 mb-3">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/spiderPlant.png"
                         style={{
                           width: "64px",
                           height: "64px",
@@ -819,7 +819,7 @@ export default function Cart() {
                   <div className="addon-card border rounded p-3 mb-3 bg-white">
                     <div className="d-flex gap-3 mb-3">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/bostonFern.png"
                         style={{
                           width: "64px",
                           height: "64px",
@@ -934,9 +934,9 @@ export default function Cart() {
                   繼續結帳
                 </button>
                 <div className="d-flex flex-column ">
-                  <div className="d-flex justify-content-start">
+                  <div className="d-flex justify-content-start gap-2 mb-2">
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                      src="/leafAndHome/icons/securePayment.png"
                       style={{
                         height: "48px",
                         width: "48px",
@@ -958,9 +958,9 @@ export default function Cart() {
                       </span>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-start">
+                  <div className="d-flex justify-content-start gap-2 mb-2">
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                      src="/leafAndHome/icons/freeDelivery.png"
                       style={{
                         height: "48px",
                         width: "48px",
@@ -982,9 +982,9 @@ export default function Cart() {
                       </span>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-start">
+                  <div className="d-flex justify-content-start gap-2 mb-2">
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                      src="/leafAndHome/icons/return.png"
                       style={{
                         height: "48px",
                         width: "48px",
@@ -1006,9 +1006,9 @@ export default function Cart() {
                       </span>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-start">
+                  <div className="d-flex justify-content-start gap-2 mb-2">
                     <img
-                      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                      src="/leafAndHome/icons/privacy.png"
                       style={{
                         height: "48px",
                         width: "48px",
