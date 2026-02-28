@@ -568,9 +568,9 @@ export default function Checkout() {
                     完成付款
                   </button>
                   <div className="d-flex flex-column ">
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/securePayment.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -592,9 +592,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/freeDelivery.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -616,9 +616,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/return.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -640,9 +640,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/privacy.png"
                         style={{
                           height: "48px",
                           width: "48px",
