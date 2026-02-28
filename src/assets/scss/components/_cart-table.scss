@@ -144,3 +144,12 @@ input[type="number"] {
   font-size: 18px;
   color: $neutral-700;
 }
+
+.mobile-checkout-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  border-top: 1px solid #eee;
+}

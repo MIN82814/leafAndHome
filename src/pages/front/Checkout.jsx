@@ -145,7 +145,7 @@ export default function Checkout() {
   return (
     <>
       <div className="container mb-5 cart-table">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="checkout-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-9 ">
               <div className="section mb-4">
@@ -267,7 +267,7 @@ export default function Checkout() {
                         <label style={{ color: "#666666" }} htmlFor="payment">
                           付款方式
                         </label>
-                        <select name="" id="payment">
+                        <select name="" id="payment" className="form-select">
                           <option value="貨到付款">貨到付款</option>
                           <option value="線上刷卡">線上刷卡</option>
                         </select>
@@ -281,7 +281,7 @@ export default function Checkout() {
                         <label htmlFor="einvoice" style={{ color: "#666666" }}>
                           電子發票類型
                         </label>
-                        <select name="" id="einvoice">
+                        <select name="" id="einvoice" className="form-select">
                           <option value="二聯電子發票">二聯電子發票</option>
                           <option value="三聯電子發票">三聯電子發票</option>
                         </select>
@@ -294,6 +294,7 @@ export default function Checkout() {
                           type="text"
                           placeholder="example@plantlife.com"
                           id="email"
+                          className="form-control"
                           {...register("email", {
                             required: "請輸入 Email",
                           })}
@@ -317,7 +318,7 @@ export default function Checkout() {
                               name=""
                               id="carrier"
                               defaultValue={""}
-                              className="h-100"
+                              className="h-100 form-select"
                             >
                               <option value="" disabled>
                                 請選擇
@@ -337,6 +338,7 @@ export default function Checkout() {
                               type="text"
                               placeholder="格式:/123-ABC(共8位字元)"
                               id="barcode"
+                              className="form-control"
                             />
                           </div>
                         </div>
@@ -370,6 +372,7 @@ export default function Checkout() {
                           type="text"
                           id="name"
                           placeholder="請輸入您的姓名"
+                          className="form-control"
                           {...register("name", { required: "請輸入姓名" })}
                         />
                         {errors.name && (
@@ -386,6 +389,7 @@ export default function Checkout() {
                           type="text"
                           id="tel"
                           placeholder="手機或市話"
+                          className="form-control"
                           {...register("tel", {
                             required: "請輸入電話",
                             pattern: {
@@ -414,6 +418,7 @@ export default function Checkout() {
                             type="text"
                             value="台北市"
                             id="city"
+                            className="form-control"
                             readOnly
                             {...register("city")}
                           />
@@ -426,7 +431,7 @@ export default function Checkout() {
                             name=""
                             id="section"
                             {...register("section")}
-                            className="h-100"
+                            className="h-100 form-select"
                           >
                             <option value="內湖區">內湖區</option>
                             <option value="大安區">大安區</option>
@@ -442,6 +447,7 @@ export default function Checkout() {
                           type="text"
                           placeholder="街道、巷弄、門號、樓層"
                           id="address"
+                          className="form-control"
                           {...register("detailAddress", {
                             required: "請輸入地址",
                           })}
@@ -460,6 +466,7 @@ export default function Checkout() {
                           type="text"
                           placeholder="請輸入郵遞區號"
                           id="postcode"
+                          className="form-control"
                           {...register("postcode", {
                             required: "請輸入郵遞區號",
                           })}
@@ -561,9 +568,9 @@ export default function Checkout() {
                     完成付款
                   </button>
                   <div className="d-flex flex-column ">
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/securePayment.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -585,9 +592,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/freeDelivery.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -609,9 +616,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/return.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -633,9 +640,9 @@ export default function Checkout() {
                         </span>
                       </div>
                     </div>
-                    <div className="d-flex justify-content-start">
+                    <div className="d-flex justify-content-start gap-2 mb-2">
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+                        src="/leafAndHome/icons/privacy.png"
                         style={{
                           height: "48px",
                           width: "48px",
@@ -663,6 +670,25 @@ export default function Checkout() {
             </div>
           </div>
         </form>
+      </div>
+      {/* 🔥 Mobile Fixed Checkout Bar */}
+      <div className="mobile-checkout-bar d-md-none">
+        <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
+          <div className="w-100 d-flex justify-content-between align-items-center mb-4">
+            <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
+            <div className="fw-bold text-neutral-900 fs-4">
+              ${couponApplied ? totalAfterCoupon : total}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            form="checkout-form"
+            className="btn btn-primary-500 text-white w-100"
+          >
+            完成付款
+          </button>
+        </div>
       </div>
     </>
   );

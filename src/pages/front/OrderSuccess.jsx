@@ -28,9 +28,9 @@ export default function OrderSuccess() {
     <div className=" container d-flex flex-column align-items-center gap-5 cart-table">
       {/* <div className="text-center"> */}
       <img
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+        src="/leafAndHome/orderSuccess.png"
         alt=""
-        style={{ width: "200px", height: "200px" }}
+        style={{ height: "300px" }}
       />
       {/* </div> */}
       <h3>付款成功！</h3>
@@ -40,7 +40,7 @@ export default function OrderSuccess() {
       </div>
       <div className="d-flex justify-content-start align-items-center bg-neutral-200 rounded-4 gap-2 px-4 py-6">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIoTqFvPu3IOd_DzmzYwpB_GmNYcbcd02WsQ&s"
+          src="/leafAndHome/icons/emailSent.png"
           alt=""
           style={{
             height: "100px",
