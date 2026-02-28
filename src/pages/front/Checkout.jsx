@@ -145,7 +145,7 @@ export default function Checkout() {
   return (
     <>
       <div className="container mb-5 cart-table">
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form id="checkout-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="row d-flex justify-content-between">
             <div className="col-12 col-lg-9 ">
               <div className="section mb-4">
@@ -670,6 +670,25 @@ export default function Checkout() {
             </div>
           </div>
         </form>
+      </div>
+      {/* 🔥 Mobile Fixed Checkout Bar */}
+      <div className="mobile-checkout-bar d-md-none">
+        <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
+          <div className="w-100 d-flex justify-content-between align-items-center mb-4">
+            <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
+            <div className="fw-bold text-neutral-900 fs-4">
+              ${couponApplied ? totalAfterCoupon : total}
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            form="checkout-form"
+            className="btn btn-primary-500 text-white w-100"
+          >
+            完成付款
+          </button>
+        </div>
       </div>
     </>
   );

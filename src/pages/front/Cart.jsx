@@ -1036,6 +1036,29 @@ export default function Cart() {
           </div>
         </div>
       </div>
+      {/* 🔥 Mobile Fixed Checkout Bar */}
+      <div className="mobile-checkout-bar d-md-none">
+        <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
+          <div className=" w-100 d-flex justify-content-between align-items-center mb-4">
+            <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
+            <div className="fw-bold text-neutral-900 fs-4">
+              ${couponApplied ? totalAfterCoupon : total}
+            </div>
+          </div>
+
+          <button
+            type="button"
+            className="btn btn-primary-500 w-100 text-white fs-5 px-4"
+            onClick={() =>
+              navigate("checkout", {
+                state: { couponApplied, couponCode, totalAfterCoupon },
+              })
+            }
+          >
+            繼續結帳
+          </button>
+        </div>
+      </div>
     </>
   );
 }
