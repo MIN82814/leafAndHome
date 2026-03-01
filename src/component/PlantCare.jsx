@@ -4,8 +4,8 @@ function PlantCare() {
   const { careStats } = useMyPlants();
 
   const stats = careStats || {
-    completed: { total: 0, water: 0, fertilizer: 0, repot: 0 },
-    pending: { total: 0, water: 0, fertilizer: 0, repot: 0 },
+    completed: { total: 0, water: 0, fertilize: 0, repot: 0 },
+    pending: { total: 0, water: 0, fertilize: 0, repot: 0 },
   };
 
   return (
@@ -42,7 +42,7 @@ function PlantCare() {
                 <span className="item-name fs-7 text-neutral-700">施肥</span>
               </div>
               <span className="item-value h6 text-secondary-700">
-                {stats.completed.fertilizer}
+                {stats.completed.fertilize}
               </span>
             </div>
             <div className="care-row">
@@ -88,7 +88,7 @@ function PlantCare() {
                 <span className="item-name fs-7 text-neutral-700">施肥</span>
               </div>
               <span className="item-value h6 text-secondary-700">
-                {stats.pending.fertilizer}
+                {stats.pending.fertilize}
               </span>
             </div>
             <div className="care-row">

@@ -108,7 +108,6 @@ function Order() {
                           >
                             訂單內容
                           </a>
-                          <a className="btn btn-primary btn-sm text-decoration-line-through">編輯</a>
                           <a className="btn btn-primary btn-sm" onClick={() => delOrder(item.id)}>刪除</a>
                         </div>
                       </td>
