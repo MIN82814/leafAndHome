@@ -17,7 +17,7 @@ function Personal() {
 
   const taskItems = [
     { label: "待澆水", num: careStats.pending.water, icon: water },
-    { label: "待施肥", num: careStats.pending.fertilizer, icon: grass },
+    { label: "待施肥", num: careStats.pending.fertilize, icon: grass },
     { label: "待換盆", num: careStats.pending.repot, icon: plant },
     { label: "本週已完成", num: careStats.completed.total, icon: checkCircle },
   ];
@@ -147,9 +147,6 @@ function Personal() {
                       <h5 className="fw-bold mb-0 text-secondary-700">
                         我的植物
                       </h5>
-                      <a href="#" className="text-decoration-none small ">
-                        ▶
-                      </a>
                     </div>
                     {/* Body */}
                     <div className="flex-grow-1">

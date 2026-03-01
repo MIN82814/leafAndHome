@@ -17,6 +17,7 @@ import Personal from "./pages/front/Personal.jsx";
 import Cart from "./pages/front/Cart.jsx";
 import Checkout from "./pages/front/Checkout.jsx";
 import OrderSuccess from "./pages/front/OrderSuccess.jsx";
+import MyPlants from "./pages/front/MyPlants.jsx";
 
 //後台
 import AdminCoupon from "./pages/admin/Coupon.jsx";
@@ -40,6 +41,7 @@ const routes = [
           { path: "products", element: <Products /> },
           { path: "products/:id", element: <Product /> },
           { path: "personal", element: <Personal /> },
+          { path: "personal/my-plants", element: <MyPlants /> },
         ],
       },
       {
