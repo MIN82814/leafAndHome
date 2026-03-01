@@ -179,7 +179,7 @@
 .carousel-item {
   height: 720px;
 }
-.carousel-item img {
+.carousel-item .img {
   height: 736px; //預留Indicator下方空隙
 }
 
@@ -197,12 +197,31 @@
   background-color: rgba(249, 247, 245, 0.5);
   backdrop-filter: blur(20px);
 }
+.carousel-article-image {
+  width: 100px;
+  height: 75px;
+}
+.truncate-line-2 {
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.carousel-article-text {
+  left: 80px;
+  bottom: 34px;
+  max-width: 500px;
+}
 
 .bg-blur {
   background-color: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(10px);
 }
 
+.icon-hover {
+  background-color: rgba(83, 131, 105, 0.1);
+}
+
 .icon-hover:hover {
   background-color: rgba(83, 131, 105, 0.2);
+}
+.menu {
 }
