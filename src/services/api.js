@@ -16,7 +16,7 @@ adminApi.interceptors.request.use(
     //先取得token
     const token = document.cookie
       .split("; ")
-      .find((row) => row.startsWith("hexToken="))
+      .find((row) => row.startsWith("hexTokenAPI="))
       ?.split("=")[1];
     if (token) {
       config.headers.Authorization = token;
