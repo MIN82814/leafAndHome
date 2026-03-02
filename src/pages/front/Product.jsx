@@ -27,6 +27,7 @@ function Product() {
   const [product, setProduct] = useState({});
   const [cartQty, setCartQty] = useState(1);
   const dispatch = useDispatch();
+  const [targetUrl, setTargetUrl] = useState();
 
   // const addCart = async (id) => {
   //   const data = {
@@ -51,14 +52,19 @@ function Product() {
       try {
         const response = await getProductApi(id);
         setProduct(response.data.product);
-        console.log(response.data.product);
-        console.log("product:", product);
+        setTargetUrl(response.data.product.imageUrl);
       } catch (error) {
         console.log(error.response);
       }
     };
     getSingleProduct();
   }, []);
+
+  //更換主圖為點擊圖片
+  const changeTargetUrl = (e) => {
+    e.preventDefault();
+    setTargetUrl(e.target.src);
+  };
 
   if (!product)
     return (
@@ -77,22 +83,33 @@ function Product() {
       {/* {JSON.stringify(product)} */}
       <section className="bg-neutral-100 py-11 py-md-14">
         <div className="container">
-          <div className="d-flex gap-9">
-            <div className="d-flex gap-6 product-image-area">
-              <div className="d-flex flex-column gap-3 prduct-image-selection">
+          <div className="d-flex flex-column flex-lg-row gap-9">
+            <div className="d-flex flex-column-reverse  flex-md-row gap-6 product-image-area">
+              <div className="d-flex flex-row flex-md-column gap-1 gap-md-3 product-image-selection">
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    changeTargetUrl(e);
+                  }}>
+                  <img src={product.imageUrl} className="rounded-2" alt={product.title} />
+                </a>
                 {product?.imagesUrl?.map((image) => (
-                  <img src={image} className="" alt={product.title} />
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      changeTargetUrl(e);
+                    }}>
+                    <img src={image} className="rounded-2" alt={product.title} />
+                  </a>
                 ))}
               </div>
-              <div className="">
-                <img src={product.imageUrl} className="" alt={product.title} />
-              </div>
+              <div className="">{targetUrl ? <img src={targetUrl} className="rounded-4" alt={product.title} /> : <></>}</div>
             </div>
             <div className="py-4 d-flex flex-column gap-9 product-content">
               <div className="d-flex flex-column flex-grow-1 justify-content-between">
                 <div>
                   <h6 className="h6 text-secondary-700 mb-3">{product.titleEn}</h6>
-                  <h2 className="h2 text-neutral-900">{product.titleZh}</h2>
+                  <h2 className="h2 text-neutral-900">{product.title}</h2>
                 </div>
                 <div>
                   <p className="fs-5 mb-3">✦ 全館滿兩千免運 ✦</p>
@@ -107,11 +124,11 @@ function Product() {
                 <label className="text-neutral-900 h6 mb-2">數量</label>
                 <div className="border border-secondary-700 d-flex justify-content-between mb-5">
                   <button className="btn" type="button" id="button-addon1" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre - 1)} disabled={cartQty <= 1}>
-                    <i class="bi bi-dash-lg"></i>
+                    <i className="bi bi-dash-lg"></i>
                   </button>
                   <input className="form-control bg-gray-100 text-center fw-bold" type="number" min="1" max="10" value={cartQty} onChange={(e) => setCartQty(Number(e.target.value))} />
                   <button className="btn" type="button" id="button-addon2" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre + 1)} disabled={cartQty >= 10}>
-                    <i class="bi bi-plus-lg"></i>
+                    <i className="bi bi-plus-lg"></i>
                   </button>
                 </div>
                 <button
@@ -129,10 +146,10 @@ function Product() {
       </section>
       <section className="bg-secondary-500 py-10">
         <div className="container">
-          <div className="row">
+          <div className="row row-cols-2 row-cols-md-4 gy-4">
             <div className="col">
-              <div className="d-flex justify-content-center gap-4">
-                <div className="p-4 bg-white rounded-circle">
+              <div className="d-flex justify-content-center gap-2 gap-md-4">
+                <div className="p-2 p-md-4 bg-white rounded-circle">
                   <img src={iconDelivery} alt="icon" />
                 </div>
                 <div>
@@ -142,8 +159,8 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center gap-4">
-                <div className="p-4 bg-white rounded-circle">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+                <div className="p-2 p-md-4 bg-white rounded-circle">
                   <img src={iconRepair} alt="icon" />
                 </div>
                 <div>
@@ -153,8 +170,8 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center gap-4">
-                <div className="p-4 bg-white rounded-circle">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+                <div className="p-2 p-md-4 bg-white rounded-circle">
                   <img src={iconBack} alt="icon" />
                 </div>
                 <div>
@@ -164,8 +181,8 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center gap-4">
-                <div className="p-4 bg-white rounded-circle">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+                <div className="p-2 p-md-4 bg-white rounded-circle">
                   <img src={iconCustomer} alt="icon" />
                 </div>
                 <div>
@@ -201,30 +218,30 @@ function Product() {
           </div>
           <div className="bg-white p-6">
             <div className="row p-6">
-              <div className="col-6">
+              <div className="col-md-6 mb-4 mb-md-0">
                 <h4 className="h4">植物特色</h4>
               </div>
-              <div className="col-6">
+              <div className="col-md-6">
                 {product?.detailedIntro?.features.map((item) => (
                   <p className="mb-2">{item}</p>
                 ))}
               </div>
             </div>
             <div className="row p-6">
-              <div className="col-6">
+              <div className="col-md-6 mb-4 mb-md-0">
                 <h4 className="h4">照顧注意事項</h4>
               </div>
-              <div className="col-6">
+              <div className="col-md-6">
                 {product?.detailedIntro?.careNotes.map((item) => (
                   <p className="mb-2">{item}</p>
                 ))}
               </div>
             </div>
             <div className="row p-6">
-              <div className="col-6">
+              <div className="col-md-6 mb-4 mb-md-0">
                 <h4 className="h4">為你帶來的好處</h4>
               </div>
-              <div className="col-6">
+              <div className="col-md-6">
                 {product?.detailedIntro?.benefits.map((item) => (
                   <p className="mb-2">{item}</p>
                 ))}
@@ -233,7 +250,7 @@ function Product() {
           </div>
         </div>
       </section>
-      <section className="bg-neutral-200  py-11 py-md-14">
+      <section className="bg-backgrond-200  py-11 py-md-14">
         <div className="container">
           <div className="text-center mb-6 mb-md-13">
             <Title title="適合擺放情境" />
@@ -243,10 +260,10 @@ function Product() {
           </div>
           <div className="row">
             {product?.placementScenes?.map((scene, index) => (
-              <div className="col-4">
+              <div className="col-md-4">
                 <div className="bg-white p-3 pb-4" key={`scene-${index}`}>
                   <div className="position-relative mb-2">
-                    <img src={product.imageUrl} alt={scene.scene} />
+                    <img src={product.imagesUrl[index]} alt={scene.scene} />
                     <span className="position-absolute scene-tag  px-4 py-1 bg-white">{scene.scene}</span>
                   </div>
                   <ul className="d-flex flex-column gap-1 px-2 py-3">
@@ -267,15 +284,18 @@ function Product() {
       <section className="bg-neutral-100  py-11 py-md-14">
         <div className="container">
           <div className="row">
-            <div className="col-3">
+            <div className="col-md-3">
               <h2 className="mb-7">顧客評價</h2>
-              <div className="d-flex align-items-center gap-2 mb-3">
-                <img src={iconStar} alt="star" style={{ width: "48px" }} />
-                <span className="h2 text-neutral-900">4.8</span>
+              <div className="d-flex justify-content-between align-items-center d-md-block">
+                <div className="d-flex align-items-center gap-2 mb-3">
+                  <img src={iconStar} alt="star" style={{ width: "48px" }} />
+                  <span className="h2 text-neutral-900">4.8</span>
+                </div>
+                <p className="text-neutral-700 h5">基於 88 則評價</p>
               </div>
-              <p className="text-neutral-700 h5">基於 88 則評價</p>
             </div>
-            <div className="col-9">
+
+            <div className="col-md-9">
               <div className="d-flex  gap-5 mb-4 align-items-center">
                 <div>
                   <Star star={5} />

@@ -1,7 +1,7 @@
 function CareGuide({ icon, title, subTitle }) {
   return (
     <>
-      <div className="col-6">
+      <div className="col-md-6">
         <div className="d-flex bg-white p-8 gap-6">
           <img src={icon} alt="icon" />
           <div>
