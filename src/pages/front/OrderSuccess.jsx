@@ -11,27 +11,22 @@ export default function OrderSuccess() {
   const [orderData, setOrderData] = useState(null);
   const navigate = useNavigate();
 
-  const fetchOrderData = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/api/${API_PATH}/order/${id}`);
-      console.log(res.data);
-      setOrderData(res.data.order);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
-
   useEffect(() => {
+    const fetchOrderData = async () => {
+      try {
+        const res = await axios.get(`${API_BASE}/api/${API_PATH}/order/${id}`);
+        console.log(res.data);
+        setOrderData(res.data.order);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
     fetchOrderData();
-  }, []);
+  }, [id]);
   return (
     <div className=" container d-flex flex-column align-items-center gap-5 cart-table">
       {/* <div className="text-center"> */}
-      <img
-        src="/leafAndHome/orderSuccess.png"
-        alt=""
-        style={{ height: "300px" }}
-      />
+      <img src="/leafAndHome/orderSuccess.png" alt="" style={{ height: "300px" }} />
       {/* </div> */}
       <h3>付款成功！</h3>
       <h5>感謝您的消費</h5>
@@ -52,9 +47,7 @@ export default function OrderSuccess() {
           <span>確認信件已發送</span>
           <span>
             我們已將確認信件發送至
-            <span style={{ color: "#222222", fontWeight: "bold" }}>
-              {orderData?.user?.email}
-            </span>
+            <span style={{ color: "#222222", fontWeight: "bold" }}>{orderData?.user?.email}</span>
             ，您可以在信件中查看訂單明細及寄送進度
           </span>
         </div>
@@ -89,18 +82,12 @@ export default function OrderSuccess() {
                             }}
                           />
                           <div className="d-flex flex-column">
-                            <span className="titleZh">
-                              {value.product.titleZh}
-                            </span>
-                            <span className="titleEn">
-                              {value.product.titleEn}
-                            </span>
+                            <span className="titleZh">{value.product.titleZh}</span>
+                            <span className="titleEn">{value.product.titleEn}</span>
                           </div>
                         </div>
                       </td>
-                      <td className="align-middle price">
-                        ${value.product.price}
-                      </td>
+                      <td className="align-middle price">${value.product.price}</td>
                       <td className="align-middle">{value.qty}</td>
                       <td className="align-middle total">${value.total}</td>
                     </tr>
@@ -157,15 +144,9 @@ export default function OrderSuccess() {
               <h4 style={{ color: "#74613e" }}>寄件資訊</h4>
             </div>
             <div className="mb-2 d-flex flex-column">
-              <span style={{ color: "#222222" }}>
-                {orderData?.user && orderData.user.name}
-              </span>
-              <span style={{ color: "#222222" }}>
-                {orderData?.user && orderData.user.tel}
-              </span>
-              <span style={{ color: "#222222" }}>
-                {orderData?.user && orderData.user.address}
-              </span>
+              <span style={{ color: "#222222" }}>{orderData?.user && orderData.user.name}</span>
+              <span style={{ color: "#222222" }}>{orderData?.user && orderData.user.tel}</span>
+              <span style={{ color: "#222222" }}>{orderData?.user && orderData.user.address}</span>
             </div>
             <div className="d-flex flex-column mb-2">
               <span style={{ color: "#666666" }}>預計抵達日:</span>
@@ -173,9 +154,7 @@ export default function OrderSuccess() {
             </div>
             <div className="mb-5 d-flex flex-column">
               <span style={{ color: "#666666" }}>訂單備注:</span>
-              <span style={{ color: "#222222" }}>
-                {orderData ? orderData.message : ""}
-              </span>
+              <span style={{ color: "#222222" }}>{orderData ? orderData.message : ""}</span>
             </div>
           </div>
           <div className="col-lg-6 d-flex flex-column">
@@ -194,9 +173,7 @@ export default function OrderSuccess() {
           </div>
           <div className="d-flex justify-content-between">
             <h6 className="text-neutral-700">商品總金額</h6>
-            <h6 className="text-neutral-900">
-              ${orderData?.id && orderData.total}
-            </h6>
+            <h6 className="text-neutral-900">${orderData?.id && orderData.total}</h6>
           </div>
           <div className="d-flex justify-content-between">
             <h6 className="text-neutral-700">運費總金額</h6>
@@ -205,9 +182,7 @@ export default function OrderSuccess() {
           <hr />
           <div className="d-flex justify-content-between">
             <h6 className="text-neutral-900">總付款金額</h6>
-            <h6 className="text-neutral-900 fw-bold fs-5">
-              {orderData ? `$${Number(orderData.total) + 120}` : "$0"}
-            </h6>
+            <h6 className="text-neutral-900 fw-bold fs-5">{orderData ? `$${Number(orderData.total) + 120}` : "$0"}</h6>
           </div>
         </div>
       </div>
@@ -215,11 +190,7 @@ export default function OrderSuccess() {
         <button type="button" className="btn btn-outline-primary-500 w-100">
           追蹤訂單
         </button>
-        <button
-          type="button"
-          className="btn btn-primary-500 text-white w-100"
-          onClick={() => navigate("/products")}
-        >
+        <button type="button" className="btn btn-primary-500 text-white w-100" onClick={() => navigate("/products")}>
           繼續逛逛
         </button>
       </div>

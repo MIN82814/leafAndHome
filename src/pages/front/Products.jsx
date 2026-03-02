@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { getProductsApi } from "../../services/product";
+import Pagination from "../../component/adminPagination";
 
 function Products() {
   const [products, setProducts] = useState([]);
+
+  //分頁
+  const [pagination, setPagination] = useState({});
+
+  const getProducts = async (page = 1) => {
+    try {
+      const response = await getProductsApi(page, "all");
+      console.log(response.data.products);
+      setProducts(response.data.products);
+      setPagination(response.data.pagination);
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const response = await getProductsApi(1, "all");
-        console.log(response.data.products);
-        setProducts(response.data.products);
-      } catch (error) {
-        console.log(error.response);
-      }
-    };
-    getProducts();
+    (async () => {
+      await getProducts();
+    })(); //確認正確後取得產品列表內容
   }, []);
   return (
     <>
@@ -41,6 +50,7 @@ function Products() {
             </div>
           ))}
         </div>
+        <Pagination pagination={pagination} onChangePage={getProducts} />
       </div>
     </>
   );

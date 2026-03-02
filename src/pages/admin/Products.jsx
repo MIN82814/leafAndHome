@@ -1,15 +1,10 @@
-import { useOutletContext } from "react-router";
 import { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import * as bootstrap from "bootstrap"; //引入 Bootstrap
-import { useSelector, useDispatch } from "react-redux";
 import Pagination from "../../component/adminPagination";
 import ProductModal from "../../component/ProductModal";
 import { getAdminProductsApi } from "../../services/product";
 
 function Products() {
-  const dispatch = useDispatch();
-  const { token, API_BASE, API_PATH } = useOutletContext();
   const INITIAL_TEMPLATE_DATA = {
     id: "",
     title: "",
@@ -54,9 +49,6 @@ function Products() {
   };
 
   useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common["Authorization"] = token;
-    }
     productModalRef.current = new bootstrap.Modal("#productModal", { keyboard: false });
 
     document.querySelector("#productModal").addEventListener("hide.bs.modal", () => {
