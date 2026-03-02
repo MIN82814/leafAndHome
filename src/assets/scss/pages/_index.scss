@@ -184,11 +184,16 @@
 }
 
 .carousel-flex-image-container {
-  max-width: 33%;
+  flex: 1 1 0;
 }
 
 .carousel-flex-image {
+  height: 736px;
   object-fit: cover;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 245px;
+  }
 }
 .carousel-flex-image-text {
   width: 120px;
@@ -209,6 +214,10 @@
   left: 80px;
   bottom: 34px;
   max-width: 500px;
+  @media (max-width: 768px) {
+    left: 12px;
+    max-width: calc(100% - 24px);
+  }
 }
 
 .bg-blur {
@@ -224,4 +233,9 @@
   background-color: rgba(83, 131, 105, 0.2);
 }
 .menu {
+}
+.x-hidden {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
 }

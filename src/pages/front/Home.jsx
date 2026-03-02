@@ -6,7 +6,6 @@ import iconBed from "/iconBed.svg";
 import iconOffice from "/iconOffice.svg";
 import iconBalcony from "/iconBalcony.svg";
 import Card_place from "../../component/Card_place";
-import product from "/product.png";
 import Card_product from "../../component/Card_product";
 import Card_article from "../../component/Card_Article";
 import Pill from "../../component/Pill";
@@ -20,6 +19,9 @@ import { formatPlainTitle } from "../../utils/articleHelpers";
 function Home() {
   const [products, setProducts] = useState([]);
   const [articles, setArticles] = useState([]);
+  const [topA, setTopA] = useState([]);
+  const [topB, setTopB] = useState([]);
+  const [topC, setTopC] = useState([]);
   // const collapseRef = useRef(null);
 
   useEffect(() => {
@@ -42,9 +44,17 @@ function Home() {
         console.log(error.response);
       }
     };
+    const setTOP = () => {
+      // 設定精選植物項目
+      setTopA([products[0], products[1], products[2], products[3], products[4]]);
+      setTopB([products[1], products[2], products[4], products[5], products[6]]);
+      setTopC([products[3], products[5], products[2], products[4], products[7]]);
+    };
+
     getProducts();
     getArticles();
-  }, []);
+    setTOP();
+  }, [products]);
 
   // const closeCollapse = () => {
   //   collapseRef.current.hide();
@@ -74,24 +84,24 @@ function Home() {
               </div>
             </div>
             <div className="carousel-item">
-              <div className="d-flex justify-content-between bg-neutral-100 position-relative">
+              <div className="carousel-flex d-flex flex-column flex-md-row justify-content-between bg-neutral-100 position-relative">
                 <div className="carousel-flex-image-container position-relative">
-                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770182996909.png" alt="玄關植物" className="carousel-flex-image img" />
-                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770182996909.png" alt="玄關植物" className="carousel-flex-image" />
+                  <div className="d-none d-md-block  position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">低光</h4>
                     <p className="fs-7 text-neutral-900">適合玄關</p>
                   </div>
                 </div>
                 <div className="carousel-flex-image-container position-relative">
-                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183024147.png" className="carousel-flex-image img" alt="書桌植物" />
-                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183024147.png" className="carousel-flex-image" alt="書桌植物" />
+                  <div className="d-none d-md-block position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">中光</h4>
                     <p className="fs-7 text-neutral-900">適合書桌</p>
                   </div>
                 </div>
                 <div className="carousel-flex-image-container position-relative">
-                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183041746.png" className="carousel-flex-image img" alt="窗邊植物" />
-                  <div className="position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183041746.png" className="carousel-flex-image" alt="窗邊植物" />
+                  <div className="d-none d-md-block position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">高光</h4>
                     <p className="fs-7 text-neutral-900">適合窗邊</p>
                   </div>
@@ -100,7 +110,7 @@ function Home() {
                   <div className="carousel-text text-center text-white">
                     <h2 className="h1">為你的空間挑一盆剛剛好的植物</h2>
                     <h4 className="h4 mb-4">給每個角落，一盆剛剛好的綠</h4>
-                    <ul className="d-flex gap-3 justify-content-center mb-6">
+                    <ul className="d-flex gap-3 justify-content-center mb-6 flex-wrap">
                       <li className="bg-secondary-700 px-4 py-2 rounded-pill">依光線條件推薦</li>
                       <li className="bg-secondary-700 px-4 py-2 rounded-pill">新手也養得活</li>
                       <li className="bg-secondary-700 px-4 py-2 rounded-pill">對應坪數與用途</li>
@@ -129,7 +139,7 @@ function Home() {
                   <div>
                     <h6 className="h6 text-neutral-900">最新生活誌</h6>
                     <p className="fs-7 mb-3">{formatPlainTitle(articles[0].title)}</p>
-                    <p className="fs-7 text-neutral-700 truncate-line-2">{formatPlainTitle(articles[0].description)}</p>
+                    <p className="d-none d-md-block fs-7 text-neutral-700 truncate-line-2">{formatPlainTitle(articles[0].description)}</p>
                   </div>
                 </div>
               ) : (
@@ -156,7 +166,7 @@ function Home() {
               <p className="h6 text-neutral-700">我們為你推薦最適合的植栽方案。</p>
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-6">
+          <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-6 x-hidden">
             <div className="col">
               <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689650010.jpg" title="租屋小套房" content="小空間也能綠意盎然" icon={iconHouse} kind="6" />
             </div>
@@ -180,15 +190,15 @@ function Home() {
               <p className="h6 text-neutral-700">我們根據新手最常見的需求，先幫你整理幾組『不容易失敗』的推薦清單</p>
             </div>
           </div>
-          <div className="row row-cols-1 row-cols-lg-2 row-cols-xxl-3">
+          <div className="row row-cols-1 row-cols-lg-2 row-cols-xxl-3 gy-3">
             <div className="col">
-              <Card_list title="幾乎沒日照也能活" subTitle="適合幾乎沒日照空間的植物 TOP 5" tag="耐陰好養" color="secondary-500" />
+              <Card_list title="幾乎沒日照也能活" subTitle="適合幾乎沒日照空間的植物 TOP 5" tag="耐陰好養" color="secondary-500" products={topA} />
             </div>
             <div className="col">
-              <Card_list title="常常忘記澆水也沒關係" subTitle="最不怕你忘記澆水的植物 Top 5" tag="懶人植物" color="primary-700" />
+              <Card_list title="常常忘記澆水也沒關係" subTitle="最不怕你忘記澆水的植物 Top 5" tag="懶人植物" color="primary-700" products={topB} />
             </div>
             <div className="col">
-              <Card_list title="桌上只放得下一點點綠" subTitle="小桌面也放得下的迷你植栽 Top 5" tag="迷你盆栽" color="neutral-700" />
+              <Card_list title="桌上只放得下一點點綠" subTitle="小桌面也放得下的迷你植栽 Top 5" tag="迷你盆栽" color="neutral-700" products={topC} />
             </div>
           </div>
         </div>
@@ -199,37 +209,21 @@ function Home() {
           <div>
             <h4 className="h4">新品上架</h4>
             <p className="mb-6">本週最新到貨，搶先擁有最美的綠意</p>
-            <div className="row row-cols-1 row-cols-md-4 g-6 mb-12">
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
+            <div className="row row-cols-1  row-cols-md-2 row-cols-lg-4 g-6 mb-12 x-hidden">
+              <div className="cols">{products[0] ? <Card_product product={products[0]} /> : <></>}</div>
+              <div className="cols">{products[1] ? <Card_product product={products[1]} /> : <></>}</div>
+              <div className="cols">{products[2] ? <Card_product product={products[2]} /> : <></>}</div>
+              <div className="cols">{products[3] ? <Card_product product={products[3]} /> : <></>}</div>
             </div>
           </div>
           <div>
             <h4 className="h4">本月熱銷排行</h4>
             <p className="mb-6">這些是本月最常被帶回家的植物，不太需要猶豫的選擇。</p>
-            <div className="row  row-cols-1 row-cols-md-4 g-6 mb-12">
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
-              <div className="cols">
-                <Card_product product={product} />
-              </div>
+            <div className="row row-cols-1  row-cols-md-2 row-cols-lg-4 g-6 mb-12 x-hidden">
+              <div className="cols">{products[4] ? <Card_product product={products[4]} /> : <></>}</div>
+              <div className="cols">{products[5] ? <Card_product product={products[5]} /> : <></>}</div>
+              <div className="cols">{products[6] ? <Card_product product={products[6]} /> : <></>}</div>
+              <div className="cols">{products[7] ? <Card_product product={products[7]} /> : <></>}</div>
             </div>
           </div>
         </div>
@@ -250,14 +244,17 @@ function Home() {
       </section>
       <section className="py-14 bg-neutral-100">
         <div className="container">
-          <div className="px-14 py-3">
+          <div className="px-md-14 py-3">
             <div className="d-flex  flex-wrap  flex-lg-nowrap justify-content-center row-gap-8 column-gap-14">
               <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770040902658.png" className="phone" alt="儀表板" />
               <div className="d-flex flex-column pt-3 pb-5">
                 <div>
                   <h2 className="h2 mb-3">別忘了你的森活儀表板</h2>
-                  <h4 className="h4 text-neutral-700">澆水、施肥、換盆日通通幫你記好，</h4>
-                  <h4 className="h4 text-neutral-700 mb-5 mb-md-8">不用再靠記憶就能穩穩養好每一盆植物。</h4>
+                  <h4 className="h4 text-neutral-700 mb-5 mb-md-8">
+                    澆水、施肥、換盆日通通幫你記好，
+                    <br className="d-none d-md-block" />
+                    不用再靠記憶就能穩穩養好每一盆植物。
+                  </h4>
                   <div className="d-flex flex-wrap row-gap-2 column-gap-4 text-secondary-700">
                     <Pill title="澆水提醒" />
                     <Pill title="換盆與剪葉記錄" />
@@ -266,7 +263,7 @@ function Home() {
                   </div>
                 </div>
                 <div className="mt-8 mt-lg-auto d-flex flex-wrap align-items-center">
-                  <NavLink to="/Personal" className="btn btn-primary-500 me-lg-5 text-white">
+                  <NavLink to="/Personal" className="btn btn-primary-500 me-lg-5 text-white mb-3 mb-md-0">
                     <i class="bi bi-tablet"></i>
                     前往我的森活儀表板
                   </NavLink>
