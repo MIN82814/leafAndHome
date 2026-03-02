@@ -16,7 +16,6 @@ import iconSupportRepotting from "/icons/iconSupportRepotting.svg";
 import iconDifficulty from "/icons/iconDifficulty.svg";
 import iconPoint from "/icons/iconPoint.svg";
 import iconStar from "/icons/iconStar.svg";
-import iconEmptyStar from "/icons/iconEmptyStar.svg";
 import CareGuide from "../../component/CareGuide";
 import Star from "../../component/Star";
 import { createAsyncAddCart } from "../../slice/cartSlice";
@@ -58,7 +57,7 @@ function Product() {
       }
     };
     getSingleProduct();
-  }, []);
+  }, [id]);
 
   //更換主圖為點擊圖片
   const changeTargetUrl = (e) => {
@@ -250,7 +249,7 @@ function Product() {
           </div>
         </div>
       </section>
-      <section className="bg-backgrond-200  py-11 py-md-14">
+      <section className="bg-background-200  py-11 py-md-14">
         <div className="container">
           <div className="text-center mb-6 mb-md-13">
             <Title title="適合擺放情境" />
