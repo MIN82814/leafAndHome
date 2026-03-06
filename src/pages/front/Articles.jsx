@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useSearchParams } from "react-router";
 import ArticleCard from "../../component/ArticleCard";
 import Pagination from "../../component/Pagination";
@@ -8,7 +7,8 @@ import { formatPlainTitle } from "../../utils/articleHelpers";
 import SearchBar from "../../component/SearchBar";
 import NoResults from "../../component/NoResults";
 import ArticlesHero from "../../component/ArticlesHero";
-import { showErrorAlert } from '../../utils/alert';
+import { showErrorAlert } from "../../utils/alert";
+import { getArticlesApi } from "../../services/article";
 
 const categories = [
   "全部",
@@ -33,20 +33,18 @@ function Articles() {
   const tagUrl = searchParams.get("tag"); // 使用 .get() 取得參數
   // 單一文章頁，如果網址有 tag 就用網址的，沒有就用 "全部"
   const [selectedTag, setSelectedTag] = useState(tagUrl || "全部");
-  const API_BASE = "https://vue3-course-api.hexschool.io/v2/api";
-  const API_PATH = "leafandhome";
 
   const articlesData = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get(`${API_BASE}/${API_PATH}/articles`);
+      const res = await getArticlesApi();
       // const sortedData = [...res.data.articles].sort(
       //   (a, b) => Number(b.create_at) - Number(a.create_at),
       // );
 
       setArticles(res.data.articles);
     } catch (err) {
-     showErrorAlert('文章列表載入失敗', err, '載入失敗，請稍後再試');
+      showErrorAlert("文章列表載入失敗", err, "載入失敗，請稍後再試");
     } finally {
       setIsLoading(false);
     }
@@ -92,10 +90,13 @@ function Articles() {
     return <Loading text={"🌿正在為您搬運植物..."} />;
   }
   return (
-    <>   <ArticlesHero categories={categories} 
-        selectedTag={selectedTag} 
-        setSelectedTag={setSelectedTag} />
-
+    <>
+      {" "}
+      <ArticlesHero
+        categories={categories}
+        selectedTag={selectedTag}
+        setSelectedTag={setSelectedTag}
+      />
       <section className="bg-background-200">
         <div className="container content-wrapper">
           {/*搜尋*/}

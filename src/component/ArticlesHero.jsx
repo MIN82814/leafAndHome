@@ -2,8 +2,7 @@ function ArticlesHero({ categories, selectedTag, setSelectedTag }) {
   if (!categories) return null;
   return (
     <>
-   
-     <header className="hero-base hero-overlay  hero-articles articles-hero-blur">
+      <header className="hero-base hero-overlay  hero-articles articles-hero-blur">
         <div className="container hero-content text-md-center px-7 px-md-0">
           <h1 className="fw-bold mb-5 custom-txt-shadow">生活日常誌</h1>
           <p className="fw-bold h5 custom-txt-shadow">

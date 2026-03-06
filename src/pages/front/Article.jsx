@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+
 import { useOutletContext, useParams } from "react-router";
 import {
   formatPlainTitle,
@@ -12,7 +12,8 @@ import Newsletter from "../../component/Newsletter";
 import CommentSection from "../../component/CommentSection";
 import ArticleContent from "../../component/ArticleContent";
 import Loading from "../../component/Loading";
-import { showErrorAlert } from '../../utils/alert';
+import { showErrorAlert } from "../../utils/alert";
+import { getArticlesApi, getArticleIdApi } from "../../services/article";
 
 function Article() {
   // 💡 如果你是用路由 (Route)，這裡會用 useParams 取得網址上的 id
@@ -24,29 +25,26 @@ function Article() {
   const [isLoading, setIsLoading] = useState(true);
   // --- 身分與登入狀態 ---
   const { isAuth, setIsAuth } = useOutletContext();
-  const [currentUser, setCurrentUser] = useState({ userName: "林沐森" });
+  const [currentUser] = useState({ userName: "林沐森" });
   // --- 留言輸入內容 ---
   const [comment, setComment] = useState("");
   const { id: articleId } = useParams();
 
-  const API_BASE = "https://vue3-course-api.hexschool.io/v2/api";
-  const API_PATH = "leafandhome";
-  const articlesData = async () => {
+  const articlesData = useCallback(async () => {
     setIsLoading(true);
     try {
       const [resDetail, resList] = await Promise.all([
-        axios.get(`${API_BASE}/${API_PATH}/article/${articleId}`),
-        axios.get(`${API_BASE}/${API_PATH}/articles`),
+        getArticleIdApi(articleId),
+        getArticlesApi(),
       ]);
-
       setArticle(resDetail.data.article);
       setArticles(resList.data.articles);
     } catch (err) {
-     showErrorAlert('文章載入失敗', err, '載入失敗，請稍後再試');
+      showErrorAlert("文章載入失敗", err, "載入失敗，請稍後再試");
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [articleId]);
   useEffect(() => {
     const loadPageData = async () => {
       //設定狀態
@@ -58,12 +56,19 @@ function Article() {
       window.scrollTo({ top: 0, behavior: "smooth" }); // 捲回頂部
     };
     loadPageData(); // 執行它
-  }, [articleId]);
+  }, [articlesData]);
   // --- **資料處理邏輯** ---
   //推薦文章判斷
   const relatedArticles = useMemo(() => {
     return getRelatedArticles(article, articles);
   }, [article, articles]);
+  // 把留言區塊找出來
+  const commentData = useMemo(() => {
+    return (
+      article?.contentBlocks?.find((block) => block.type === "commentSection")
+        ?.comments || []
+    );
+  }, [article]);
 
   // --- **留言送出邏輯** ---
 
@@ -112,25 +117,22 @@ function Article() {
     //   alert("留言成功！");
     // } catch (err) {
     //   Swal.fire({
-        // icon: 'error',
-        // title: '留言失敗',
-        // text: '留言失，請稍後再試', 
-        // confirmButtonColor: '#d33',
-        // });
+    // icon: 'error',
+    // title: '留言失敗',
+    // text: '留言失，請稍後再試',
+    // confirmButtonColor: '#d33',
+    // });
     // }
     setArticle(updatedData);
     setComment(""); // 清空留言處文字
   };
 
   // ---**事件處理 (Event Handlers)** ---
+
   //先處理「載入中」的狀態
   if (isLoading || !article) {
     return <Loading text={"🌿正在為您搬運植物..."} />;
   }
-  // 把留言區塊找出來
-  const commentData =
-    article.contentBlocks?.find((block) => block.type === "commentSection")
-      ?.comments || [];
   return (
     <>
       {/* hero區塊 */}
@@ -149,7 +151,7 @@ function Article() {
       />
 
       {/* --- 留言/電子報 --- */}
-      <section className="bg-background-200  bottom-section">
+      <section className="bg-background-200 bottom-section">
         {/* 電子報 */}
         <Newsletter />
         {/* 留言 */}
