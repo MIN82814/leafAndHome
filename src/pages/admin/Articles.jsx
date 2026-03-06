@@ -423,18 +423,75 @@ function Articles() {
 
         {/* 商品與留言管理 */}
         <div className="row mb-4">
-          <div className="col-md-6 border-end pe-4">
-            <h6 className="fw-bold border-bottom pb-2">🛍️ 相關商品</h6>
-            <button className="btn btn-sm btn-outline-primary mb-2" onClick={() => setRelatedProducts([...relatedProducts, { name: "", productId: "", img: "" }])}>+ 新增商品</button>
-            {relatedProducts.map((p, i) => (
-              <div key={i} className="p-3 border rounded mb-3 bg-white shadow-sm">
-                <input className="form-control form-control-sm mb-1" placeholder="商品名稱" value={p.name} onChange={(e) => { const n = [...relatedProducts]; n[i].name = e.target.value; setRelatedProducts(n); }} />
-                <input className="form-control form-control-sm mb-1" placeholder="商品 ID" value={p.productId} onChange={(e) => { const n = [...relatedProducts]; n[i].productId = e.target.value; setRelatedProducts(n); }} />
-                <input className="form-control form-control-sm" placeholder="圖片 URL" value={p.img} onChange={(e) => { const n = [...relatedProducts]; n[i].img = e.target.value; setRelatedProducts(n); }} />
-                <div className="text-end mt-1"><button className="btn btn-sm text-danger p-0" onClick={() => setRelatedProducts(relatedProducts.filter((_, idx) => idx !== i))}>✕ 移除</button></div>
-              </div>
-            ))}
-          </div>
+        <div className="col-md-6 border-end pe-4">
+  <h6 className="fw-bold border-bottom pb-2">🛍️ 相關商品</h6>
+  <button 
+    className="btn btn-sm btn-outline-primary mb-2" 
+    onClick={() => setRelatedProducts([...relatedProducts, { name: "", productId: "", img: "" }])}
+  >
+    + 新增商品
+  </button>
+  
+  {relatedProducts.map((p, i) => (
+    <div key={i} className="p-3 border rounded mb-3 bg-white shadow-sm">
+      {/* 💡 商品快速選擇器 */}
+      <label className="small fw-bold text-success mb-1">快速選取現有商品：</label>
+      <select 
+        className="form-select form-select-sm mb-2 border-success"
+        value={p.productId}
+     onChange={(e) => {
+  const selectedId = e.target.value;
+  if (!selectedId) return; // 💡 增加這一行：如果選回預設選項，直接跳出不執行 find
+
+  const product = allProducts?.find(item => item.id === selectedId);
+  const n = [...relatedProducts];
+  n[i] = {
+    name: product?.title || "", // 使用 Optional Chaining 更安全
+    productId: selectedId,
+    img: product?.imageUrl || ""
+  };
+  setRelatedProducts(n);
+}}
+      >
+        <option value="">-- 請選擇商品 --</option>
+        {allProducts.map(prod => (
+          <option key={prod.id} value={prod.id}>{prod.title}</option>
+        ))}
+      </select>
+
+      <hr className="my-2 opacity-25" />
+
+      {/* 欄位內容（選中後會自動填入，也可手動修改） */}
+      <input 
+        className="form-control form-control-sm mb-1" 
+        placeholder="商品名稱" 
+        value={p.name} 
+        onChange={(e) => { const n = [...relatedProducts]; n[i].name = e.target.value; setRelatedProducts(n); }} 
+      />
+      <input 
+        className="form-control form-control-sm mb-1" 
+        placeholder="商品 ID" 
+        value={p.productId} 
+        onChange={(e) => { const n = [...relatedProducts]; n[i].productId = e.target.value; setRelatedProducts(n); }} 
+      />
+      <div className="d-flex gap-2 align-items-center">
+        <input 
+          className="form-control form-control-sm" 
+          placeholder="圖片 URL" 
+          value={p.img} 
+          onChange={(e) => { const n = [...relatedProducts]; n[i].img = e.target.value; setRelatedProducts(n); }} 
+        />
+        {p.img && <img src={p.img} alt="preview" style={{ width: '40px', height: '40px', objectFit: 'cover' }} className="rounded border" />}
+      </div>
+
+      <div className="text-end mt-2">
+        <button className="btn btn-sm text-danger p-0" onClick={() => setRelatedProducts(relatedProducts.filter((_, idx) => idx !== i))}>
+          ✕ 移除商品
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
 
           <div className="col-md-6 ps-4">
             <h6 className="fw-bold border-bottom pb-2">💬 留言板內容管理</h6>
