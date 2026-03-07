@@ -69,10 +69,15 @@ function Articles() {
         selectedTag === "全部" || item.tag?.includes(selectedTag);
       //formatPlainTitle把標籤清掉
       //toLowerCase()把資料都轉為小寫
-      const searchLower = search.toLowerCase();
-      const matchSearch =
-        formatPlainTitle(item.title).toLowerCase().includes(searchLower) ||
-        formatPlainTitle(item.description).toLowerCase().includes(searchLower);
+      // .trim() 移除前後空白，.toLowerCase() 轉小寫
+      const searchLower = search.toLowerCase().trim();
+      
+      // 使用 || "" 確保即便 title 或 description 是 null 也不會報錯
+      const title = formatPlainTitle(item.title || "").toLowerCase();
+      const description = formatPlainTitle(item.description || "").toLowerCase();
+
+      const matchSearch = title.includes(searchLower) || description.includes(searchLower);
+
       return matchTag && matchSearch;
     })
     .sort((a, b) => b.create_at - a.create_at);
