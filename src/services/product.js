@@ -24,6 +24,11 @@ export const getAdminProductsApi = (page = 1, category) => {
   })
 }
 
+export const createAdminProductsApi = (data) => {
+  return adminApi.post(`/api/${API_PATH}/admin/product`, data);
+  // return console.log(data);
+}
+
 export const updateAdminProductsApi = (data) => {
   return adminApi.put(`/api/${API_PATH}/admin/product/${data.data.id}`, data);
   // return console.log(data);
