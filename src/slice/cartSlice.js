@@ -51,6 +51,27 @@ export const createAsyncAddCart = createAsyncThunk(
   }
 )
 
+export const createAsyncUpdateCart = createAsyncThunk(
+  'cart/createAsyncAddCart',
+  async ({ cartId, productId, qty = 1 }, { dispatch }) => {
+    console.log(cartId, productId, qty)
+    try {
+      const data = {
+        product_id: productId,
+        qty,
+      };
+      const response = await axios.put(`${API_BASE}/api/${API_PATH}/cart/${cartId}`, { data });
+      console.log(response.data);
+      dispatch(createAsyncGetCart());
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+)
+
+
+
+
 export const createAsyncDelCart = createAsyncThunk(
   'cart/createAsyncDelCart',
   async (id, { dispatch }) => {
