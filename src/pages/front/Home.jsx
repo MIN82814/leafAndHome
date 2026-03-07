@@ -54,7 +54,7 @@ function Home() {
     getProducts();
     getArticles();
     setTOP();
-  }, [products]);
+  }, []);
 
   // const closeCollapse = () => {
   //   collapseRef.current.hide();
@@ -264,12 +264,12 @@ function Home() {
                 </div>
                 <div className="mt-8 mt-lg-auto d-flex flex-wrap align-items-center">
                   <NavLink to="/Personal" className="btn btn-primary-500 me-lg-5 text-white mb-3 mb-md-0">
-                    <i class="bi bi-tablet"></i>
+                    <i className="bi bi-tablet"></i>
                     前往我的森活儀表板
                   </NavLink>
                   <NavLink to="/Personal" className="h6 fw-bold">
                     <span className="text-underline">
-                      看看我有哪些植物 <i class="bi bi-arrow-right"></i>
+                      看看我有哪些植物 <i className="bi bi-arrow-right"></i>
                     </span>
                   </NavLink>
                 </div>

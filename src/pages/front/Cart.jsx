@@ -1,74 +1,41 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
+import { createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
 
 export default function Cart() {
-  const [cartData, setCartData] = useState([]);
-  const subtotal = cartData.reduce((sum, item) => sum + item.total, 0);
-  const shipping = cartData.length > 0 ? 120 : 0;
+  //購物車內容初始由 CartLayout 傳入
+  const { carts } = useOutletContext();
+
+  //React-redux
+  const dispatch = useDispatch();
+
+  const subtotal = carts.reduce((sum, item) => sum + item.total, 0);
+  const shipping = carts.length > 0 ? 120 : 0;
   const total = subtotal + shipping;
   const [couponCode, setCouponCode] = useState(""); // 使用者輸入
   const [couponApplied, setCouponApplied] = useState(false); // 是否成功套用
   const [totalAfterCoupon, setTotalAfterCoupon] = useState(total); // 折扣後金額
   const navigate = useNavigate();
 
-  //fetchCartData function
-  const fetchCartData = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/api/${API_PATH}/cart`);
-      setCartData(res.data.data.carts);
-      console.log(res.data.data.carts);
-    } catch (error) {
-      alert(error.message);
-    }
+  // const handleUpdateCart = (id, qty) => {
+  //   dispatch(createAsyncAddCart({ id, qty }));
+  //   setCartQty(1);
+  // };
+
+  //移除購物車品項
+  const handleRemoveCart = (e, id) => {
+    e.preventDefault();
+    dispatch(createAsyncDelCart(id));
   };
 
-  //useEffect
-  useEffect(() => {
-    fetchCartData();
-  }, []);
-
-  //updateCart
-  const updateCartItemQty = async (itemId, newQty) => {
-    const data = {
-      product_id: itemId,
-      qty: newQty,
-    };
-    try {
-      await axios.put(`${API_BASE}/api/${API_PATH}/cart/${itemId}`, {
-        data,
-      });
-      fetchCartData();
-    } catch (err) {
-      console.error(err);
-      alert("更新失敗");
-    }
-  };
-
-  //deletecart
-  const deleteCart = async (itemId) => {
-    try {
-      const res = await axios.delete(
-        `${API_BASE}/api/${API_PATH}/cart/${itemId}`,
-      );
-      fetchCartData();
-    } catch (error) {
-      console.error(error);
-      alert("刪除失敗");
-    }
-  };
-
-  //deletecarts
-  const deleteCarts = async () => {
-    try {
-      const res = await axios.delete(`${API_BASE}/api/${API_PATH}/carts`);
-      fetchCartData();
-    } catch (error) {
-      console.error(error);
-      alert("刪除失敗");
-    }
+  //  //更新購物車數量
+  const handleUpdateCart = (cartId, productId, qty = 1) => {
+    console.log(cartId, productId, qty);
+    dispatch(createAsyncUpdateCart({ cartId, productId, qty }));
   };
 
   //applyCoupon
@@ -90,6 +57,7 @@ export default function Cart() {
         setTotalAfterCoupon(total);
       }
     } catch (error) {
+      console.log(error);
       alert("優惠卷套用失敗...");
       setCouponApplied(false);
       setTotalAfterCoupon(total);
@@ -104,11 +72,7 @@ export default function Cart() {
             <div className="section mb-4">
               <div className="head d-flex justify-content-between py-4 px-6 bg-secondary-100">
                 <h4 className="text-secondary-700">購物車</h4>
-                <button
-                  type="button"
-                  onClick={() => deleteCarts()}
-                  className="btn btn-link text-primary-700 fw-bold text-decoration-underline"
-                >
+                <button type="button" className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
                   全部刪除
                 </button>
               </div>
@@ -124,7 +88,7 @@ export default function Cart() {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartData.map((item) => {
+                    {carts.map((item) => {
                       return (
                         <tr key={item.id}>
                           <td style={{ width: "400px" }}>
@@ -138,30 +102,15 @@ export default function Cart() {
                                 }}
                               />
                               <div className="d-flex flex-column">
-                                <span className="titleZh">
-                                  {item.product.titleZh}
-                                </span>
-                                <span className="titleEn">
-                                  {item.product.titleEn}
-                                </span>
+                                <span className="titleZh">{item.product.titleZh}</span>
+                                <span className="titleEn">{item.product.titleEn}</span>
                               </div>
                             </div>
                           </td>
-                          <td className="align-middle price">
-                            NT $ {item.product.price}
-                          </td>
+                          <td className="align-middle price">NT $ {item.product.price}</td>
                           <td className="align-middle">
                             <div className="qty-input-group">
-                              <button
-                                className="btn "
-                                type="button"
-                                id="btn-decrease"
-                                onClick={() => {
-                                  if (item.qty > 1) {
-                                    updateCartItemQty(item.id, item.qty - 1);
-                                  }
-                                }}
-                              >
+                              <button className="btn " type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
                                 －
                               </button>
                               <input
@@ -173,36 +122,20 @@ export default function Cart() {
                                 onChange={(e) => {
                                   let val = parseInt(e.target.value);
                                   if (isNaN(val) || val < 1) val = 1;
-                                  updateCartItemQty(item.id, val);
+                                  handleUpdateCart(item.id, item.product_id, val);
                                 }}
                               />
-                              <button
-                                className="btn"
-                                type="button"
-                                id="btn-increase"
-                                onClick={() =>
-                                  updateCartItemQty(item.id, item.qty + 1)
-                                }
-                              >
+                              <button className="btn" type="button" id="btn-increase" disabled={item.qty >= 10 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
                                 ＋
                               </button>
                             </div>
                           </td>
-                          <td className="align-middle total">
-                            NT $ {item.total}
-                          </td>
+                          <td className="align-middle total">NT $ {item.total}</td>
                           <td className="function">
-                            <button
-                              type="button"
-                              className="btn btn-custom-link-dark"
-                            >
+                            <button type="button" className="btn btn-custom-link-dark">
                               加入收藏
                             </button>
-                            <button
-                              type="button"
-                              onClick={() => deleteCart(item.id)}
-                              className="btn btn-custom-link-light"
-                            >
+                            <button type="button" onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
                               刪除
                             </button>
                           </td>
@@ -213,18 +146,13 @@ export default function Cart() {
                 </table>
                 {/*mobile DOM*/}
                 <div className="d-block d-lg-none">
-                  {cartData.map((item) => {
+                  {carts.map((item) => {
                     return (
                       <div key={item.id} className="cart-card mb-3 p-3 rounded">
                         {/* 操作列 */}
                         <div className="d-flex gap-3 justify-content-end">
-                          <button className="btn btn-custom-link-dark">
-                            加入收藏
-                          </button>
-                          <button
-                            onClick={() => deleteCart(item.id)}
-                            className="btn btn-custom-link-light"
-                          >
+                          <button className="btn btn-custom-link-dark">加入收藏</button>
+                          <button onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
                             刪除
                           </button>
                         </div>
@@ -241,12 +169,8 @@ export default function Cart() {
                           />
 
                           <div>
-                            <div className="titleZh">
-                              {item.product.titleZh}
-                            </div>
-                            <div className="titleEn">
-                              {item.product.titleEn}
-                            </div>
+                            <div className="titleZh">{item.product.titleZh}</div>
+                            <div className="titleEn">{item.product.titleEn}</div>
                           </div>
                         </div>
 
@@ -262,10 +186,9 @@ export default function Cart() {
                               className="btn"
                               onClick={() => {
                                 if (item.qty > 1) {
-                                  updateCartItemQty(item.id, item.qty - 1);
+                                  handleUpdateCart(item.id, item.product_id, item.qty - 1);
                                 }
-                              }}
-                            >
+                              }}>
                               －
                             </button>
 
@@ -277,16 +200,11 @@ export default function Cart() {
                               onChange={(e) => {
                                 let val = parseInt(e.target.value);
                                 if (isNaN(val) || val < 1) val = 1;
-                                updateCartItemQty(item.id, val);
+                                handleUpdateCart(item.id, item.product_id, val);
                               }}
                             />
 
-                            <button
-                              className="btn"
-                              onClick={() =>
-                                updateCartItemQty(item.id, item.qty + 1)
-                              }
-                            >
+                            <button className="btn" onClick={handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
                               ＋
                             </button>
                           </div>
@@ -322,44 +240,25 @@ export default function Cart() {
                           />
                           <div className="d-flex flex-column">
                             <span className="titleZh">到貨換盆</span>
-                            <span className="titleEn">
-                              專業換盆服務，含優質培養土
-                            </span>
+                            <span className="titleEn">專業換盆服務，含優質培養土</span>
                           </div>
                         </div>
                       </td>
                       <td className="align-middle price"></td>
                       <td className="align-middle">
                         <div className="qty-input-group">
-                          <button
-                            className="btn "
-                            type="button"
-                            id="btn-decrease"
-                          >
+                          <button className="btn " type="button" id="btn-decrease">
                             －
                           </button>
-                          <input
-                            type="number"
-                            className="form-control text-center "
-                            defaultValue="1"
-                            min="1"
-                            id="qtyInput"
-                          />
-                          <button
-                            className="btn"
-                            type="button"
-                            id="btn-increase"
-                          >
+                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
+                          <button className="btn" type="button" id="btn-increase">
                             ＋
                           </button>
                         </div>
                       </td>
                       <td className="align-middle total">NT $ 150 </td>
                       <td className="function">
-                        <button
-                          type="button"
-                          className="btn btn-primary-500 text-white"
-                        >
+                        <button type="button" className="btn btn-primary-500 text-white">
                           加入
                         </button>
                       </td>
@@ -377,44 +276,25 @@ export default function Cart() {
                           />
                           <div className="d-flex flex-column">
                             <span className="titleZh">送禮包裝</span>
-                            <span className="titleEn">
-                              精美禮盒包裝，附手寫卡片
-                            </span>
+                            <span className="titleEn">精美禮盒包裝，附手寫卡片</span>
                           </div>
                         </div>
                       </td>
                       <td className="align-middle price"></td>
                       <td className="align-middle">
                         <div className="qty-input-group">
-                          <button
-                            className="btn "
-                            type="button"
-                            id="btn-decrease"
-                          >
+                          <button className="btn " type="button" id="btn-decrease">
                             －
                           </button>
-                          <input
-                            type="number"
-                            className="form-control text-center "
-                            defaultValue="1"
-                            min="1"
-                            id="qtyInput"
-                          />
-                          <button
-                            className="btn"
-                            type="button"
-                            id="btn-increase"
-                          >
+                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
+                          <button className="btn" type="button" id="btn-increase">
                             ＋
                           </button>
                         </div>
                       </td>
                       <td className="align-middle total">NT $ 80 </td>
                       <td className="function">
-                        <button
-                          type="button"
-                          className="btn btn-primary-500 text-white"
-                        >
+                        <button type="button" className="btn btn-primary-500 text-white">
                           加入
                         </button>
                       </td>
@@ -432,44 +312,25 @@ export default function Cart() {
                           />
                           <div className="d-flex flex-column">
                             <span className="titleZh">新手照護卡</span>
-                            <span className="titleEn">
-                              專屬照護指南，隨貨附贈
-                            </span>
+                            <span className="titleEn">專屬照護指南，隨貨附贈</span>
                           </div>
                         </div>
                       </td>
                       <td className="align-middle price"></td>
                       <td className="align-middle">
                         <div className="qty-input-group">
-                          <button
-                            className="btn "
-                            type="button"
-                            id="btn-decrease"
-                          >
+                          <button className="btn " type="button" id="btn-decrease">
                             －
                           </button>
-                          <input
-                            type="number"
-                            className="form-control text-center "
-                            defaultValue="1"
-                            min="1"
-                            id="qtyInput"
-                          />
-                          <button
-                            className="btn"
-                            type="button"
-                            id="btn-increase"
-                          >
+                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
+                          <button className="btn" type="button" id="btn-increase">
                             ＋
                           </button>
                         </div>
                       </td>
                       <td className="align-middle total">免費</td>
                       <td className="function">
-                        <button
-                          type="button"
-                          className="btn btn-primary-500 text-white"
-                        >
+                        <button type="button" className="btn btn-primary-500 text-white">
                           加入
                         </button>
                       </td>
@@ -494,9 +355,7 @@ export default function Cart() {
 
                       <div>
                         <div className="titleZh">到貨換盆</div>
-                        <div className="titleEn">
-                          專業換盆服務，含優質培養土
-                        </div>
+                        <div className="titleEn">專業換盆服務，含優質培養土</div>
                       </div>
                     </div>
 
@@ -507,12 +366,7 @@ export default function Cart() {
                           －
                         </button>
 
-                        <input
-                          type="number"
-                          className="form-control text-center"
-                          defaultValue="1"
-                          min="1"
-                        />
+                        <input type="number" className="form-control text-center" defaultValue="1" min="1" />
 
                         <button type="button" className="btn">
                           ＋
@@ -524,10 +378,7 @@ export default function Cart() {
 
                     {/* 下：CTA */}
                     <div className="d-flex justify-content-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary-500 text-white"
-                      >
+                      <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
@@ -558,12 +409,7 @@ export default function Cart() {
                           －
                         </button>
 
-                        <input
-                          type="number"
-                          className="form-control text-center"
-                          defaultValue="1"
-                          min="1"
-                        />
+                        <input type="number" className="form-control text-center" defaultValue="1" min="1" />
 
                         <button type="button" className="btn">
                           ＋
@@ -574,10 +420,7 @@ export default function Cart() {
                     </div>
 
                     <div className="d-flex justify-content-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary-500 text-white"
-                      >
+                      <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
@@ -608,12 +451,7 @@ export default function Cart() {
                           －
                         </button>
 
-                        <input
-                          type="number"
-                          className="form-control text-center"
-                          defaultValue="1"
-                          min="1"
-                        />
+                        <input type="number" className="form-control text-center" defaultValue="1" min="1" />
 
                         <button type="button" className="btn">
                           ＋
@@ -624,10 +462,7 @@ export default function Cart() {
                     </div>
 
                     <div className="d-flex justify-content-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary-500 text-white"
-                      >
+                      <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
@@ -641,10 +476,7 @@ export default function Cart() {
                   <h4 className="text-secondary-700">收藏清單</h4>
                   <span className="subHeading">那些您曾停下來看過的植物</span>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-link text-primary-700 fw-bold text-decoration-underline"
-                >
+                <button type="button" className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
                   查看全部
                 </button>
               </div>
@@ -671,35 +503,18 @@ export default function Cart() {
                       <td className="align-middle price"></td>
                       <td className="align-middle">
                         <div className="qty-input-group">
-                          <button
-                            className="btn "
-                            type="button"
-                            id="btn-decrease"
-                          >
+                          <button className="btn " type="button" id="btn-decrease">
                             －
                           </button>
-                          <input
-                            type="number"
-                            className="form-control text-center "
-                            defaultValue="1"
-                            min="1"
-                            id="qtyInput"
-                          />
-                          <button
-                            className="btn"
-                            type="button"
-                            id="btn-increase"
-                          >
+                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
+                          <button className="btn" type="button" id="btn-increase">
                             ＋
                           </button>
                         </div>
                       </td>
                       <td className="align-middle total">NT $ 340 </td>
                       <td className="function">
-                        <button
-                          type="button"
-                          className="btn btn-primary-500 text-white"
-                        >
+                        <button type="button" className="btn btn-primary-500 text-white">
                           加入
                         </button>
                       </td>
@@ -724,35 +539,18 @@ export default function Cart() {
                       <td className="align-middle price"></td>
                       <td className="align-middle">
                         <div className="qty-input-group">
-                          <button
-                            className="btn "
-                            type="button"
-                            id="btn-decrease"
-                          >
+                          <button className="btn " type="button" id="btn-decrease">
                             －
                           </button>
-                          <input
-                            type="number"
-                            className="form-control text-center "
-                            defaultValue="1"
-                            min="1"
-                            id="qtyInput"
-                          />
-                          <button
-                            className="btn"
-                            type="button"
-                            id="btn-increase"
-                          >
+                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
+                          <button className="btn" type="button" id="btn-increase">
                             ＋
                           </button>
                         </div>
                       </td>
                       <td className="align-middle total">NT $ 350</td>
                       <td className="function">
-                        <button
-                          type="button"
-                          className="btn btn-primary-500 text-white"
-                        >
+                        <button type="button" className="btn btn-primary-500 text-white">
                           加入
                         </button>
                       </td>
@@ -788,13 +586,7 @@ export default function Cart() {
                           －
                         </button>
 
-                        <input
-                          type="number"
-                          className="form-control text-center"
-                          defaultValue="1"
-                          min="1"
-                          style={{ width: "50px" }}
-                        />
+                        <input type="number" className="form-control text-center" defaultValue="1" min="1" style={{ width: "50px" }} />
 
                         <button type="button" className="btn">
                           ＋
@@ -806,10 +598,7 @@ export default function Cart() {
 
                     {/* 下：CTA */}
                     <div className="d-flex justify-content-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary-500 text-white"
-                      >
+                      <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
@@ -840,13 +629,7 @@ export default function Cart() {
                           －
                         </button>
 
-                        <input
-                          type="number"
-                          className="form-control text-center"
-                          defaultValue="1"
-                          min="1"
-                          style={{ width: "50px" }}
-                        />
+                        <input type="number" className="form-control text-center" defaultValue="1" min="1" style={{ width: "50px" }} />
 
                         <button type="button" className="btn">
                           ＋
@@ -857,10 +640,7 @@ export default function Cart() {
                     </div>
 
                     <div className="d-flex justify-content-end">
-                      <button
-                        type="button"
-                        className="btn btn-primary-500 text-white"
-                      >
+                      <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
@@ -870,14 +650,9 @@ export default function Cart() {
             </div>
           </div>
           <div className="col-12 col-lg-3">
-            <div
-              className="card position-sticky shadow section"
-              style={{ top: "16px" }}
-            >
+            <div className="card position-sticky shadow section" style={{ top: "16px" }}>
               <div className="card-head bg-primary-700 px-6 py-4">
-                <h4 className="card-title text-start text-neutral-100">
-                  訂單內容
-                </h4>
+                <h4 className="card-title text-start text-neutral-100">訂單內容</h4>
               </div>
               <div className="card-body p-4">
                 <div className="d-flex  flex-column  align-items-start w-auto mb-6">
@@ -891,20 +666,11 @@ export default function Cart() {
                       onChange={(e) => setCouponCode(e.target.value)}
                       disabled={couponApplied} // 成功套用後禁用
                     />
-                    <button
-                      type="button"
-                      className={`btn btn-outline-${couponApplied ? "success" : "primary-700"}`}
-                      onClick={applyCoupon}
-                      disabled={couponApplied}
-                    >
+                    <button type="button" className={`btn btn-outline-${couponApplied ? "success" : "primary-700"}`} onClick={applyCoupon} disabled={couponApplied}>
                       {couponApplied ? "已套用" : "套用"}
                     </button>
                   </div>
-                  {couponApplied && (
-                    <small className="text-success mt-1">
-                      折扣碼{couponCode}已套用
-                    </small>
-                  )}
+                  {couponApplied && <small className="text-success mt-1">折扣碼{couponCode}已套用</small>}
                 </div>
                 <div className="orderBreakDown mb-6">
                   <div className="productPrice d-flex justify-content-between">
@@ -917,9 +683,7 @@ export default function Cart() {
                   </div>
                   <div className="orderPrice d-flex justify-content-between">
                     <h6 style={{ color: "#666666" }}>總付款金額</h6>
-                    <h6 style={{ color: "#222222" }}>
-                      ${couponApplied ? totalAfterCoupon : total}
-                    </h6>
+                    <h6 style={{ color: "#222222" }}>${couponApplied ? totalAfterCoupon : total}</h6>
                   </div>
                 </div>
                 <button
@@ -929,8 +693,7 @@ export default function Cart() {
                       state: { couponApplied, couponCode, totalAfterCoupon },
                     })
                   }
-                  className="btn btn-primary-500 w-100 text-white mb-6"
-                >
+                  className="btn btn-primary-500 w-100 text-white mb-6">
                   繼續結帳
                 </button>
                 <div className="d-flex flex-column ">
@@ -944,16 +707,10 @@ export default function Cart() {
                       }}
                     />
                     <div className="d-flex flex-column align-items-start">
-                      <span
-                        className="card-text"
-                        style={{ color: "#222222", fontSize: "16px" }}
-                      >
+                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                         安心結帳
                       </span>
-                      <span
-                        className="card-text"
-                        style={{ color: "#74613e", fontSize: "12px" }}
-                      >
+                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                         SSL加密安全付款
                       </span>
                     </div>
@@ -968,16 +725,10 @@ export default function Cart() {
                       }}
                     />
                     <div className="d-flex flex-column align-items-start">
-                      <span
-                        className="card-text"
-                        style={{ color: "#222222", fontSize: "16px" }}
-                      >
+                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                         免運費
                       </span>
-                      <span
-                        className="card-text"
-                        style={{ color: "#74613e", fontSize: "12px" }}
-                      >
+                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                         全館消費滿$2,000免運費
                       </span>
                     </div>
@@ -992,16 +743,10 @@ export default function Cart() {
                       }}
                     />
                     <div className="d-flex flex-column align-items-start">
-                      <span
-                        className="card-text"
-                        style={{ color: "#222222", fontSize: "16px" }}
-                      >
+                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                         退貨保證
                       </span>
-                      <span
-                        className="card-text"
-                        style={{ color: "#74613e", fontSize: "12px" }}
-                      >
+                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                         7 天鑑賞期，無條件退貨
                       </span>
                     </div>
@@ -1016,16 +761,10 @@ export default function Cart() {
                       }}
                     />
                     <div className="d-flex flex-column align-items-start">
-                      <span
-                        className="card-text"
-                        style={{ color: "#222222", fontSize: "16px" }}
-                      >
+                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                         隱私保護
                       </span>
-                      <span
-                        className="card-text"
-                        style={{ color: "#74613e", fontSize: "12px" }}
-                      >
+                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                         個人資料全程保護
                       </span>
                     </div>
@@ -1041,9 +780,7 @@ export default function Cart() {
         <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
           <div className=" w-100 d-flex justify-content-between align-items-center mb-4">
             <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
-            <div className="fw-bold text-neutral-900 fs-4">
-              ${couponApplied ? totalAfterCoupon : total}
-            </div>
+            <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
           </div>
 
           <button
@@ -1053,8 +790,7 @@ export default function Cart() {
               navigate("checkout", {
                 state: { couponApplied, couponCode, totalAfterCoupon },
               })
-            }
-          >
+            }>
             繼續結帳
           </button>
         </div>

@@ -1,29 +1,25 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
-import { useNavigate } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
 
 export default function Checkout() {
+  const { carts } = useOutletContext();
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [cartData, setCartData] = useState([]);
-  const subtotal = cartData.reduce((sum, item) => sum + item.total, 0);
-  const shipping = cartData.length > 0 ? 120 : 0;
+  // const [cartData, setCartData] = useState([]);
+  const subtotal = carts.reduce((sum, item) => sum + item.total, 0);
+  const shipping = carts.length > 0 ? 120 : 0;
   const total = subtotal + shipping;
 
-  const [couponApplied, setCouponApplied] = useState(
-    location.state?.couponApplied || false,
-  );
-  const [couponCode, setCouponCode] = useState(
-    location.state?.couponCode || "",
-  );
-  const [totalAfterCoupon, setTotalAfterCoupon] = useState(
-    location.state?.totalAfterCoupon || total,
-  );
+  const [couponApplied, setCouponApplied] = useState(location.state?.couponApplied || false);
+  const [couponCode, setCouponCode] = useState(location.state?.couponCode || "");
+  const [totalAfterCoupon, setTotalAfterCoupon] = useState(location.state?.totalAfterCoupon || total);
 
   const {
     register,
@@ -33,8 +29,7 @@ export default function Checkout() {
 
   //onSubmit
   const onSubmit = async (data) => {
-    const fullAddress =
-      data.postcode + data.city + data.section + data.detailAddress;
+    const fullAddress = data.postcode + data.city + data.section + data.detailAddress;
     const orderData = {
       data: {
         user: {
@@ -48,10 +43,7 @@ export default function Checkout() {
     };
 
     try {
-      const res = await axios.post(
-        `${API_BASE}/api/${API_PATH}/order`,
-        orderData,
-      );
+      const res = await axios.post(`${API_BASE}/api/${API_PATH}/order`, orderData);
       console.log("訂單建立成功", res.data);
       const orderId = res.data.orderId;
       navigate(`/cart/order-success/${orderId}`);
@@ -61,62 +53,10 @@ export default function Checkout() {
     }
   };
 
-  //fetchCartData function
-  const fetchCartData = async () => {
-    try {
-      const res = await axios.get(`${API_BASE}/api/${API_PATH}/cart`);
-      setCartData(res.data.data.carts);
-      console.log(res.data.data.carts);
-    } catch (error) {
-      alert(error.message);
-    }
-  };
-
   //useEffect
-  useEffect(() => {
-    fetchCartData();
-  }, []);
-
-  //updateCart
-  const updateCartItemQty = async (itemId, newQty) => {
-    const data = {
-      product_id: itemId,
-      qty: newQty,
-    };
-    try {
-      await axios.put(`${API_BASE}/api/${API_PATH}/cart/${itemId}`, {
-        data,
-      });
-      fetchCartData();
-    } catch (err) {
-      console.error(err);
-      alert("更新失敗");
-    }
-  };
-
-  //deletecart
-  const deleteCart = async (itemId) => {
-    try {
-      const res = await axios.delete(
-        `${API_BASE}/api/${API_PATH}/cart/${itemId}`,
-      );
-      fetchCartData();
-    } catch (error) {
-      console.error(error);
-      alert("刪除失敗");
-    }
-  };
-
-  //deletecarts
-  const deleteCarts = async () => {
-    try {
-      const res = await axios.delete(`${API_BASE}/api/${API_PATH}/carts`);
-      fetchCartData();
-    } catch (error) {
-      console.error(error);
-      alert("刪除失敗");
-    }
-  };
+  // useEffect(() => {
+  //   fetchCartData();
+  // }, []);
 
   //applyCoupon
   const applyCoupon = async () => {
@@ -137,6 +77,7 @@ export default function Checkout() {
         setTotalAfterCoupon(total);
       }
     } catch (error) {
+      console.log(error);
       alert("優惠卷套用失敗...");
       setCouponApplied(false);
       setTotalAfterCoupon(total);
@@ -151,11 +92,7 @@ export default function Checkout() {
               <div className="section mb-4">
                 <div className="head d-flex justify-content-between py-4 px-6 bg-secondary-100">
                   <h4 className="text-secondary-700">訂單內容</h4>
-                  <button
-                    type="button"
-                    onClick={() => navigate("/cart")}
-                    className="btn btn-link text-primary-700 fw-bold text-decoration-underline"
-                  >
+                  <button type="button" onClick={() => navigate("/cart")} className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
                     返回購物車
                   </button>
                 </div>
@@ -170,7 +107,7 @@ export default function Checkout() {
                       </tr>
                     </thead>
                     <tbody>
-                      {cartData.map((item) => {
+                      {carts.map((item) => {
                         return (
                           <tr key={item.id}>
                             <td style={{ width: "400px" }}>
@@ -184,22 +121,14 @@ export default function Checkout() {
                                   }}
                                 />
                                 <div className="d-flex flex-column">
-                                  <span className="titleZh">
-                                    {item.product.titleZh}
-                                  </span>
-                                  <span className="titleEn">
-                                    {item.product.titleEn}
-                                  </span>
+                                  <span className="titleZh">{item.product.titleZh}</span>
+                                  <span className="titleEn">{item.product.titleEn}</span>
                                 </div>
                               </div>
                             </td>
-                            <td className="align-middle price">
-                              NT $ {item.product.price}
-                            </td>
+                            <td className="align-middle price">NT $ {item.product.price}</td>
                             <td className="align-middle">{item.qty}</td>
-                            <td className="align-middle total">
-                              NT $ {item.total}
-                            </td>
+                            <td className="align-middle total">NT $ {item.total}</td>
                           </tr>
                         );
                       })}
@@ -207,12 +136,9 @@ export default function Checkout() {
                   </table>
                   {/*mobile DOM*/}
                   <div className="d-block d-lg-none">
-                    {cartData.map((item) => {
+                    {carts.map((item) => {
                       return (
-                        <div
-                          key={item.id}
-                          className="cart-card mb-3 p-3 rounded"
-                        >
+                        <div key={item.id} className="cart-card mb-3 p-3 rounded">
                           {/* 商品資訊 */}
                           <div className="d-flex gap-3 mb-3">
                             <img
@@ -225,12 +151,8 @@ export default function Checkout() {
                             />
 
                             <div>
-                              <div className="titleZh">
-                                {item.product.titleZh}
-                              </div>
-                              <div className="titleEn">
-                                {item.product.titleEn}
-                              </div>
+                              <div className="titleZh">{item.product.titleZh}</div>
+                              <div className="titleEn">{item.product.titleEn}</div>
                             </div>
                           </div>
 
@@ -299,27 +221,15 @@ export default function Checkout() {
                             required: "請輸入 Email",
                           })}
                         />
-                        {errors.email && (
-                          <small className="text-danger">
-                            {errors.email.message}
-                          </small>
-                        )}
+                        {errors.email && <small className="text-danger">{errors.email.message}</small>}
                       </div>
                       <div className="carrier d-flex gap-4">
                         <div className="type d-flex mb-2 gap-2">
                           <div className="d-flex flex-column">
-                            <label
-                              htmlFor="carrier"
-                              style={{ color: "#666666" }}
-                            >
+                            <label htmlFor="carrier" style={{ color: "#666666" }}>
                               載具類型
                             </label>
-                            <select
-                              name=""
-                              id="carrier"
-                              defaultValue={""}
-                              className="h-100 form-select"
-                            >
+                            <select name="" id="carrier" defaultValue={""} className="h-100 form-select">
                               <option value="" disabled>
                                 請選擇
                               </option>
@@ -328,27 +238,16 @@ export default function Checkout() {
                             </select>
                           </div>
                           <div className="code d-flex flex-column">
-                            <label
-                              htmlFor="barcode"
-                              style={{ color: "#666666" }}
-                            >
+                            <label htmlFor="barcode" style={{ color: "#666666" }}>
                               載具條碼
                             </label>
-                            <input
-                              type="text"
-                              placeholder="格式:/123-ABC(共8位字元)"
-                              id="barcode"
-                              className="form-control"
-                            />
+                            <input type="text" placeholder="格式:/123-ABC(共8位字元)" id="barcode" className="form-control" />
                           </div>
                         </div>
                       </div>
                       <div className="d-flex gap-1">
                         <input type="checkbox" id="defaultCarrier" />
-                        <label
-                          htmlFor="defaultCarrier"
-                          style={{ color: "#222222" }}
-                        >
+                        <label htmlFor="defaultCarrier" style={{ color: "#222222" }}>
                           設定為預設載具
                         </label>
                       </div>
@@ -368,18 +267,8 @@ export default function Checkout() {
                         <label htmlFor="name" style={{ color: "#666666" }}>
                           全名
                         </label>
-                        <input
-                          type="text"
-                          id="name"
-                          placeholder="請輸入您的姓名"
-                          className="form-control"
-                          {...register("name", { required: "請輸入姓名" })}
-                        />
-                        {errors.name && (
-                          <small className="text-danger">
-                            {errors.name.message}
-                          </small>
-                        )}
+                        <input type="text" id="name" placeholder="請輸入您的姓名" className="form-control" {...register("name", { required: "請輸入姓名" })} />
+                        {errors.name && <small className="text-danger">{errors.name.message}</small>}
                       </div>
                       <div className="d-flex flex-column">
                         <label htmlFor="tel" style={{ color: "#666666" }}>
@@ -398,11 +287,7 @@ export default function Checkout() {
                             },
                           })}
                         />
-                        {errors.tel && (
-                          <small className="text-danger">
-                            {errors.tel.message}
-                          </small>
-                        )}
+                        {errors.tel && <small className="text-danger">{errors.tel.message}</small>}
                       </div>
                     </div>
                     <div className="col-lg-6 d-flex flex-column">
@@ -414,25 +299,13 @@ export default function Checkout() {
                           <label htmlFor="city" style={{ color: "#666666" }}>
                             城市
                           </label>
-                          <input
-                            type="text"
-                            value="台北市"
-                            id="city"
-                            className="form-control"
-                            readOnly
-                            {...register("city")}
-                          />
+                          <input type="text" value="台北市" id="city" className="form-control" readOnly {...register("city")} />
                         </div>
                         <div className="type d-flex flex-column">
                           <label htmlFor="section" style={{ color: "#666666" }}>
                             區
                           </label>
-                          <select
-                            name=""
-                            id="section"
-                            {...register("section")}
-                            className="h-100 form-select"
-                          >
+                          <select name="" id="section" {...register("section")} className="h-100 form-select">
                             <option value="內湖區">內湖區</option>
                             <option value="大安區">大安區</option>
                             <option value="文山區">文山區</option>
@@ -452,11 +325,7 @@ export default function Checkout() {
                             required: "請輸入地址",
                           })}
                         />
-                        {errors.detailAddress && (
-                          <small className="text-danger">
-                            {errors.detailAddress.message}
-                          </small>
-                        )}
+                        {errors.detailAddress && <small className="text-danger">{errors.detailAddress.message}</small>}
                       </div>
                       <div className="d-flex flex-column mb-2">
                         <label htmlFor="postcode" style={{ color: "#666666" }}>
@@ -471,18 +340,11 @@ export default function Checkout() {
                             required: "請輸入郵遞區號",
                           })}
                         />
-                        {errors.postcode && (
-                          <small className="text-danger">
-                            {errors.postcode.message}
-                          </small>
-                        )}
+                        {errors.postcode && <small className="text-danger">{errors.postcode.message}</small>}
                       </div>
                       <div className="d-flex gap-1">
                         <input type="checkbox" id="defaultInfo" />
-                        <label
-                          htmlFor="defaultInfo"
-                          style={{ color: "#222222" }}
-                        >
+                        <label htmlFor="defaultInfo" style={{ color: "#222222" }}>
                           設定為預設結帳資訊
                         </label>
                       </div>
@@ -495,13 +357,7 @@ export default function Checkout() {
                         <div className="mb-2">
                           <h6>備注:</h6>
                         </div>
-                        <textarea
-                          className="form-control"
-                          id="remark"
-                          rows="3"
-                          placeholder="管理室代收/電聯時間......"
-                          {...register("remark")}
-                        ></textarea>
+                        <textarea className="form-control" id="remark" rows="3" placeholder="管理室代收/電聯時間......" {...register("remark")}></textarea>
                       </div>
                     </div>
                   </div>
@@ -509,14 +365,9 @@ export default function Checkout() {
               </form>
             </div>
             <div className="col-12 col-lg-3">
-              <div
-                className="card shadow position-sticky section"
-                style={{ top: "16px" }}
-              >
+              <div className="card shadow position-sticky section" style={{ top: "16px" }}>
                 <div className="card-head bg-primary-500 px-6 py-4">
-                  <h4 className="card-title text-start text-neutral-100">
-                    訂單內容
-                  </h4>
+                  <h4 className="card-title text-start text-neutral-100">訂單內容</h4>
                 </div>
                 <div className="card-body p-4">
                   <div className="d-flex  flex-column  align-items-start w-auto mb-6">
@@ -530,20 +381,11 @@ export default function Checkout() {
                         onChange={(e) => setCouponCode(e.target.value)}
                         disabled={couponApplied} // 成功套用後禁用
                       />
-                      <button
-                        type="button"
-                        className={`btn btn-outline-${couponApplied ? "success" : "primary-700"}`}
-                        onClick={applyCoupon}
-                        disabled={couponApplied}
-                      >
+                      <button type="button" className={`btn btn-outline-${couponApplied ? "success" : "primary-700"}`} onClick={applyCoupon} disabled={couponApplied}>
                         {couponApplied ? "已套用" : "套用"}
                       </button>
                     </div>
-                    {couponApplied && (
-                      <small className="text-success mt-1">
-                        折扣碼{couponCode}已套用
-                      </small>
-                    )}
+                    {couponApplied && <small className="text-success mt-1">折扣碼{couponCode}已套用</small>}
                   </div>
                   <div className="orderBreakDown mb-6">
                     <div className="productPrice d-flex justify-content-between">
@@ -556,15 +398,10 @@ export default function Checkout() {
                     </div>
                     <div className="orderPrice d-flex justify-content-between">
                       <h6 style={{ color: "#666666" }}>總付款金額</h6>
-                      <h6 style={{ color: "#222222" }}>
-                        ${couponApplied ? totalAfterCoupon : total}
-                      </h6>
+                      <h6 style={{ color: "#222222" }}>${couponApplied ? totalAfterCoupon : total}</h6>
                     </div>
                   </div>
-                  <button
-                    type="submit"
-                    className="btn btn-primary-500 w-100 text-white mb-6"
-                  >
+                  <button type="submit" className="btn btn-primary-500 w-100 text-white mb-6">
                     完成付款
                   </button>
                   <div className="d-flex flex-column ">
@@ -578,16 +415,10 @@ export default function Checkout() {
                         }}
                       />
                       <div className="d-flex flex-column align-items-start">
-                        <span
-                          className="card-text"
-                          style={{ color: "#222222", fontSize: "16px" }}
-                        >
+                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           安心結帳
                         </span>
-                        <span
-                          className="card-text"
-                          style={{ color: "#74613e", fontSize: "12px" }}
-                        >
+                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                           SSL加密安全付款
                         </span>
                       </div>
@@ -602,16 +433,10 @@ export default function Checkout() {
                         }}
                       />
                       <div className="d-flex flex-column align-items-start">
-                        <span
-                          className="card-text"
-                          style={{ color: "#222222", fontSize: "16px" }}
-                        >
+                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           免運費
                         </span>
-                        <span
-                          className="card-text"
-                          style={{ color: "#74613e", fontSize: "12px" }}
-                        >
+                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                           全館消費滿$2,000免運費
                         </span>
                       </div>
@@ -626,16 +451,10 @@ export default function Checkout() {
                         }}
                       />
                       <div className="d-flex flex-column align-items-start">
-                        <span
-                          className="card-text"
-                          style={{ color: "#222222", fontSize: "16px" }}
-                        >
+                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           退貨保證
                         </span>
-                        <span
-                          className="card-text"
-                          style={{ color: "#74613e", fontSize: "12px" }}
-                        >
+                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                           7 天鑑賞期，無條件退貨
                         </span>
                       </div>
@@ -650,16 +469,10 @@ export default function Checkout() {
                         }}
                       />
                       <div className="d-flex flex-column align-items-start">
-                        <span
-                          className="card-text"
-                          style={{ color: "#222222", fontSize: "16px" }}
-                        >
+                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           隱私保護
                         </span>
-                        <span
-                          className="card-text"
-                          style={{ color: "#74613e", fontSize: "12px" }}
-                        >
+                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
                           個人資料全程保護
                         </span>
                       </div>
@@ -676,16 +489,10 @@ export default function Checkout() {
         <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
           <div className="w-100 d-flex justify-content-between align-items-center mb-4">
             <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
-            <div className="fw-bold text-neutral-900 fs-4">
-              ${couponApplied ? totalAfterCoupon : total}
-            </div>
+            <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
           </div>
 
-          <button
-            type="submit"
-            form="checkout-form"
-            className="btn btn-primary-500 text-white w-100"
-          >
+          <button type="submit" form="checkout-form" className="btn btn-primary-500 text-white w-100">
             完成付款
           </button>
         </div>
