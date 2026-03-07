@@ -9,7 +9,7 @@ function ArticleContent({ description, blocks, tags }) {
       <section className="bg-background-100">
         <div className="container py-11 pt-md-14 pb-md-15">
           <div className="content-limit">
-            <p className="lead text-dark opacity-75 fs-7  mb-8 mb-md-12 pb-4 pb-md-8  border-bottom text-center lh-lg italic">
+            <p className=" text-dark opacity-75 fs-7  mb-8 mb-md-12 pb-4 pb-md-8  border-bottom text-center  italic">
               「 {description} 」
             </p>
           </div>
