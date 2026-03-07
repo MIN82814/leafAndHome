@@ -1,14 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm, useWatch, useFieldArray } from "react-hook-form";
 import axios from "axios";
-import { updateAdminProductsApi } from "../services/product";
+import { createAdminProductsApi, updateAdminProductsApi } from "../services/product";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 
 function ProductModal({ modalType, templateData, closeModal, getProducts }) {
   // 處理Modal編輯內容。
 
-  const [templateModalData, setTemplateModalData] = useState(templateData);
   const {
     register, // 用來註冊表單元素
     control,
@@ -34,6 +33,7 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
       customerReviews: [""],
     },
   });
+  const title = useWatch({ control, name: "title" });
   const imageUrl = useWatch({ control, name: "imageUrl" });
   const imagesUrl = useWatch({
     control,
@@ -78,85 +78,33 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
   //當點擊新的產品改變templateData後 需要重新設定Modal暫存值。
   useEffect(() => {
     if (!templateData?.id) return;
-    setTemplateModalData(templateData);
-    // 資料傳入後 重設表單
-    reset({
-      id: templateData.id,
-      title: templateData.title,
-      titleEn: templateData.titleEn,
-      category: templateData.category,
-      origin_price: templateData.origin_price,
-      price: templateData.price,
-      unit: templateData.unit,
-      description: templateData.description,
-      content: templateData.content,
-      is_enabled: templateData.is_enabled,
-      imageUrl: templateData.imageUrl,
-      imagesUrl: templateData.imagesUrl,
-      careGuide: templateData.careGuide,
-      detailedIntro: templateData.detailedIntro,
-      placementScenes: templateData.placementScenes,
-      customerReviews: templateData.customerReviews,
-    });
+    if (modalType === "create") {
+      reset({
+        id: "",
+        title: "",
+      });
+    } else {
+      // 資料傳入後 重設表單
+      reset({
+        id: templateData.id,
+        title: templateData.title,
+        titleEn: templateData.titleEn,
+        category: templateData.category,
+        origin_price: templateData.origin_price,
+        price: templateData.price,
+        unit: templateData.unit,
+        description: templateData.description,
+        content: templateData.content,
+        is_enabled: templateData.is_enabled,
+        imageUrl: templateData.imageUrl,
+        imagesUrl: templateData.imagesUrl,
+        careGuide: templateData.careGuide,
+        detailedIntro: templateData.detailedIntro,
+        placementScenes: templateData.placementScenes,
+        customerReviews: templateData.customerReviews,
+      });
+    }
   }, [templateData?.id, reset]);
-
-  const handleModalInputChange = (e) => {
-    const { name, value, checked, type } = e.target;
-    setTemplateModalData((data) => ({
-      ...data,
-      [name]: type == "checkbox" ? checked : value,
-    }));
-  };
-  // const handleCareGuideModalInputChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setTemplateModalData((data) => ({
-  //     ...data,
-  //     careGuide: {
-  //       ...data.careGuide,
-  //       [name]: value,
-  //     },
-  //   }));
-  // };
-  // const handleDetailModalInputChange = (e) => {
-  //   const { value, dataset } = e.target;
-  //   const field = dataset.field;
-  //   const index = Number(dataset.index);
-  //   setTemplateModalData((data) => {
-  //     const detailed = { ...data.detailedIntro }; //用來暫存detailed 的資料
-  //     const arr = [...detailed[field]]; //將陣列資料複製到arr
-  //     arr[index] = value; //複寫
-  //     return { ...data, detailedIntro: { ...detailed, [field]: arr } };
-  //   });
-  // };
-  // 新增、編輯產品
-  const updateProduct = async (id) => {
-    let url = `${API_BASE}/api/${API_PATH}/admin/product`;
-    let method = "post";
-
-    if (modalType === "edit") {
-      url = `${API_BASE}/api/${API_PATH}/admin/product/${id}`;
-      method = "put";
-    }
-    const productData = {
-      //資料轉型、防呆
-      data: {
-        ...templateModalData,
-        origin_price: Number(templateModalData.origin_price),
-        price: Number(templateModalData.price),
-        is_enabled: templateModalData.is_enabled ? 1 : 0,
-        imagesUrl: [...templateModalData.imagesUrl.filter((url) => url !== "")],
-      },
-    };
-    try {
-      const response = await axios[method](url, productData);
-      console.log(response);
-      getProducts();
-      closeModal();
-      // console.log(response.data);
-    } catch (error) {
-      console.log(error.response.data.message);
-    }
-  };
 
   // 刪除產品
   const deleteProduct = async (id) => {
@@ -170,29 +118,24 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
     }
   };
 
-  //處理Modal編輯圖片的內容 (陣列和物件結構需要另外處理)
-  // const handleImagesChange = (index, value) => {
-  //   setTemplateModalData((pre) => {
-  //     const newImage = [...pre.imagesUrl]; //先存放完整的圖片路徑
-  //     newImage[index] = value; //修改希望編輯的圖片
-  //     //如果輸入值不為空，且編輯的圖片為最後一筆，且圖片數量尚低於5時
-  //     if (value !== "" && index === newImage.length - 1 && newImage.length < 5) {
-  //       newImage.push("");
-  //     }
-  //     //如果輸入值為空，且編輯的圖片不是第一筆，且最後一筆是空時
-  //     if (value === "" && newImage.length > 1 && newImage[newImage.length - 1] === "") {
-  //       newImage.pop("");
-  //     }
-  //     return {
-  //       ...pre,
-  //       imagesUrl: newImage,
-  //     };
-  //   });
-  // };
   const sendSubmit = async (data) => {
-    const myData = { data: { ...data } };
+    const productData = {
+      data: {
+        ...data,
+        origin_price: Number(data.origin_price),
+        price: Number(data.price),
+        is_enabled: data.is_enabled ? 1 : 0,
+        imagesUrl: [...data.imagesUrl.filter((url) => url !== "")],
+      },
+    };
     try {
-      const response = await updateAdminProductsApi(myData);
+      let response;
+      if (modalType === "edit") {
+        response = await updateAdminProductsApi(productData);
+      } else {
+        response = await createAdminProductsApi(productData);
+      }
+
       console.log(response.data);
       getProducts();
       closeModal();
@@ -201,26 +144,6 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
     }
   };
 
-  // const handleAddImage = () => {
-  //   setTemplateModalData((pre) => {
-  //     const newImage = [...pre.imagesUrl]; //先存放完整的圖片路徑
-  //     newImage.push("");
-  //     return {
-  //       ...pre,
-  //       imagesUrl: newImage,
-  //     };
-  //   });
-  // };
-  // const handleRemoveImage = () => {
-  //   setTemplateModalData((pre) => {
-  //     const newImage = [...pre.imagesUrl]; //先存放完整的圖片路徑
-  //     newImage.pop();
-  //     return {
-  //       ...pre,
-  //       imagesUrl: newImage,
-  //     };
-  //   });
-  // };
   return (
     <>
       <div id="productModal" className="modal fade" tabIndex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
@@ -241,7 +164,7 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
                   {modalType === "delete" ? (
                     <>
                       {/* 刪除則顯示原標題 不提供編輯 */}
-                      <h2 className="h2 text-center text-danger">確定刪除{templateModalData.title}?</h2>
+                      <h2 className="h2 text-center text-danger">確定刪除{title}?</h2>
                     </>
                   ) : (
                     <>
@@ -454,7 +377,7 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
                     <button type="button" className="btn btn-outline-secondary" data-bs-dismiss="modal" onClick={() => closeModal()}>
                       取消
                     </button>
-                    <button type="button" className="btn btn-danger" onClick={() => deleteProduct(templateModalData.id)}>
+                    <button type="button" className="btn btn-danger" onClick={() => deleteProduct(templateData.id)}>
                       刪除
                     </button>
                   </>
