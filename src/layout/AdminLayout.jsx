@@ -52,7 +52,7 @@ function AdminLayout() {
       return;
     }
     if (isAuth) {
-      //如果以驗證成功 則不重新驗證
+      //如果已驗證成功 則不重新驗證
       return;
     }
     //如果取得token 則進行驗證
