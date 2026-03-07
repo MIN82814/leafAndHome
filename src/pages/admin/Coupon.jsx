@@ -1,8 +1,6 @@
-import { useOutletContext } from "react-router";
-import axios from "axios";
 import { useState, useRef, useEffect } from "react";
 import * as bootstrap from "bootstrap";
-import { deleteAdminCouponsApi, getAdminCouponsApi } from "../../services/coupon";
+import { addAdminCouponsApi, deleteAdminCouponsApi, getAdminCouponsApi, updateAdminCouponsApi } from "../../services/coupon";
 
 const INITIAL_MODAL_DATA = {
   title: "",
@@ -13,7 +11,6 @@ const INITIAL_MODAL_DATA = {
 };
 
 export default function Coupon() {
-  const { token, API_BASE, API_PATH } = useOutletContext();
   const [data, setData] = useState([]);
   const couponModalRef = useRef(null);
   const [modalData, setModalData] = useState(INITIAL_MODAL_DATA);
@@ -35,6 +32,7 @@ export default function Coupon() {
     }));
   };
 
+  //取得Coupon API
   const getAdminCoupon = async () => {
     try {
       const response = await getAdminCouponsApi();
@@ -53,8 +51,9 @@ export default function Coupon() {
     couponModalRef.current = new bootstrap.Modal("#couponModal", {
       keyboard: false,
     });
-  }, [token]);
+  }, []);
 
+  //刪除 Coupon API
   const deleteCoupon = async (id) => {
     try {
       await deleteAdminCouponsApi(id);
@@ -65,10 +64,10 @@ export default function Coupon() {
   };
 
   const updateCoupon = async () => {
-    let method = "post";
-    if (modalType === "edit") {
-      method = "put";
-    }
+    // let method = "post";
+    // if (modalType === "edit") {
+    //   method = "put";
+    // }
     const data = {
       data: {
         ...modalData,
@@ -80,17 +79,11 @@ export default function Coupon() {
       },
     };
     try {
-      let res;
       if (modalType === "create") {
-        res = await axios.post(`${API_BASE}/api/${API_PATH}/admin/coupon`, data, {
-          headers: { Authorization: token },
-        });
+        await addAdminCouponsApi(data);
       } else {
-        res = await axios.put(`${API_BASE}/api/${API_PATH}/admin/coupon/${modalData.id}`, data, {
-          headers: { Authorization: token },
-        });
+        await updateAdminCouponsApi(modalData.id, data);
       }
-
       getAdminCoupon();
       closeModal();
     } catch (error) {
@@ -99,7 +92,7 @@ export default function Coupon() {
   };
 
   const openModal = (type, coupon) => {
-    console.log("類型", type, "優惠卷", coupon);
+    // console.log("類型", type, "優惠卷", coupon);
     setModalType(type);
     setModalData((pre) => ({
       ...pre,
@@ -114,74 +107,70 @@ export default function Coupon() {
 
   return (
     <>
-      {token ? (
-        <div className="container">
-          <div className="mt-2">
-            <h1 className="text-center mb-5">優惠券列表</h1>
-            <div className="d-flex justify-content-end">
-              <button
-                onClick={() => {
-                  openModal("create", INITIAL_MODAL_DATA);
-                }}
-                className="btn btn-primary">
-                新增優惠卷
-              </button>
-            </div>
-            <table className="table">
-              <thead>
+      <div className="container">
+        <div className="mt-2">
+          <h1 className="text-center mb-5">優惠券列表</h1>
+          <div className="d-flex justify-content-end">
+            <button
+              onClick={() => {
+                openModal("create", INITIAL_MODAL_DATA);
+              }}
+              className="btn btn-primary">
+              新增優惠卷
+            </button>
+          </div>
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">標題</th>
+                <th scope="col">是否啟用</th>
+                <th scope="col">折扣幅度</th>
+                <th scope="col">到期日</th>
+                <th scope="col">折扣碼</th>
+                <th scope="col">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.length === 0 ? (
                 <tr>
-                  <th scope="col">標題</th>
-                  <th scope="col">是否啟用</th>
-                  <th scope="col">折扣幅度</th>
-                  <th scope="col">到期日</th>
-                  <th scope="col">折扣碼</th>
-                  <th scope="col">操作</th>
+                  <td colSpan="5" className="text-center">
+                    尚無優惠卷
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {data.length === 0 ? (
-                  <tr>
-                    <td colSpan="5" className="text-center">
-                      尚無優惠卷
+              ) : (
+                data.map((coupon) => (
+                  <tr key={coupon.id}>
+                    <th scope="row">{coupon.title}</th>
+                    <td>{coupon.is_enabled ? "啟用" : "未啟用"} </td>
+                    <td>{coupon.percent}</td>
+                    <td>{new Date(coupon.due_date * 1000).toLocaleDateString()}</td>
+                    <td>{coupon.code}</td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          openModal("edit", coupon);
+                        }}
+                        className="btn btn-outline-primary me-2">
+                        編輯
+                      </button>
+                      <button
+                        type="button"
+                        data-id={coupon.id}
+                        onClick={() => {
+                          deleteCoupon(coupon.id);
+                        }}
+                        className="btn btn-primary">
+                        刪除
+                      </button>
                     </td>
                   </tr>
-                ) : (
-                  data.map((coupon) => (
-                    <tr key={coupon.id}>
-                      <th scope="row">{coupon.title}</th>
-                      <td>{coupon.is_enabled ? "啟用" : "未啟用"} </td>
-                      <td>{coupon.percent}</td>
-                      <td>{new Date(coupon.due_date * 1000).toLocaleDateString()}</td>
-                      <td>{coupon.code}</td>
-                      <td>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            openModal("edit", coupon);
-                          }}
-                          className="btn btn-outline-primary me-2">
-                          編輯
-                        </button>
-                        <button
-                          type="button"
-                          data-id={coupon.id}
-                          onClick={() => {
-                            deleteCoupon(coupon.id);
-                          }}
-                          className="btn btn-primary">
-                          刪除
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
+                ))
+              )}
+            </tbody>
+          </table>
         </div>
-      ) : (
-        <h1>請先登入</h1>
-      )}
+      </div>
 
       <div className="modal fade modal-xl" id="couponModal" tabIndex="-1" aria-labelledby="couponModalLabel" aria-hidden="true" ref={couponModalRef}>
         <div className="modal-dialog">
@@ -244,7 +233,6 @@ export default function Coupon() {
                   }}
                 />
               </div>
-
               <div className="mb-3">
                 <label htmlFor="code" className="form-label">
                   優惠碼

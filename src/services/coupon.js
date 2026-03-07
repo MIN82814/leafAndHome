@@ -10,7 +10,7 @@ export const getAdminCouponsApi = (page = 1) => {
 }
 
 export const addAdminCouponsApi = (data) => {
-  return adminApi.post(`/api/${API_PATH}/admin/coupons`, data);
+  return adminApi.post(`/api/${API_PATH}/admin/coupon`, data);
 }
 
 export const updateAdminCouponsApi = (id, data) => {
