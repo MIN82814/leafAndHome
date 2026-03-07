@@ -87,7 +87,7 @@ function Articles() {
 
   //--先處理「載入中」的狀態--//
   if (isLoading) {
-    return <Loading text={"🌿正在為您搬運植物..."} />;
+    return <Loading text={"正在為您搬運植物..."} />;
   }
   return (
     <>
