@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-
 import { useOutletContext, useParams } from "react-router";
 import {
   formatPlainTitle,
@@ -116,22 +115,16 @@ function Article() {
     //   setComment(""); // 清空留言處文字
     //   alert("留言成功！");
     // } catch (err) {
-    //   Swal.fire({
-    // icon: 'error',
-    // title: '留言失敗',
-    // text: '留言失，請稍後再試',
-    // confirmButtonColor: '#d33',
-    // });
+     //showErrorAlert("留言失敗", err, "留言失敗，請稍後再試");
     // }
     setArticle(updatedData);
     setComment(""); // 清空留言處文字
   };
 
   // ---**事件處理 (Event Handlers)** ---
-
   //先處理「載入中」的狀態
   if (isLoading || !article) {
-    return <Loading text={"🌿正在為您搬運植物..."} />;
+    return <Loading text={"正在為您搬運植物..."} />;
   }
   return (
     <>
