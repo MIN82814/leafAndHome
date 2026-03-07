@@ -84,7 +84,7 @@ function Layout() {
               <button class="navbar-toggler border-0 shadow-none ms-3 d-block d-lg-none" type="button" onClick={handleToggle}>
                 <i class="bi bi-list px-4 py-3 icon-hover rounded-circle"></i>
               </button>
-              <div class="collapse navbar-collapse position-absolute start-0 top-100 z-3 vw-100" id="navbarToggler" ref={collapseElRef}>
+              <div class="collapse navbar-collapse position-absolute start-0 top-100 z-3 w-100" id="navbarToggler" ref={collapseElRef}>
                 <ul class="navbar-nav  text-center">
                   <li class="nav-item bg-white">
                     <NavLink to="products" className="h6  py-6" onClick={handleToggle}>
