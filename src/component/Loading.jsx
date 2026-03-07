@@ -40,7 +40,7 @@ const textStyle = {
   marginTop: "0",
   fontSize: "1.3rem",
   color: "#4A6741", 
-  fontWeight: "700",
+  fontWeight: "600",
   letterSpacing: "2px"
 };
 
