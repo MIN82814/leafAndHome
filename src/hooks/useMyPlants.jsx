@@ -1,28 +1,28 @@
-import { useState, useEffect, useMemo } from "react";
-import axios from "axios";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { getAdminOrdersApi, updateAdminOrderApi } from "../services/order";
 
 export const useMyPlants = () => {
-  const API_BASE = import.meta.env.VITE_API_BASE;
-  const API_PATH = import.meta.env.VITE_API_PATH;
+  // const API_BASE = import.meta.env.VITE_API_BASE;
+  // const API_PATH = import.meta.env.VITE_API_PATH;
 
   const [myPlants, setMyPlants] = useState({});
   const [plantProducts, setPlantProducts] = useState([]);
+  const [renderBaseTime] = useState(() => Math.floor(Date.now() / 1000));
 
   // 植物照護
   const careStats = useMemo(() => {
-    const now = new Date();
-    const nowUnix = Math.floor(now.getTime() / 1000);
+    const nowUnix = renderBaseTime;
 
     // --- A. 計算本週日的 Unix (用於「已完成」) ---
-    const sunday = new Date(now);
+    const sunday = new Date(nowUnix * 1000);
     sunday.setHours(0, 0, 0, 0);
-    sunday.setDate(now.getDate() - now.getDay());
+    sunday.setDate(sunday.getDate() - sunday.getDay());
     const sundayUnix = Math.floor(sunday.getTime() / 1000);
 
     // --- B. 計算未來 7 天的 Unix (用於「待辦」) ---
     const oneWeekLaterUnix = nowUnix + 7 * 86400;
 
-    // --- C. 設定過期很久的過濾線 (例如：超過 30 天沒動過的測試資料不計入) ---
+    // --- C. 設定過期很久的資料不計入 ---
     const longAgoUnix = nowUnix - 30 * 86400;
 
     const stats = {
@@ -75,11 +75,11 @@ export const useMyPlants = () => {
     });
 
     return stats;
-  }, [myPlants]);
+  }, [myPlants, renderBaseTime]);
 
   // 我的植物狀態概覽
   const statusSummary = useMemo(() => {
-    const nowUnix = Math.floor(Date.now() / 1000);
+    const nowUnix = renderBaseTime;
     const summary = {
       total: 0,
       healthy: 0,
@@ -101,16 +101,13 @@ export const useMyPlants = () => {
         const totalCycleSec = cycle * 86400;
         if (elapsedSec >= totalCycleSec) return 0;
 
-        const score = 100 - (elapsedSec / totalCycleSec) * 100;
-        return score;
+        return 100 - (elapsedSec / totalCycleSec) * 100;
       };
 
-      const waterScore = getScore(p.lastWateringTime, p.waterCycle);
-      const fertilizerScore = getScore(
-        p.lastFertilizingTime,
-        p.fertilizerCycle,
+      const finalScore = Math.min(
+        getScore(p.lastWateringTime, p.waterCycle),
+        getScore(p.lastFertilizingTime, p.fertilizerCycle),
       );
-      const finalScore = Math.min(waterScore, fertilizerScore);
 
       if (finalScore > 70) {
         summary.healthy++;
@@ -123,18 +120,12 @@ export const useMyPlants = () => {
       }
     });
     return summary;
-  }, [myPlants, plantProducts]);
+  }, [myPlants, renderBaseTime]);
 
   //API取得
-  const getMyPlants = async () => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexTokenAPI\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
-    );
-    if (!token) return;
-    axios.defaults.headers.common["Authorization"] = token;
+  const getMyPlants = useCallback(async () => {
     try {
-      const res = await axios.get(`${API_BASE}/api/${API_PATH}/admin/orders`);
+      const res = await getAdminOrdersApi();
       const targetOrder = res.data.orders.find(
         (item) => item.message === "植物狀態取用",
       );
@@ -147,65 +138,63 @@ export const useMyPlants = () => {
 
         // 2. 取得訂單中的商品清單
         if (targetOrder.products) {
-          const productsArray = Object.values(targetOrder.products);
-          setPlantProducts(productsArray);
+          setPlantProducts(Object.values(targetOrder.products));
         }
       }
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
 
   // --- API: 更新資料 (澆水/施肥) ---
-  const updatePlantCare = async (plantId, type) => {
-    const token = document.cookie.replace(
-      /(?:(?:^|.*;\s*)hexTokenAPI\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
-    );
-    if (!token) return;
-    axios.defaults.headers.common["Authorization"] = token;
-
-    try {
-      // 1. 先抓取最新訂單內容
-      const res = await axios.get(`${API_BASE}/api/${API_PATH}/admin/orders`);
-      const targetOrder = res.data.orders.find(
-        (item) => item.message === "植物狀態取用",
-      );
-
-      if (targetOrder && targetOrder.custom?.myPlants) {
-        const nowUnix = Math.floor(Date.now() / 1000);
-        const updatedMyPlants = { ...targetOrder.custom.myPlants };
-
-        // 2. 更新unix時間
-        if (type === "water") {
-          updatedMyPlants[plantId].lastWateringTime = nowUnix;
-          updatedMyPlants[plantId].lastActionAt = nowUnix;
-        } else if (type === "fertilize") {
-          updatedMyPlants[plantId].lastFertilizingTime = nowUnix;
-          updatedMyPlants[plantId].lastActionAt = nowUnix;
-        }
-
-        // 3. 發送 PUT
-        await axios.put(
-          `${API_BASE}/api/${API_PATH}/admin/order/${targetOrder.id}`,
-          {
-            data: {
-              ...targetOrder,
-              custom: { ...targetOrder.custom, myPlants: updatedMyPlants },
-            },
-          },
+  const updatePlantCare = useCallback(
+    async (plantId, type) => {
+      try {
+        // 1. 先抓取最新訂單內容
+        const res = await getAdminOrdersApi();
+        const targetOrder = res.data.orders.find(
+          (item) => item.message === "植物狀態取用",
         );
 
-        await getMyPlants();
+        if (targetOrder && targetOrder.custom?.myPlants) {
+          const nowUnix = Math.floor(Date.now() / 1000);
+          const updatedMyPlants = { ...targetOrder.custom.myPlants };
+
+          // 2. 更新unix時間
+          if (updatedMyPlants[plantId]) {
+            if (type === "water") {
+              updatedMyPlants[plantId].lastWateringTime = nowUnix;
+            } else if (type === "fertilize") {
+              updatedMyPlants[plantId].lastFertilizingTime = nowUnix;
+            }
+            updatedMyPlants[plantId].lastActionAt = nowUnix;
+          }
+
+          // 3. 發送 PUT
+          await updateAdminOrderApi(targetOrder.id, {
+            ...targetOrder,
+            custom: { ...targetOrder.custom, myPlants: updatedMyPlants },
+          });
+
+          await getMyPlants();
+        }
+      } catch (error) {
+        console.error("更新失敗:", error);
       }
-    } catch (error) {
-      console.error("更新失敗:", error);
-    }
-  };
+    },
+    [getMyPlants],
+  );
 
   useEffect(() => {
-    getMyPlants();
-  }, []);
+    const loadData = async () => {
+      try {
+        await getMyPlants();
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    loadData();
+  }, [getMyPlants]);
 
   return {
     myPlants,

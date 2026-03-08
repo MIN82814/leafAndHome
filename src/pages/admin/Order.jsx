@@ -1,12 +1,13 @@
 import { useOutletContext } from "react-router";
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as bootstrap from "bootstrap";
+import { delAdminOrderApi, getAdminOrdersApi } from "../../services/order";
 
 function Order() {
-  const { token, API_BASE, API_PATH } = useOutletContext();
+  const { token } = useOutletContext();
 
   const formatUnixTime = (unixTime) => {
+    if (!unixTime) return "";
     const date = new Date(unixTime * 1000);
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -21,50 +22,64 @@ function Order() {
   const [tempOrder, setTempOrder] = useState({});
   const [tempOrderProducts, setTempOrderProducts] = useState({});
 
-
   const orderModalRef = useRef(null);
+  const modalInstance = useRef(null);
 
-  
-  const openModal = () => {
-    orderModalRef.current.show();
-  };
+  const openModal = useCallback((item) => {
+    setTempOrder(item);
+    setTempOrderProducts(item.products || {});
+    if (modalInstance.current) {
+      modalInstance.current.show();
+    }
+  }, []);
 
-  const closeModal = () => {
-    orderModalRef.current.hide();
-  };
+  const closeModal = useCallback(() => {
+    if (modalInstance.current) {
+      modalInstance.current.hide();
+    }
+  }, []);
 
   // 取得訂單列表api
-    const getOrders = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/api/${API_PATH}/admin/orders`);
-        // console.log(res);
-        setOrderList(res.data.orders);
-      } catch (error) {
-        console.log(error);
+  const getOrders = useCallback(async () => {
+    try {
+      const res = await getAdminOrdersApi();
+      setOrderList(res.data.orders || []);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  // 初始化 Modal
+  useEffect(() => {
+    if (orderModalRef.current) {
+      modalInstance.current = new bootstrap.Modal(orderModalRef.current, {
+        keyboard: false,
+      });
+    }
+    return () => {
+      if (modalInstance.current) {
+        modalInstance.current.dispose();
       }
     };
+  }, []);
 
   useEffect(() => {
-    if (!token) return;
-    axios.defaults.headers.common["Authorization"] = token;
-    getOrders();
-
-    // 訂單細節modal
-    orderModalRef.current = new bootstrap.Modal("#orderModal", {
-      keyboard: false,
-    });
-  }, [token, API_BASE, API_PATH]);
+    if (token) {
+      const fetchData = async () => {
+        await getOrders();
+      };
+      fetchData();
+    }
+  }, [token, getOrders]);
 
   // 刪除一筆訂單api
   const delOrder = async (id) => {
     try {
-      const res = await axios.delete(`${API_BASE}/api/${API_PATH}/admin/order/${id}`)
-      console.log(res);
+      await delAdminOrderApi(id);
       getOrders();
-    }catch (error) {
+    } catch (error) {
       console.log(error);
-    };
-
+    }
   };
 
   return (
@@ -73,9 +88,7 @@ function Order() {
         <div className="row">
           <div className="col-12">
             <h2 className="h2 text-center">訂單列表</h2>
-            <div className="text-end mt-4">
-              
-            </div>
+            <div className="text-end mt-4"></div>
 
             <table className="table">
               <thead className="table-dark">
@@ -94,9 +107,9 @@ function Order() {
                   return (
                     <tr key={item.id} className="text-center">
                       <td>{item.id}</td>
-                      <td>{item.user.name}</td>
-                      <td>{item.user.address}</td>
-                      <td>{item.user.email}</td>
+                      <td>{item.user?.name}</td>
+                      <td>{item.user?.address}</td>
+                      <td>{item.user?.email}</td>
                       <td>{item.total}</td>
                       <td>{item.message}</td>
                       <td>
@@ -104,11 +117,18 @@ function Order() {
                           <a
                             className="btn btn-primary active btn-sm"
                             aria-current="page"
-                            onClick={()=> {openModal(); setTempOrder(item);setTempOrderProducts(item.products);console.log(tempOrderProducts)}}
+                            onClick={() => {
+                              openModal(item);
+                            }}
                           >
                             訂單內容
                           </a>
-                          <a className="btn btn-primary btn-sm" onClick={() => delOrder(item.id)}>刪除</a>
+                          <a
+                            className="btn btn-primary btn-sm"
+                            onClick={() => delOrder(item.id)}
+                          >
+                            刪除
+                          </a>
                         </div>
                       </td>
                     </tr>
@@ -145,43 +165,36 @@ function Order() {
 
             <div className="modal-body">
               <section className="mb-4">
-                <div className="row g-3">
-                  <div className="col-md-3">
-                    <small className="text-dark fs-6">訂單 ID</small>
+                {tempOrder.id ? (
+                  <div className="row g-3">
+                    <div className="col-md-4">
+                      <p className="mb-0 fw-semibold">{tempOrder.id}</p>
+                    </div>
+                    <div className="col-md-3">
+                      <p className="mb-0">
+                        {formatUnixTime(tempOrder.create_at)}
+                      </p>
+                    </div>
+                    <div className="col-md-3">
+                      <p className="mb-0">
+                        <span
+                          className={`badge ${tempOrder.is_paid ? "bg-success" : "bg-secondary"}`}
+                        >
+                          {tempOrder.is_paid ? "已付款" : "未付款"}
+                        </span>
+                      </p>
+                    </div>
+                    <div className="col-md-3">
+                      <p className="mb-0 fw-bold">
+                        ${tempOrder.total?.toLocaleString()}
+                      </p>
+                    </div>
                   </div>
-                  <div className="col-md-3">
-                    <small className="text-dark fs-6">建立時間</small>
-                  </div>
-                  <div className="col-md-3">
-                    <small className="text-dark fs-6">付款狀態</small>
-                    <p className="mb-0"></p>
-                  </div>
-                  <div className="col-md-3">
-                    <small className="text-dark fs-6">訂單總金額</small>
-                  </div>
-                </div>
-                      <div className="row g-3" key={tempOrder.id}>
-                        <div className="col-md-3">
-                          <p className="mb-0 fw-semibold">{tempOrder.id}</p>
-                        </div>
-                        <div className="col-md-3">
-                          <p className="mb-0">
-                            {formatUnixTime(tempOrder.create_at)}
-                          </p>
-                        </div>
-                        <div className="col-md-3">
-                          <p className="mb-0">
-                            <span className="badge bg-success">
-                              {tempOrder.is_paid ? "已付款" : "未付款"}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="col-md-3">
-                          <p className="mb-0 fw-bold">${tempOrder.total}</p>
-                        </div>
-                      </div>
+                ) : (
+                  <p className="text-center">讀取中...</p>
+                )}
               </section>
-                <hr />
+              <hr />
               <section>
                 <h4 className="fw-bold mb-3">商品明細</h4>
 
@@ -196,13 +209,21 @@ function Order() {
                       </tr>
                     </thead>
                     <tbody>
-                      
-                            <tr>
-                              <td>名稱</td>
-                              <td className="text-center">2</td>
-                              <td className="text-end">$1,000</td>
-                              <td className="text-end">$2,000</td>
-                            </tr>
+                      {tempOrderProducts &&
+                        Object.values(tempOrderProducts).map((product) => (
+                          <tr key={product.id}>
+                            <td>{product.product?.title}</td>
+                            <td className="text-center">
+                              {product.qty} {product.product?.unit}
+                            </td>
+                            <td className="text-end">
+                              ${product.product?.price?.toLocaleString()}
+                            </td>
+                            <td className="text-end">
+                              ${product.final_total?.toLocaleString()}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
