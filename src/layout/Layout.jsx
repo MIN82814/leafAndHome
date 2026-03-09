@@ -96,11 +96,11 @@ function Layout() {
                       <span className="text-underline">森活日常誌</span>
                     </NavLink>
                   </li>
-                  <li class="nav-item bg-white">
+                  {/* <li class="nav-item bg-white">
                     <NavLink to="about" className="h6  py-6" onClick={handleToggle}>
                       <span className="text-underline">關於觀葉森活</span>
                     </NavLink>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
