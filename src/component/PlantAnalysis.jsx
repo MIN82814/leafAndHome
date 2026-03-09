@@ -16,15 +16,13 @@ function PlantAnalysis() {
   // 隨機選取需留意植物
   const alertPlantName = useMemo(() => {
     const { dangerList, warningList } = statusSummary;
-
-    // 優先順序：danger -> warning
     const targetPool = dangerList.length > 0 ? dangerList : warningList;
 
-    if (targetPool.length > 0) {
-      const randomIndex = Math.floor(Math.random() * targetPool.length);
-      return targetPool[randomIndex];
-    }
-    return "植物狀況良好";
+    if (targetPool.length === 0) return "植物狀況良好";
+
+    const index = (dangerList.length + warningList.length) % targetPool.length;
+    return targetPool[index];
+
   }, [statusSummary]);
 
   // --- recharts圖表邏輯 ---
@@ -112,9 +110,7 @@ function PlantAnalysis() {
               <div className="p-4 border rounded-4 h-100 ">
                 <h6 className="fw-bold text-secondary-700">本週完成率</h6>
                 <div className="d-flex align-items-end justify-content-end">
-                  <span
-                    className="h2 fw-bold text-primary-700"
-                  >
+                  <span className="h2 fw-bold text-primary-700">
                     {completionRate}%
                   </span>
                 </div>
@@ -124,7 +120,9 @@ function PlantAnalysis() {
             {/* 上方：需留意的植物 */}
             <div className="col-12 col-md-6">
               <div className="p-4 border rounded-4 h-100 d-flex flex-column justify-content-between text-end">
-                <h6 className="fw-bold text-start text-secondary-700">需關照的植物</h6>
+                <h6 className="fw-bold text-start text-secondary-700">
+                  需關照的植物
+                </h6>
                 <div className="h4 fw-bold text-primary-700">
                   {alertPlantName}
                 </div>

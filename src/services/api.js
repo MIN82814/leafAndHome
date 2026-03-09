@@ -18,6 +18,7 @@ adminApi.interceptors.request.use(
       .split("; ")
       .find((row) => row.startsWith("hexTokenAPI="))
       ?.split("=")[1];
+
     if (token) {
       config.headers.Authorization = token;
     }
