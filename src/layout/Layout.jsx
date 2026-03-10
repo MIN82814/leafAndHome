@@ -52,9 +52,9 @@ function Layout() {
               <NavLink to="articles" className="px-4 py-2 h6">
                 <span className="text-underline">森活日常誌</span>
               </NavLink>
-              <NavLink to="about" className="px-4 py-2 h6">
+              {/* <NavLink to="about" className="px-4 py-2 h6">
                 <span className="text-underline">關於觀葉森活</span>
-              </NavLink>
+              </NavLink> */}
             </div>
             {/*  Cart / Personal  */}
             <div className="d-flex align-items-center">
