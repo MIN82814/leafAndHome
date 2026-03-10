@@ -89,6 +89,7 @@ export default function Cart() {
                   </thead>
                   <tbody>
                     {carts.map((item) => {
+                      if (!item?.product) return null;
                       return (
                         <tr key={item.id}>
                           <td style={{ width: "400px" }}>
@@ -118,6 +119,7 @@ export default function Cart() {
                                 className="form-control text-center "
                                 value={item.qty}
                                 min="1"
+                                max="10"
                                 id="qtyInput"
                                 onChange={(e) => {
                                   let val = parseInt(e.target.value);
@@ -147,6 +149,7 @@ export default function Cart() {
                 {/*mobile DOM*/}
                 <div className="d-block d-lg-none">
                   {carts.map((item) => {
+                    if (!item?.product) return null;
                     return (
                       <div key={item.id} className="cart-card mb-3 p-3 rounded">
                         {/* 操作列 */}
@@ -167,18 +170,15 @@ export default function Cart() {
                               objectFit: "cover",
                             }}
                           />
-
                           <div>
                             <div className="titleZh">{item.product.titleZh}</div>
                             <div className="titleEn">{item.product.titleEn}</div>
                           </div>
                         </div>
-
                         {/* 單價 */}
                         <div className="d-flex justify-content-end mb-2">
                           <span>NT $ {item.product.price}</span>
                         </div>
-
                         {/* 數量 */}
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <div className="qty-input-group">
@@ -191,12 +191,12 @@ export default function Cart() {
                               }}>
                               －
                             </button>
-
                             <input
                               type="number"
                               className="form-control text-center"
                               value={item.qty}
                               min="1"
+                              max="10"
                               onChange={(e) => {
                                 let val = parseInt(e.target.value);
                                 if (isNaN(val) || val < 1) val = 1;
@@ -204,7 +204,11 @@ export default function Cart() {
                               }}
                             />
 
-                            <button className="btn" onClick={handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
+                            <button
+                              className="btn"
+                              onClick={() => {
+                                handleUpdateCart(item.id, item.product_id, item.qty + 1);
+                              }}>
                               ＋
                             </button>
                           </div>
