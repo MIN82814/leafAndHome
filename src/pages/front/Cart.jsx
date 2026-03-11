@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 import { useNavigate, useOutletContext } from "react-router";
-import { createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
+import { createAsyncDelAllCart, createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
 
 export default function Cart() {
   //購物車內容初始由 CartLayout 傳入
@@ -36,6 +36,10 @@ export default function Cart() {
   const handleUpdateCart = (cartId, productId, qty = 1) => {
     console.log(cartId, productId, qty);
     dispatch(createAsyncUpdateCart({ cartId, productId, qty }));
+  };
+
+  const handleDelAllCart = () => {
+    dispatch(createAsyncDelAllCart());
   };
 
   //applyCoupon
@@ -72,7 +76,12 @@ export default function Cart() {
             <div className="section mb-4">
               <div className="head d-flex justify-content-between py-4 px-6 bg-secondary-100">
                 <h4 className="text-secondary-700">購物車</h4>
-                <button type="button" className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
+                <button
+                  type="button"
+                  className="btn btn-link text-primary-700 fw-bold text-decoration-underline"
+                  onClick={() => {
+                    handleDelAllCart();
+                  }}>
                   全部刪除
                 </button>
               </div>
