@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { getProductsApi } from "../../services/product";
 import Pagination from "../../component/adminPagination";
+import Card_product from "../../component/Card_product";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -27,13 +28,14 @@ function Products() {
   }, []);
   return (
     <>
-      {" "}
-      <div className="container">
-        <div className="row">
-          {/* 不用手動return */}
-          {products.map((item) => (
-            <div className="col-md-4 mb-3" key={item.id}>
-              <div className="card">
+      <div className="bg-neutral-100 py-10">
+        <div className="container">
+          <div className="row">
+            {/* 不用手動return */}
+            {products.map((item) => (
+              <div className="col-md-4 mb-6" key={item.id}>
+                <Card_product product={item} />
+                {/* <div className="card">
                 <img src={item.imageUrl} className="card-img-top" alt={item.title} />
                 <div className="card-body">
                   <h5 className="card-title">{item.title}</h5>
@@ -46,11 +48,12 @@ function Products() {
                     查看更多
                   </NavLink>
                 </div>
+              </div> */}
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <Pagination pagination={pagination} onChangePage={getProducts} />
         </div>
-        <Pagination pagination={pagination} onChangePage={getProducts} />
       </div>
     </>
   );

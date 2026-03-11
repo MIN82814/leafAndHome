@@ -7,7 +7,7 @@ import iconOffice from "/iconOffice.svg";
 import iconBalcony from "/iconBalcony.svg";
 import Card_place from "../../component/Card_place";
 import Card_product from "../../component/Card_product";
-import Card_article from "../../component/Card_Article";
+import Card_article from "../../component/Card_article";
 import Pill from "../../component/Pill";
 import Card_list from "../../component/Card_list";
 import Title from "../../component/Title";
@@ -44,17 +44,24 @@ function Home() {
         console.log(error.response);
       }
     };
+
+    getProducts();
+    getArticles();
+  }, []);
+
+  useEffect(() => {
+    //尚未取得資料時先 return
+    if (products.length < 1) return;
+
+    //取得資料以後更新 TOP 5
     const setTOP = () => {
       // 設定精選植物項目
       setTopA([products[0], products[1], products[2], products[3], products[4]]);
       setTopB([products[1], products[2], products[4], products[5], products[6]]);
       setTopC([products[3], products[5], products[2], products[4], products[7]]);
     };
-
-    getProducts();
-    getArticles();
     setTOP();
-  }, []);
+  }, [products]);
 
   // const closeCollapse = () => {
   //   collapseRef.current.hide();
@@ -263,11 +270,11 @@ function Home() {
                   </div>
                 </div>
                 <div className="mt-8 mt-lg-auto d-flex flex-wrap align-items-center">
-                  <NavLink to="/Personal" className="btn btn-primary-500 me-lg-5 text-white mb-3 mb-md-0">
+                  <NavLink to="/personal" className="btn btn-primary-500 me-lg-5 text-white mb-3 mb-md-0">
                     <i className="bi bi-tablet"></i>
                     前往我的森活儀表板
                   </NavLink>
-                  <NavLink to="/Personal" className="h6 fw-bold">
+                  <NavLink to="/personal/my-plants" className="h6 fw-bold">
                     <span className="text-underline">
                       看看我有哪些植物 <i className="bi bi-arrow-right"></i>
                     </span>

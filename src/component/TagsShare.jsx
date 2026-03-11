@@ -9,11 +9,7 @@ function TagsShare({ tags, handleShare }) {
             <span className=" text-neutral-900  me-3">標籤：</span>
             <div className="d-flex align-items-center gap-2 flex-wrap ">
               {tags?.map((tag) => (
-                <Link
-                  key={tag}
-                  className="btn btn btn-outline-primary-700 fs-8 px-3 py-1 fw-bold rounded-3 border-1"
-                  to={`/articles?tag=${tag}`}
-                >
+                <Link key={tag} className="btn btn btn-outline-primary-700 fs-9 px-3 py-1 fw-bold rounded-3 border-1" to={`/articles?tag=${tag}`}>
                   #{tag}
                 </Link>
               ))}
@@ -22,22 +18,13 @@ function TagsShare({ tags, handleShare }) {
           <div className="d-flex align-items-center">
             <span className=" text-neutral-900  me-3">分享</span>
             <div className="d-flex align-items-center gap-3">
-              <button
-                className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
-                onClick={() => handleShare("fb")}
-              >
+              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("fb")}>
                 <FaceBook className="text-white" />
               </button>
-              <button
-                className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
-                onClick={() => handleShare("line")}
-              >
+              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("line")}>
                 <Line className="text-white" />
               </button>
-              <button
-                className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center"
-                onClick={() => handleShare("copy")}
-              >
+              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("copy")}>
                 <LinkIcon className="text-white" />
               </button>
             </div>
