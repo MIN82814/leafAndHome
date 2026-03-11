@@ -76,15 +76,27 @@ export const createAsyncDelCart = createAsyncThunk(
   'cart/createAsyncDelCart',
   async (id, { dispatch }) => {
     try {
-      const response = await axios.delete(`${API_BASE}/api/${API_PATH}/cart/${id}`);
-      console.log(id);
-      console.log(response.data);
+      await axios.delete(`${API_BASE}/api/${API_PATH}/cart/${id}`);
       dispatch(createAsyncGetCart());
     } catch (error) {
       console.log(error.response);
     }
   }
 )
+
+
+export const createAsyncDelAllCart = createAsyncThunk(
+  'cart/createAsyncDelCart',
+  async (id, { dispatch }) => {
+    try {
+      await axios.delete(`${API_BASE}/api/${API_PATH}/carts`);
+      dispatch(createAsyncGetCart());
+    } catch (error) {
+      console.log(error.response);
+    }
+  }
+)
+
 
 
 export const { updateCart } = cartSlice.actions;
