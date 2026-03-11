@@ -1,10 +1,5 @@
 import { NavLink } from "react-router";
 
-// Place icon
-import iconHouse from "/iconHouse.svg";
-import iconBed from "/iconBed.svg";
-import iconOffice from "/iconOffice.svg";
-import iconBalcony from "/iconBalcony.svg";
 import Card_place from "../../component/Card_place";
 import Card_product from "../../component/Card_product";
 import Card_article from "../../component/Card_article";
@@ -175,16 +170,16 @@ function Home() {
           </div>
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-6 x-hidden">
             <div className="col">
-              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689650010.jpg" title="租屋小套房" content="小空間也能綠意盎然" icon={iconHouse} kind="6" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689650010.jpg" title="租屋小套房" content="小空間也能綠意盎然" icon="home_and_garden" kind="6" />
             </div>
             <div className="col">
-              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689691671.jpg" title="辦公桌增綠" content="工作環境更舒心" icon={iconOffice} kind="11" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689691671.jpg" title="辦公桌增綠" content="工作環境更舒心" icon="trip" kind="11" />
             </div>
             <div className="col">
-              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689720473.jpg" title="臥室療癒角" content="助眠淨化好夥伴" icon={iconBed} kind="8" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689720473.jpg" title="臥室療癒角" content="助眠淨化好夥伴" icon="bed" kind="8" />
             </div>
             <div className="col">
-              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689734990.jpg" title="陽台小花園" content="戶外綠化好選擇" icon={iconBalcony} kind="5" />
+              <Card_place image="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770689734990.jpg" title="陽台小花園" content="戶外綠化好選擇" icon="deck" kind="5" />
             </div>
           </div>
         </div>
