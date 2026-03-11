@@ -12,6 +12,18 @@ $utilities: map-merge(
         100: 1,
       ),
     ),
+    "font-weight": (
+      property: font-weight,
+      class: fw,
+      values: (
+        light: $font-weight-light,
+        lighter: $font-weight-lighter,
+        normal: $font-weight-normal,
+        medium: $font-weight-medium,
+        bold: $font-weight-bold,
+        bolder: $font-weight-bolder,
+      ),
+    ),
   )
 );
 

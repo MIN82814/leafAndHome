@@ -3,14 +3,16 @@ import { NavLink } from "react-router";
 import { getProductsApi } from "../../services/product";
 import Pagination from "../../component/adminPagination";
 import Card_product from "../../component/Card_product";
+import Loading from "../../component/Loading";
 
 function Products() {
   const [products, setProducts] = useState([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   //分頁
   const [pagination, setPagination] = useState({});
 
   const getProducts = async (page = 1) => {
+    setIsLoading(true);
     try {
       const response = await getProductsApi(page, "all");
       console.log(response.data.products);
@@ -18,6 +20,8 @@ function Products() {
       setPagination(response.data.pagination);
     } catch (error) {
       console.log(error.response);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -26,6 +30,11 @@ function Products() {
       await getProducts();
     })(); //確認正確後取得產品列表內容
   }, []);
+
+  if (isLoading) {
+    return <Loading text={"正在為您搬運植物..."} />;
+  }
+
   return (
     <>
       <div className="bg-neutral-100 py-10">

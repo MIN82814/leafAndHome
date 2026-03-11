@@ -12,21 +12,26 @@ function Pagination({ pagination, onChangePage }) {
         <ul className="pagination justify-content-center gap-3">
           {/* has_pre has_next 為 API 回傳值 */}
           <li className={`page-item ${!pagination.has_pre && "disabled"}`}>
-            <a className="page-link" href="#" aria-label="Previous" onClick={(e) => handleClick(e, pagination.current_page - 1)}>
-              <span aria-hidden="true">&laquo;</span>
-            </a>
+            <button type="button" className="btn btn-outline-primary-700 page-square" onClick={(e) => handleClick(e, pagination.current_page - 1)} disabled={!pagination.has_pre}>
+              &laquo;
+            </button>
           </li>
+
           {Array.from({ length: pagination.total_pages }, (_, index) => (
-            <li className={`page-item ${pagination.current_page === index + 1 && "active"}`} key={`${index}_page`}>
-              <a className="page-link" href="#" onClick={(e) => handleClick(e, index + 1)}>
+            <li className="page-item" key={`${index}_page`}>
+              <button
+                className={`btn page-square ${pagination.current_page === index + 1 ? "btn-primary-700" : "btn-outline-primary-700"}`}
+                onClick={(e) => {
+                  handleClick(e, index + 1);
+                }}>
                 {index + 1}
-              </a>
+              </button>
             </li>
           ))}
           <li className={`page-item ${!pagination.has_next && "disabled"}`}>
-            <a className="page-link" href="#" aria-label="Next" onClick={(e) => handleClick(e, pagination.current_page + 1)}>
-              <span aria-hidden="true">&raquo;</span>
-            </a>
+            <button type="button" className="btn btn-outline-primary-700 page-square" onClick={(e) => handleClick(e, pagination.current_page + 1)} disabled={!pagination.has_next}>
+              &raquo;
+            </button>
           </li>
         </ul>
       </nav>

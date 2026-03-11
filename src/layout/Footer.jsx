@@ -27,7 +27,7 @@ function Footer() {
             </div>
           </div>
         </div>
-        <p className="text-center text-secondary-300">&copy; 2025觀葉森活 Plant Life. All rights reserved.</p>
+        <p className="text-center text-secondary-300">&copy; 2025觀葉森活 Leaf and Home. All rights reserved.</p>
       </div>
     </div>
   );
