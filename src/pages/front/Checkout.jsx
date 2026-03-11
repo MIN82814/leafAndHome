@@ -406,14 +406,11 @@ export default function Checkout() {
                   </button>
                   <div className="d-flex flex-column ">
                     <div className="d-flex justify-content-start gap-2 mb-2">
-                      <img
-                        src="/leafAndHome/icons/securePayment.png"
-                        style={{
-                          height: "48px",
-                          width: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
+                      <div className="p-3 rounded-circle bg-background-200 lh-1">
+                        <span className="material-symbols-outlined text-secondary-500 lh-1" style={{ fontSize: "24px" }}>
+                          security
+                        </span>
+                      </div>
                       <div className="d-flex flex-column align-items-start">
                         <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           安心結帳
@@ -424,14 +421,11 @@ export default function Checkout() {
                       </div>
                     </div>
                     <div className="d-flex justify-content-start gap-2 mb-2">
-                      <img
-                        src="/leafAndHome/icons/freeDelivery.png"
-                        style={{
-                          height: "48px",
-                          width: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
+                      <div className="p-3 rounded-circle bg-background-200 lh-1">
+                        <span className="material-symbols-outlined text-secondary-500 lh-1" style={{ fontSize: "24px" }}>
+                          local_shipping
+                        </span>
+                      </div>
                       <div className="d-flex flex-column align-items-start">
                         <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           免運費
@@ -442,14 +436,11 @@ export default function Checkout() {
                       </div>
                     </div>
                     <div className="d-flex justify-content-start gap-2 mb-2">
-                      <img
-                        src="/leafAndHome/icons/return.png"
-                        style={{
-                          height: "48px",
-                          width: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
+                      <div className="p-3 rounded-circle bg-background-200 lh-1">
+                        <span className="material-symbols-outlined text-secondary-500 lh-1" style={{ fontSize: "24px" }}>
+                          replay
+                        </span>
+                      </div>
                       <div className="d-flex flex-column align-items-start">
                         <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           退貨保證
@@ -460,14 +451,11 @@ export default function Checkout() {
                       </div>
                     </div>
                     <div className="d-flex justify-content-start gap-2 mb-2">
-                      <img
-                        src="/leafAndHome/icons/privacy.png"
-                        style={{
-                          height: "48px",
-                          width: "48px",
-                          objectFit: "cover",
-                        }}
-                      />
+                      <div className="p-3 rounded-circle bg-background-200 lh-1">
+                        <span className="material-symbols-outlined text-secondary-500 lh-1" style={{ fontSize: "24px" }}>
+                          lock
+                        </span>
+                      </div>
                       <div className="d-flex flex-column align-items-start">
                         <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           隱私保護

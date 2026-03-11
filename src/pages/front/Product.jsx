@@ -2,18 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Title from "../../component/Title";
 import { getProductApi } from "../../services/product";
-import iconCustomer from "/icons/iconCustomer.svg";
-import iconBack from "/icons/iconBack.svg";
-import iconDelivery from "/icons/iconDelivery.svg";
-import iconRepair from "/icons/iconRepair.svg";
-import iconLight from "/icons/iconLight.svg";
-import iconWatering from "/icons/iconWatering.svg";
-import iconTemperature from "/icons/iconTemperature.svg";
-import iconHumidity from "/icons/iconHumidity.svg";
-import iconSize from "/icons/iconSize.svg";
-import iconPetSafety from "/icons/iconPetSafety.svg";
-import iconSupportRepotting from "/icons/iconSupportRepotting.svg";
-import iconDifficulty from "/icons/iconDifficulty.svg";
 import iconPoint from "/icons/iconPoint.svg";
 import iconStar from "/icons/iconStar.svg";
 import CareGuide from "../../component/CareGuide";
@@ -147,9 +135,9 @@ function Product() {
         <div className="container">
           <div className="row row-cols-2 row-cols-md-4 gy-4">
             <div className="col">
-              <div className="d-flex justify-content-center gap-2 gap-md-4">
+              <div className="d-flex justify-content-center gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <img src={iconDelivery} alt="icon" />
+                  <span class="material-symbols-outlined text-secondary-700 fs-2">package_2</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">七天到貨</h4>
@@ -158,9 +146,9 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <img src={iconRepair} alt="icon" />
+                  <span class="material-symbols-outlined text-secondary-700 fs-2">build</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">破損補寄</h4>
@@ -169,9 +157,9 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <img src={iconBack} alt="icon" />
+                  <span class="material-symbols-outlined text-secondary-700 fs-2">replay</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">七天鑑賞</h4>
@@ -180,9 +168,9 @@ function Product() {
               </div>
             </div>
             <div className="col">
-              <div className="d-flex justify-content-center  gap-2 gap-md-4">
+              <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <img src={iconCustomer} alt="icon" />
+                  <span class="material-symbols-outlined text-secondary-700 fs-2">support_agent</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">專業客服</h4>
@@ -199,14 +187,14 @@ function Product() {
             <Title title="照顧指南" />
           </div>
           <div className="row g-6">
-            <CareGuide icon={iconLight} title="光線需求" subTitle={product?.careGuide?.light} />
-            <CareGuide icon={iconWatering} title="澆水頻率" subTitle={product?.careGuide?.watering} />
-            <CareGuide icon={iconTemperature} title="適合溫度" subTitle={product?.careGuide?.temperature} />
-            <CareGuide icon={iconHumidity} title="濕度需求" subTitle={product?.careGuide?.humidity} />
-            <CareGuide icon={iconSize} title="尺寸需求" subTitle={product?.careGuide?.size} />
-            <CareGuide icon={iconPetSafety} title="寵物安全" subTitle={product?.careGuide?.petSafety} />
-            <CareGuide icon={iconSupportRepotting} title="支撐/換盆建議" subTitle={product?.careGuide?.supportRepotting} />
-            <CareGuide icon={iconDifficulty} title="照顧難度" subTitle={product?.careGuide?.difficulty} />
+            <CareGuide icon="sunny" title="光線需求" subTitle={product?.careGuide?.light} />
+            <CareGuide icon="water_drop" title="澆水頻率" subTitle={product?.careGuide?.watering} />
+            <CareGuide icon="device_thermostat" title="適合溫度" subTitle={product?.careGuide?.temperature} />
+            <CareGuide icon="dew_point" title="濕度需求" subTitle={product?.careGuide?.humidity} />
+            <CareGuide icon="straighten" title="尺寸需求" subTitle={product?.careGuide?.size} />
+            <CareGuide icon="pets" title="寵物安全" subTitle={product?.careGuide?.petSafety} />
+            <CareGuide icon="potted_plant" title="支撐/換盆建議" subTitle={product?.careGuide?.supportRepotting} />
+            <CareGuide icon="volunteer_activism" title="照顧難度" subTitle={product?.careGuide?.difficulty} />
           </div>
         </div>
       </section>

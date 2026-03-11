@@ -1,7 +1,6 @@
 import { Outlet, NavLink, useOutletContext } from "react-router";
 import Footer from "./Footer";
 import mark from "/mark.svg";
-import cart from "/cart.svg";
 import personal from "/personal.svg";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,8 +58,10 @@ function Layout() {
             {/*  Cart / Personal  */}
             <div className="d-flex align-items-center">
               <NavLink to="cart" className="me-3 position-relative">
-                <div className="cart-container position-relative">
-                  <img src={cart} alt="購物車" className="icon-hover rounded-circle p-3" />
+                <div className="cart-container position-relative p-3 icon-hover rounded-circle lh-1">
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24" }}>
+                    shopping_cart
+                  </span>
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger">
                     {carts.length}
                     <span className="visually-hidden">unread messages</span>
