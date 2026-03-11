@@ -46,19 +46,11 @@ function Personal() {
                           style={{
                             aspectRatio: "966 / 300",
                             minHeight: "200px",
-                          }}
-                        >
-                          <div
-                            className="position-absolute top-50 start-0 translate-middle-y text-white w-100 px-4 px-md-5"
-                            style={{ zIndex: 2, pointerEvents: "none" }}
-                          >
+                          }}>
+                          <div className="position-absolute top-50 start-0 translate-middle-y text-white w-100 px-4 px-md-5" style={{ zIndex: 2, pointerEvents: "none" }}>
                             <h3 className="fw-bold mb-1">林沐森</h3>
-                            <h5 className="fw-bold mb-3">
-                              歡迎回來，這裡是你的森活個人館
-                            </h5>
-                            <h6 className="d-none d-md-block fs-8">
-                              從心動收藏到日常照護，你的森活都在這裡慢慢累積
-                            </h6>
+                            <h5 className="fw-bold mb-3">歡迎回來，這裡是你的森活個人館</h5>
+                            <h6 className="d-none d-md-block fs-9">從心動收藏到日常照護，你的森活都在這裡慢慢累積</h6>
                           </div>
 
                           <div className="position-absolute top-0 end-0 text-end w-auto">
@@ -66,16 +58,8 @@ function Personal() {
                           </div>
 
                           <picture>
-                            <source
-                              media="(max-width: 768px)"
-                              srcSet="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770717485948.jpg"
-                            />
-                            <img
-                              src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770716338914.jpg"
-                              alt="banner"
-                              className="w-100 h-100"
-                              style={{ objectFit: "cover" }}
-                            />
+                            <source media="(max-width: 768px)" srcSet="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770717485948.jpg" />
+                            <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770716338914.jpg" alt="banner" className="w-100 h-100" style={{ objectFit: "cover" }} />
                           </picture>
                         </div>
 
@@ -89,13 +73,9 @@ function Personal() {
                                     <div className="icon-wrapper bg-primary-700">
                                       <img src={item.icon} alt={item.label} />
                                     </div>
-                                    <span className="task-num h2">
-                                      {item.num}
-                                    </span>
+                                    <span className="task-num h2">{item.num}</span>
                                   </div>
-                                  <div className="task-label h6">
-                                    {item.label}
-                                  </div>
+                                  <div className="task-label h6">{item.label}</div>
                                 </div>
                               </div>
                             ))}
@@ -111,9 +91,7 @@ function Personal() {
                   <div className="rounded-4 overflow-hidden border-0">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
-                      <h5 className="fw-bold mb-0 text-secondary-700">
-                        本週行事曆
-                      </h5>
+                      <h5 className="fw-bold mb-0 text-secondary-700">本週行事曆</h5>
                       <a href="#" className="small text-primary-700 fw-bold">
                         查看完整月曆 ▸
                       </a>
@@ -127,9 +105,7 @@ function Personal() {
                   <div className="bg-white rounded-4 overflow-hidden  h-100 d-flex flex-column">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
-                      <h5 className="fw-bold mb-0 text-secondary-700">
-                        本週照護
-                      </h5>
+                      <h5 className="fw-bold mb-0 text-secondary-700">本週照護</h5>
                     </div>
 
                     {/* Body */}
@@ -144,9 +120,7 @@ function Personal() {
                   <div className="bg-white rounded-4 overflow-hidden h-100 d-flex flex-column">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
-                      <h5 className="fw-bold mb-0 text-secondary-700">
-                        我的植物
-                      </h5>
+                      <h5 className="fw-bold mb-0 text-secondary-700">我的植物</h5>
                     </div>
                     {/* Body */}
                     <div className="flex-grow-1">
@@ -160,9 +134,7 @@ function Personal() {
                   <div className="rounded-4 overflow-hidden border-0">
                     {/* 1. Header  */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
-                      <h5 className="fw-bold mb-0 text-secondary-700">
-                        森活解析
-                      </h5>
+                      <h5 className="fw-bold mb-0 text-secondary-700">森活解析</h5>
                     </div>
 
                     {/* 2. Body  */}
@@ -170,11 +142,7 @@ function Personal() {
                   </div>
                 </div>
                 <div className="col-12 mx-auto text-center m-10">
-                  <a
-                    className="btn btn-primary-500 text-white"
-                    href="#"
-                    role="button"
-                  >
+                  <a className="btn btn-primary-500 text-white" href="#" role="button">
                     查看更多解析 <span className="small">▶</span>
                   </a>
                 </div>
