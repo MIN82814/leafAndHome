@@ -153,3 +153,8 @@ input[type="number"] {
   z-index: 1050;
   border-top: 1px solid #eee;
 }
+
+.cart_btn:disabled {
+  background-color: $neutral-100;
+  border: 0;
+}

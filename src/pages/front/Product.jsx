@@ -121,13 +121,13 @@ function Product() {
 
               <div className="w-100">
                 <label className="text-neutral-900 h6 mb-2">數量</label>
-                <div className="border border-secondary-700 d-flex justify-content-between mb-5">
-                  <button className="btn" type="button" id="button-addon1" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre - 1)} disabled={cartQty <= 1}>
+                <div className="border rounded-3 border-secondary-700 d-flex justify-content-between mb-5">
+                  <button className="btn cart_btn fw-bold" type="button" id="button-addon1" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre - 1)} disabled={cartQty <= 1}>
                     <i className="bi bi-dash-lg"></i>
                   </button>
-                  <input className="form-control bg-gray-100 text-center fw-bold" type="number" min="1" max="10" value={cartQty} onChange={(e) => setCartQty(Number(e.target.value))} />
-                  <button className="btn" type="button" id="button-addon2" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre + 1)} disabled={cartQty >= 10}>
-                    <i className="bi bi-plus-lg"></i>
+                  <input className="form-control bg-neutral-100 text-center fw-bold border-0" type="number" min="1" max="10" value={cartQty} onChange={(e) => setCartQty(Number(e.target.value))} />
+                  <button className="btn cart_btn" type="button" id="button-addon2" aria-label="Decrease quantity" onClick={() => setCartQty((pre) => pre + 1)} disabled={cartQty >= 10}>
+                    <i className="bi bi-plus-lg "></i>
                   </button>
                 </div>
                 <button
@@ -215,14 +215,14 @@ function Product() {
           <div className="text-center mb-6 mb-md-13">
             <Title title="詳細介紹" />
           </div>
-          <div className="bg-white p-6">
+          <div className="bg-white p-6 rounded-4">
             <div className="row p-6">
               <div className="col-md-6 mb-4 mb-md-0">
                 <h4 className="h4">植物特色</h4>
               </div>
               <div className="col-md-6">
                 {product?.detailedIntro?.features.map((item) => (
-                  <p className="mb-2">{item}</p>
+                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
                 ))}
               </div>
             </div>
@@ -232,7 +232,7 @@ function Product() {
               </div>
               <div className="col-md-6">
                 {product?.detailedIntro?.careNotes.map((item) => (
-                  <p className="mb-2">{item}</p>
+                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
                 ))}
               </div>
             </div>
@@ -242,7 +242,7 @@ function Product() {
               </div>
               <div className="col-md-6">
                 {product?.detailedIntro?.benefits.map((item) => (
-                  <p className="mb-2">{item}</p>
+                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
                 ))}
               </div>
             </div>
@@ -260,14 +260,14 @@ function Product() {
           <div className="row">
             {product?.placementScenes?.map((scene, index) => (
               <div className="col-md-4">
-                <div className="bg-white p-3 pb-4" key={`scene-${index}`}>
+                <div className="bg-white p-3 pb-4 rounded-4" key={`scene-${index}`}>
                   <div className="position-relative mb-2">
-                    <img src={product.imagesUrl[index]} alt={scene.scene} />
-                    <span className="position-absolute scene-tag  px-4 py-1 bg-white">{scene.scene}</span>
+                    <img src={product.imagesUrl[index]} alt={scene.scene} className="rounded-3" />
+                    <span className="position-absolute scene-tag  px-4 py-1 bg-white fw-bold rounded-1">{scene.scene}</span>
                   </div>
                   <ul className="d-flex flex-column gap-1 px-2 py-3">
                     {scene?.phrases.map((phrase, pIndex) => (
-                      <li className="text-neutral-900 h6" key={`phrase-${pIndex}`}>
+                      <li className="text-neutral-900 h6 fw-medium" key={`phrase-${pIndex}`}>
                         <img src={iconPoint} alt="point" />
                         <span className="ps-1">{phrase}</span>
                       </li>

@@ -120,7 +120,7 @@ export default function Cart() {
                           <td className="align-middle price">NT $ {item.product.price}</td>
                           <td className="align-middle">
                             <div className="qty-input-group">
-                              <button className="btn " type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
+                              <button className="btn cart_btn" type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
                                 －
                               </button>
                               <input
@@ -136,7 +136,7 @@ export default function Cart() {
                                   handleUpdateCart(item.id, item.product_id, val);
                                 }}
                               />
-                              <button className="btn" type="button" id="btn-increase" disabled={item.qty >= 10 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
+                              <button className="btn cart_btn" type="button" id="btn-increase" disabled={item.qty >= 10 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
                                 ＋
                               </button>
                             </div>

@@ -12,21 +12,21 @@
 //Component
 @import "./components/title.scss";
 @import "./components/checkout-step";
-@import "./components/cart-table";
-@import "./components/card_place.scss";
-@import "./components/card_list.scss";
+@import "./components/card_place";
+@import "./components/card_list";
 @import "./components/btn.scss";
-@import "./components/page.scss";
-@import "./components/calendar.scss";
-@import "./components/weatherIcon.scss";
-@import "./components/plantCare.scss";
-@import "./components/plantOverview.scss";
+@import "./components/page";
+@import "./components/calendar";
+@import "./components/weatherIcon";
+@import "./components/plantCare";
+@import "./components/plantOverview";
 @import "./components/sidemenu";
-@import "./components/articleHero.scss";
+@import "./components/articleHero";
 
 //頁面
-@import "./pages/index.scss";
+@import "./pages/index";
 @import "./pages/article";
 @import "./pages/articles";
-@import "./pages/product.scss";
+@import "./pages/product";
+@import "./pages/cart";
 @import "./pages/personal";
