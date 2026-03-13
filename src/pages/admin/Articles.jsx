@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useOutletContext } from "react-router";
+// import { useOutletContext } from "react-router";
 
 // --- 📦 套件引入 ---
 import EditorJS from "@editorjs/editorjs";
@@ -7,15 +7,7 @@ import Header from "@editorjs/header";
 import DragDrop from "editorjs-drag-drop";
 
 // --- 🔗 引入自定義 API 服務 ---
-import {
-  deleteAdminArticleApi,
-  getAdminArticleIdApi,
-  getAdminArticlesApi,
-  getAllProductsApi,
-  postAdminArticleApi,
-  postAdminUploadApi,
-  putAdminArticleApi,
-} from "../../services/article";
+import { deleteAdminArticleApi, getAdminArticleIdApi, getAdminArticlesApi, getAllProductsApi, postAdminArticleApi, postAdminUploadApi, putAdminArticleApi } from "../../services/article";
 
 // --- 📸 自定義圖片插件 ---
 class UrlImage {
@@ -28,8 +20,7 @@ class UrlImage {
   }
   render() {
     this.wrapper = document.createElement("div");
-    this.wrapper.className =
-      "p-3 border rounded bg-light text-center shadow-sm";
+    this.wrapper.className = "p-3 border rounded bg-light text-center shadow-sm";
     if (this.data && this.data.url) {
       this._showImage(this.data.url, this.data.caption);
     } else {
@@ -80,12 +71,7 @@ class UrlImage {
     img.src = url;
     img.classList.add("img-fluid", "rounded", "mb-2");
     const capInput = document.createElement("input");
-    capInput.classList.add(
-      "form-control",
-      "form-control-sm",
-      "text-center",
-      "border-0",
-    );
+    capInput.classList.add("form-control", "form-control-sm", "text-center", "border-0");
     capInput.placeholder = "輸入圖片說明...";
     capInput.value = caption;
     this.wrapper.appendChild(img);
@@ -102,7 +88,7 @@ class UrlImage {
 }
 
 function Articles() {
-  const { token } = useOutletContext();
+  // const { token } = useOutletContext();
   const [articles, setArticles] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [editId, setEditId] = useState(null);
@@ -120,13 +106,7 @@ function Articles() {
   const [comments, setComments] = useState([]);
   const editorRef = useRef(null);
 
-  const TAG_OPTIONS = [
-    "新手友善",
-    "澆水技巧",
-    "光線需求",
-    "疑難雜症",
-    "居家搭配",
-  ];
+  const TAG_OPTIONS = ["新手友善", "澆水技巧", "光線需求", "疑難雜症", "居家搭配"];
 
   // --- 1. 先宣告所有需要的 Callback ---
   const fetchArticles = useCallback(async () => {
@@ -166,10 +146,12 @@ function Articles() {
   // --- 2. 隨後執行 useEffect ---
   useEffect(() => {
     const initData = async () => {
-      if (token) {
-        await fetchArticles();
-        await fetchAllProducts();
-      }
+      await fetchArticles();
+      await fetchAllProducts();
+      // if (token) {
+      //   await fetchArticles();
+      //   await fetchAllProducts();
+      // }
     };
     initData();
 
@@ -193,7 +175,8 @@ function Articles() {
         editorRef.current = null;
       }
     };
-  }, [token, fetchArticles, fetchAllProducts]);
+    // }, [token, fetchArticles, fetchAllProducts]);
+  }, [fetchArticles, fetchAllProducts]);
 
   const handleFileUpload = async (e, callback) => {
     const file = e.target.files?.[0];
@@ -218,9 +201,7 @@ function Articles() {
           const cleanedText = text.replace(/\u200B/g, "").trim();
           if (!cleanedText) text = "";
           else text = text.replace(/\n/g, "<br>");
-          return block.type === "paragraph"
-            ? { type: "paragraph", content: text }
-            : { type: "heading", level: block.data.level, content: text };
+          return block.type === "paragraph" ? { type: "paragraph", content: text } : { type: "heading", level: block.data.level, content: text };
         }
         if (block.type === "image")
           return {
@@ -283,16 +264,12 @@ function Articles() {
       });
       setSelectedTags(d.tag || []);
       const blocks = d.contentBlocks || [];
-      setRelatedProducts(
-        blocks.find((b) => b.type === "relatedProducts")?.products || [],
-      );
+      setRelatedProducts(blocks.find((b) => b.type === "relatedProducts")?.products || []);
       setComments(
-        (blocks.find((b) => b.type === "commentSection")?.comments || []).map(
-          (c) => ({
-            ...c,
-            create_at: c.create_at || Math.floor(Date.now() / 1000),
-          }),
-        ),
+        (blocks.find((b) => b.type === "commentSection")?.comments || []).map((c) => ({
+          ...c,
+          create_at: c.create_at || Math.floor(Date.now() / 1000),
+        })),
       );
 
       const editorBlocks = blocks
@@ -314,8 +291,7 @@ function Articles() {
         })
         .filter((b) => b);
 
-      if (editorRef.current)
-        await editorRef.current.render({ blocks: editorBlocks });
+      if (editorRef.current) await editorRef.current.render({ blocks: editorBlocks });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
       alert("讀取失敗");
@@ -335,77 +311,29 @@ function Articles() {
         <div className="row g-3 mb-4 p-3 bg-light rounded border">
           <div className="col-md-9">
             <label className="small fw-bold">文章標題 *</label>
-            <textarea
-              className="form-control shadow-sm"
-              rows="2"
-              style={{ resize: "none" }}
-              value={formData.title}
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
-            />
+            <textarea className="form-control shadow-sm" rows="2" style={{ resize: "none" }} value={formData.title} onChange={(e) => setFormData({ ...formData, title: e.target.value })} />
           </div>
           <div className="col-md-3">
             <label className="small fw-bold">發布日期 *</label>
-            <input
-              type="date"
-              className="form-control shadow-sm"
-              value={formData.create_at}
-              onChange={(e) =>
-                setFormData({ ...formData, create_at: e.target.value })
-              }
-            />
+            <input type="date" className="form-control shadow-sm" value={formData.create_at} onChange={(e) => setFormData({ ...formData, create_at: e.target.value })} />
           </div>
-          <div className="col-12">
+          <div>
             <label className="small fw-bold">文章簡述 (Description)</label>
-            <textarea
-              className="form-control shadow-sm"
-              rows="2"
-              placeholder="輸入文章摘要..."
-              value={formData.description}
-              onChange={(e) =>
-                setFormData({ ...formData, description: e.target.value })
-              }
-            />
+            <textarea className="form-control shadow-sm" rows="2" placeholder="輸入文章摘要..." value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
           </div>
           <div className="col-md-4">
             <label className="small fw-bold">作者名稱 *</label>
-            <input
-              className="form-control shadow-sm"
-              value={formData.author}
-              onChange={(e) =>
-                setFormData({ ...formData, author: e.target.value })
-              }
-            />
+            <input className="form-control shadow-sm" value={formData.author} onChange={(e) => setFormData({ ...formData, author: e.target.value })} />
           </div>
           <div className="col-md-5">
             <label className="small fw-bold">主圖 URL *</label>
             <div className="input-group shadow-sm">
-              <input
-                className="form-control"
-                value={formData.image}
-                onChange={(e) =>
-                  setFormData({ ...formData, image: e.target.value })
-                }
-              />
-              <button
-                className="btn btn-outline-secondary"
-                type="button"
-                onClick={() => document.getElementById("cover-up").click()}
-              >
+              <input className="form-control" value={formData.image} onChange={(e) => setFormData({ ...formData, image: e.target.value })} />
+              <button className="btn btn-outline-secondary" type="button" onClick={() => document.getElementById("cover-up").click()}>
                 📁 上傳
               </button>
             </div>
-            <input
-              type="file"
-              id="cover-up"
-              hidden
-              onChange={(e) =>
-                handleFileUpload(e, (url) =>
-                  setFormData({ ...formData, image: url }),
-                )
-              }
-            />
+            <input type="file" id="cover-up" hidden onChange={(e) => handleFileUpload(e, (url) => setFormData({ ...formData, image: url }))} />
           </div>
           <div className="col-md-3">
             <label className="small fw-bold">發布狀態</label>
@@ -417,28 +345,16 @@ function Articles() {
                   ...formData,
                   isPublic: e.target.value === "true",
                 })
-              }
-            >
+              }>
               <option value="true">公開發布</option>
               <option value="false">草稿</option>
             </select>
           </div>
-          <div className="col-12">
+          <div>
             <label className="small fw-bold d-block mb-2">文章標籤 *</label>
             <div className="d-flex flex-wrap gap-2">
               {TAG_OPTIONS.map((tag) => (
-                <button
-                  key={tag}
-                  type="button"
-                  onClick={() =>
-                    setSelectedTags((prev) =>
-                      prev.includes(tag)
-                        ? prev.filter((t) => t !== tag)
-                        : [...prev, tag],
-                    )
-                  }
-                  className={`btn btn-sm rounded-pill px-3 shadow-sm ${selectedTags.includes(tag) ? "btn-success" : "btn-outline-secondary"}`}
-                >
+                <button key={tag} type="button" onClick={() => setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]))} className={`btn btn-sm rounded-pill px-3 shadow-sm ${selectedTags.includes(tag) ? "btn-success" : "btn-outline-secondary"}`}>
                   {tag}
                 </button>
               ))}
@@ -446,46 +362,25 @@ function Articles() {
           </div>
         </div>
         <div className="mb-4">
-          <h6 className="fw-bold mb-3 border-start border-4 border-success ps-2">
-            文章正文編輯區
-          </h6>
-          <div
-            id="editorjs-container"
-            className="border rounded bg-white p-3 shadow-sm"
-            style={{ minHeight: "400px" }}
-          ></div>
+          <h6 className="fw-bold mb-3 border-start border-4 border-success ps-2">文章正文編輯區</h6>
+          <div id="editorjs-container" className="border rounded bg-white p-3 shadow-sm" style={{ minHeight: "400px" }}></div>
         </div>
         <div className="row mb-4">
           <div className="col-md-6 border-end pe-4">
             <h6 className="fw-bold border-bottom pb-2">🛍️ 相關商品</h6>
-            <button
-              className="btn btn-sm btn-outline-primary mb-2"
-              onClick={() =>
-                setRelatedProducts([
-                  ...relatedProducts,
-                  { name: "", productId: "", img: "" },
-                ])
-              }
-            >
+            <button type="button" className="btn btn-sm btn-outline-primary mb-2" onClick={() => setRelatedProducts([...relatedProducts, { name: "", productId: "", img: "" }])}>
               + 新增商品
             </button>
             {relatedProducts.map((p, i) => (
-              <div
-                key={i}
-                className="p-3 border rounded mb-3 bg-white shadow-sm"
-              >
-                <label className="small fw-bold text-success mb-1">
-                  快速選取現有商品：
-                </label>
+              <div key={i} className="p-3 border rounded mb-3 bg-white shadow-sm">
+                <label className="small fw-bold text-success mb-1">快速選取現有商品：</label>
                 <select
                   className="form-select form-select-sm mb-2 border-success"
                   value={p.productId}
                   onChange={(e) => {
                     const selectedId = e.target.value;
                     if (!selectedId) return;
-                    const product = allProducts?.find(
-                      (item) => item.id === selectedId,
-                    );
+                    const product = allProducts?.find((item) => item.id === selectedId);
                     const n = [...relatedProducts];
                     n[i] = {
                       name: product?.title || "",
@@ -493,8 +388,7 @@ function Articles() {
                       img: product?.imageUrl || "",
                     };
                     setRelatedProducts(n);
-                  }}
-                >
+                  }}>
                   <option value="">-- 請選擇商品 --</option>
                   {allProducts.map((prod) => (
                     <option key={prod.id} value={prod.id}>
@@ -547,14 +441,7 @@ function Articles() {
                   )}
                 </div>
                 <div className="text-end mt-2">
-                  <button
-                    className="btn btn-sm text-danger p-0"
-                    onClick={() =>
-                      setRelatedProducts(
-                        relatedProducts.filter((_, idx) => idx !== i),
-                      )
-                    }
-                  >
+                  <button type="button" className="btn btn-sm text-danger p-0" onClick={() => setRelatedProducts(relatedProducts.filter((_, idx) => idx !== i))}>
                     ✕ 移除商品
                   </button>
                 </div>
@@ -564,6 +451,7 @@ function Articles() {
           <div className="col-md-6 ps-4">
             <h6 className="fw-bold border-bottom pb-2">💬 留言板內容管理</h6>
             <button
+              type="button"
               className="btn btn-sm btn-outline-success mb-2 w-100"
               onClick={() =>
                 setComments([
@@ -574,19 +462,12 @@ function Articles() {
                     create_at: Math.floor(Date.now() / 1000),
                   },
                 ])
-              }
-            >
+              }>
               ➕ 新增留言
             </button>
-            <div
-              className="bg-light p-2 rounded"
-              style={{ maxHeight: "320px", overflowY: "auto" }}
-            >
+            <div className="bg-light p-2 rounded" style={{ maxHeight: "320px", overflowY: "auto" }}>
               {comments.map((c, i) => (
-                <div
-                  key={i}
-                  className="p-3 border rounded mb-3 bg-white shadow-sm"
-                >
+                <div key={i} className="p-3 border rounded mb-3 bg-white shadow-sm">
                   <input
                     className="form-control form-control-sm mb-2"
                     placeholder="使用者名稱"
@@ -609,16 +490,8 @@ function Articles() {
                     }}
                   />
                   <div className="d-flex justify-content-between align-items-center">
-                    <small className="text-muted">
-                      🕒 {new Date(c.create_at * 1000).toLocaleString("zh-TW")}
-                    </small>
-                    <button
-                      className="btn btn-sm text-danger p-0"
-                      onClick={() =>
-                        window.confirm("確定刪除？") &&
-                        setComments(comments.filter((_, idx) => idx !== i))
-                      }
-                    >
+                    <small className="text-muted">🕒 {new Date(c.create_at * 1000).toLocaleString("zh-TW")}</small>
+                    <button type="button" className="btn btn-sm text-danger p-0" onClick={() => window.confirm("確定刪除？") && setComments(comments.filter((_, idx) => idx !== i))}>
                       ✕ 移除
                     </button>
                   </div>
@@ -630,24 +503,15 @@ function Articles() {
         <div className="mt-4">
           {editId ? (
             <div className="d-flex gap-3">
-              <button
-                className="btn btn-primary btn-lg flex-grow-1 fw-bold shadow py-3"
-                onClick={handleSave}
-              >
+              <button className="btn btn-primary btn-lg flex-grow-1 fw-bold shadow py-3" onClick={handleSave}>
                 💾 更新文章
               </button>
-              <button
-                className="btn btn-outline-danger btn-lg fw-bold shadow py-3 px-5"
-                onClick={() => window.confirm("確定取消？") && resetForm()}
-              >
+              <button className="btn btn-outline-danger btn-lg fw-bold shadow py-3 px-5" onClick={() => window.confirm("確定取消？") && resetForm()}>
                 ❌ 取消
               </button>
             </div>
           ) : (
-            <button
-              className="btn btn-success btn-lg w-100 fw-bold shadow py-3"
-              onClick={handleSave}
-            >
+            <button className="btn btn-success btn-lg w-100 fw-bold shadow py-3" onClick={handleSave}>
               🚀 發布新文章
             </button>
           )}
@@ -655,32 +519,16 @@ function Articles() {
       </div>
       <div className="list-group">
         {articles.map((a) => (
-          <div
-            key={a.id}
-            className="list-group-item d-flex justify-content-between align-items-center mb-2 rounded border-0 shadow-sm p-3 bg-white"
-          >
+          <div key={a.id} className="list-group-item d-flex justify-content-between align-items-center mb-2 rounded border-0 shadow-sm p-3 bg-white">
             <div>
-              <h6 className="mb-0 fw-bold">
-                {a.title.replace(/<br\s*\/?>/gi, " ")}
-              </h6>
-              <small className="text-secondary">
-                {new Date(a.create_at * 1000).toLocaleDateString()}
-              </small>
+              <h6 className="mb-0 fw-bold">{a.title.replace(/<br\s*\/?>/gi, " ")}</h6>
+              <small className="text-secondary">{new Date(a.create_at * 1000).toLocaleDateString()}</small>
             </div>
             <div className="btn-group gap-2">
-              <button
-                className="btn btn-sm btn-outline-primary px-3 rounded-pill"
-                onClick={() => handleEdit(a)}
-              >
+              <button type="button" className="btn btn-sm btn-outline-primary px-3 rounded-pill" onClick={() => handleEdit(a)}>
                 編輯
               </button>
-              <button
-                className="btn btn-sm btn-outline-danger px-3 rounded-pill"
-                onClick={() =>
-                  window.confirm("確定刪除？") &&
-                  deleteAdminArticleApi(a.id).then(() => fetchArticles())
-                }
-              >
+              <button type="button" className="btn btn-sm btn-outline-danger px-3 rounded-pill" onClick={() => window.confirm("確定刪除？") && deleteAdminArticleApi(a.id).then(() => fetchArticles())}>
                 刪除
               </button>
             </div>

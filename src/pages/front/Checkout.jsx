@@ -5,6 +5,7 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 import { useNavigate, useOutletContext } from "react-router";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
+import useMessage from "../../hooks/useMessage";
 
 export default function Checkout() {
   const { carts } = useOutletContext();
@@ -20,7 +21,7 @@ export default function Checkout() {
   const [couponApplied, setCouponApplied] = useState(location.state?.couponApplied || false);
   const [couponCode, setCouponCode] = useState(location.state?.couponCode || "");
   const [totalAfterCoupon, setTotalAfterCoupon] = useState(location.state?.totalAfterCoupon || total);
-
+  const { showSuccess, showError } = useMessage();
   const {
     register,
     handleSubmit,
@@ -44,12 +45,11 @@ export default function Checkout() {
 
     try {
       const res = await axios.post(`${API_BASE}/api/${API_PATH}/order`, orderData);
-      console.log("訂單建立成功", res.data);
+      showSuccess("訂單建立成功");
       const orderId = res.data.orderId;
       navigate(`/cart/order-success/${orderId}`);
     } catch (error) {
-      console.error(error);
-      alert("建立訂單失敗");
+      showError(error.response.data.message);
     }
   };
 
@@ -70,15 +70,14 @@ export default function Checkout() {
       if (res.data.success) {
         setCouponApplied(true);
         setTotalAfterCoupon(res.data.data.final_total);
-        alert(res.data.message);
+        showSuccess("優惠卷套用成功");
       } else {
-        alert("優惠卷無效或已過期");
+        showError("優惠卷無效或已過期");
         setCouponApplied(false);
         setTotalAfterCoupon(total);
       }
     } catch (error) {
-      console.log(error);
-      alert("優惠卷套用失敗...");
+      showError(error.response.data.message);
       setCouponApplied(false);
       setTotalAfterCoupon(total);
     }
@@ -88,7 +87,7 @@ export default function Checkout() {
       <div className="container mb-5 cart-table">
         <form id="checkout-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="row d-flex justify-content-between">
-            <div className="col-12 col-lg-9 ">
+            <div className="col-lg-9 ">
               <div className="section mb-4">
                 <div className="head d-flex justify-content-between py-4 px-6 bg-secondary-100">
                   <h4 className="text-secondary-700">訂單內容</h4>
@@ -364,7 +363,7 @@ export default function Checkout() {
                 </div>
               </form>
             </div>
-            <div className="col-12 col-lg-3">
+            <div className="col-lg-3">
               <div className="card shadow position-sticky section" style={{ top: "16px" }}>
                 <div className="card-head bg-primary-500 px-6 py-4">
                   <h4 className="card-title text-start text-neutral-100">訂單內容</h4>

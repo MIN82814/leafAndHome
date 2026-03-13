@@ -22,7 +22,6 @@ function PlantAnalysis() {
 
     const index = (dangerList.length + warningList.length) % targetPool.length;
     return targetPool[index];
-
   }, [statusSummary]);
 
   // --- recharts圖表邏輯 ---
@@ -88,8 +87,7 @@ function PlantAnalysis() {
     const format = (arr) =>
       arr.map((item) => ({
         ...item,
-        percent:
-          total > 0 ? `${Math.round((item.value / total) * 100)}%` : "0%",
+        percent: total > 0 ? `${Math.round((item.value / total) * 100)}%` : "0%",
       }));
 
     return {
@@ -101,36 +99,30 @@ function PlantAnalysis() {
   }, [plantProducts]);
 
   return (
-    <div className="col-12">
+    <div>
       <div>
         <div className="p-4 bg-white">
           <div className="row g-4">
             {/* 上方：本週完成率 */}
-            <div className="col-12 col-md-6">
+            <div className="col-md-6">
               <div className="p-4 border rounded-4 h-100 ">
                 <h6 className="fw-bold text-secondary-700">本週完成率</h6>
                 <div className="d-flex align-items-end justify-content-end">
-                  <span className="h2 fw-bold text-primary-700">
-                    {completionRate}%
-                  </span>
+                  <span className="h2 fw-bold text-primary-700">{completionRate}%</span>
                 </div>
               </div>
             </div>
 
             {/* 上方：需留意的植物 */}
-            <div className="col-12 col-md-6">
+            <div className="col-md-6">
               <div className="p-4 border rounded-4 h-100 d-flex flex-column justify-content-between text-end">
-                <h6 className="fw-bold text-start text-secondary-700">
-                  需關照的植物
-                </h6>
-                <div className="h4 fw-bold text-primary-700">
-                  {alertPlantName}
-                </div>
+                <h6 className="fw-bold text-start text-secondary-700">需關照的植物</h6>
+                <div className="h4 fw-bold text-primary-700">{alertPlantName}</div>
               </div>
             </div>
 
             {/* 下方：我的植物類型 */}
-            <div className="col-12">
+            <div>
               <div className="p-4 border rounded-4">
                 <h6 className="fw-bold text-secondary-700">我的植物類型</h6>
                 <div className="row">

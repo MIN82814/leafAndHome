@@ -5,6 +5,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 import { useNavigate, useOutletContext } from "react-router";
 import { createAsyncDelAllCart, createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
+import useMessage from "../../hooks/useMessage";
 
 export default function Cart() {
   //購物車內容初始由 CartLayout 傳入
@@ -20,6 +21,7 @@ export default function Cart() {
   const [couponApplied, setCouponApplied] = useState(false); // 是否成功套用
   const [totalAfterCoupon, setTotalAfterCoupon] = useState(total); // 折扣後金額
   const navigate = useNavigate();
+  const { showSuccess, showError } = useMessage();
 
   // const handleUpdateCart = (id, qty) => {
   //   dispatch(createAsyncAddCart({ id, qty }));
@@ -34,7 +36,6 @@ export default function Cart() {
 
   //  //更新購物車數量
   const handleUpdateCart = (cartId, productId, qty = 1) => {
-    console.log(cartId, productId, qty);
     dispatch(createAsyncUpdateCart({ cartId, productId, qty }));
   };
 
@@ -54,15 +55,14 @@ export default function Cart() {
       if (res.data.success) {
         setCouponApplied(true);
         setTotalAfterCoupon(res.data.data.final_total);
-        alert(res.data.message);
+        showSuccess("優惠卷套用成功");
       } else {
-        alert("優惠卷無效或已過期");
+        showError("優惠卷無效或已過期");
         setCouponApplied(false);
         setTotalAfterCoupon(total);
       }
     } catch (error) {
-      console.log(error);
-      alert("優惠卷套用失敗...");
+      showError(error.response.data.message);
       setCouponApplied(false);
       setTotalAfterCoupon(total);
     }
@@ -72,7 +72,7 @@ export default function Cart() {
     <>
       <div className="container mb-5 cart-table">
         <div className="row d-flex justify-content-between">
-          <div className="col-12 col-lg-9 ">
+          <div className="col-lg-9 ">
             <div className="section mb-4">
               <div className="head d-flex justify-content-between py-4 px-6 bg-secondary-100">
                 <h4 className="text-secondary-700">購物車</h4>
@@ -164,7 +164,7 @@ export default function Cart() {
                         {/* 操作列 */}
                         <div className="d-flex gap-3 justify-content-end">
                           <button className="btn btn-custom-link-dark">加入收藏</button>
-                          <button onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
+                          <button type="button" onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
                             刪除
                           </button>
                         </div>
@@ -192,6 +192,7 @@ export default function Cart() {
                         <div className="d-flex justify-content-between align-items-center mb-2">
                           <div className="qty-input-group">
                             <button
+                              type="button"
                               className="btn"
                               onClick={() => {
                                 if (item.qty > 1) {
@@ -214,6 +215,7 @@ export default function Cart() {
                             />
 
                             <button
+                              type="button"
                               className="btn"
                               onClick={() => {
                                 handleUpdateCart(item.id, item.product_id, item.qty + 1);
@@ -662,7 +664,7 @@ export default function Cart() {
               </div>
             </div>
           </div>
-          <div className="col-12 col-lg-3">
+          <div className="col-lg-3">
             <div className="card position-sticky shadow section" style={{ top: "16px" }}>
               <div className="card-head bg-primary-700 px-6 py-4">
                 <h4 className="card-title text-start text-neutral-100">訂單內容</h4>

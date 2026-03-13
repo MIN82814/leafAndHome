@@ -9,15 +9,7 @@ import ArticlesHero from "../../component/ArticlesHero";
 import { showErrorAlert } from "../../utils/alert";
 import { getArticlesApi } from "../../services/article";
 
-const categories = [
-  "全部",
-  "新手友善",
-  "疑難雜症",
-  "澆水技巧",
-  "光線需求",
-  "居家搭配",
-  "蟲蟲危機",
-];
+const categories = ["全部", "新手友善", "疑難雜症", "澆水技巧", "光線需求", "居家搭配", "蟲蟲危機"];
 //文章列表頁頁碼
 function Pagination({ totalPages, currentPage, setCurrentPage }) {
   if (totalPages <= 1) return null;
@@ -30,13 +22,13 @@ function Pagination({ totalPages, currentPage, setCurrentPage }) {
           {/* 上一頁按鈕 */}
           <li className={`page-item ${!hasPre ? "disabled" : ""}`}>
             <button
+              type="button"
               className="btn btn-outline-primary-700 page-square"
               onClick={() => {
                 setCurrentPage(currentPage - 1);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              disabled={!hasPre}
-            >
+              disabled={!hasPre}>
               &laquo;
             </button>
           </li>
@@ -45,12 +37,12 @@ function Pagination({ totalPages, currentPage, setCurrentPage }) {
           {[...Array(totalPages)].map((_, i) => (
             <li key={i + 1} className="page-item">
               <button
+                type="button"
                 className={`btn page-square  ${currentPage === i + 1 ? "btn-primary-700" : "btn-outline-primary-700"}`}
                 onClick={() => {
                   setCurrentPage(i + 1);
                   window.scrollTo({ top: 0, behavior: "smooth" });
-                }}
-              >
+                }}>
                 {i + 1}
               </button>
             </li>
@@ -59,13 +51,13 @@ function Pagination({ totalPages, currentPage, setCurrentPage }) {
           {/* 下一頁按鈕 */}
           <li className={`page-item ${!hasNext ? "disabled" : ""}`}>
             <button
+              type="button"
               className="btn btn-outline-primary-700 page-square"
               onClick={() => {
                 setCurrentPage(currentPage + 1);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }}
-              disabled={!hasNext}
-            >
+              disabled={!hasNext}>
               &raquo;
             </button>
           </li>
@@ -120,20 +112,16 @@ function Articles() {
   const filteredArticles = articles
     .filter((item) => {
       // 如果文章的 tag 陣列包含選中的標籤
-      const matchTag =
-        selectedTag === "全部" || item.tag?.includes(selectedTag);
+      const matchTag = selectedTag === "全部" || item.tag?.includes(selectedTag);
       //formatPlainTitle把標籤清掉
       //toLowerCase()把資料都轉為小寫
       // .trim() 移除前後空白，.toLowerCase() 轉小寫
       const searchLower = search.toLowerCase().trim();
       // 使用 || "" 確保即便 title 或 description 是 null 也不會報錯
       const title = formatPlainTitle(item.title || "").toLowerCase();
-      const description = formatPlainTitle(
-        item.description || "",
-      ).toLowerCase();
+      const description = formatPlainTitle(item.description || "").toLowerCase();
 
-      const matchSearch =
-        title.includes(searchLower) || description.includes(searchLower);
+      const matchSearch = title.includes(searchLower) || description.includes(searchLower);
 
       return matchTag && matchSearch;
     })
@@ -142,10 +130,7 @@ function Articles() {
   //頁碼
   const totalPages = Math.ceil(filteredArticles.length / pageSize);
   //計算每頁要切出多少文章，用slice來切陣列資料
-  const currentPageData = filteredArticles.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize,
-  );
+  const currentPageData = filteredArticles.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   //--先處理「載入中」的狀態--//
   if (isLoading) {
@@ -154,37 +139,21 @@ function Articles() {
   return (
     <>
       {" "}
-      <ArticlesHero
-        categories={categories}
-        selectedTag={selectedTag}
-        setSelectedTag={setSelectedTag}
-      />
+      <ArticlesHero categories={categories} selectedTag={selectedTag} setSelectedTag={setSelectedTag} />
       <section className="bg-background-200">
         <div className="container content-wrapper">
           {/*搜尋*/}
           <div className="row mb-8 justify-content-md-end">
-            <div className="col-12 col-md-4">
-              <SearchBar
-                onChange={setSearch}
-                search={search}
-                placeholder={"綠手指小秘訣"}
-              />
+            <div className="col-md-4">
+              <SearchBar onChange={setSearch} search={search} placeholder={"綠手指小秘訣"} />
             </div>
           </div>
           <div className="row gy-3">
             {currentPageData.map((item) => (
-              <ArticleCard
-                key={item.id}
-                item={item}
-                formatPlainTitle={formatPlainTitle}
-              />
+              <ArticleCard key={item.id} item={item} formatPlainTitle={formatPlainTitle} />
             ))}
           </div>
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
+          <Pagination totalPages={totalPages} currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
           {/*標籤沒有文章提醒*/}
           {filteredArticles.length === 0 && !isLoading && (

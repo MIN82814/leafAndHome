@@ -1,10 +1,11 @@
-import { useOutletContext } from "react-router";
+// import { useOutletContext } from "react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as bootstrap from "bootstrap";
 import { delAdminOrderApi, getAdminOrdersApi } from "../../services/order";
+import useMessage from "../../hooks/useMessage";
 
 function Order() {
-  const { token } = useOutletContext();
+  // const { token } = useOutletContext();
 
   const formatUnixTime = (unixTime) => {
     if (!unixTime) return "";
@@ -24,7 +25,7 @@ function Order() {
 
   const orderModalRef = useRef(null);
   const modalInstance = useRef(null);
-
+  const { showError } = useMessage();
   const openModal = useCallback((item) => {
     setTempOrder(item);
     setTempOrderProducts(item.products || {});
@@ -40,14 +41,15 @@ function Order() {
   }, []);
 
   // 取得訂單列表api
+
   const getOrders = useCallback(async () => {
     try {
       const res = await getAdminOrdersApi();
       setOrderList(res.data.orders || []);
     } catch (error) {
-      console.log(error);
+      showError(error.response.data.message);
     }
-  }, []);
+  }, [showError]);
 
   // 初始化 Modal
   useEffect(() => {
@@ -63,14 +65,21 @@ function Order() {
     };
   }, []);
 
+  // useEffect(() => {
+  //   if (token) {
+  //     const fetchData = async () => {
+  //       await getOrders();
+  //     };
+  //     fetchData();
+  //   }
+  // }, [token, getOrders]);
+
   useEffect(() => {
-    if (token) {
-      const fetchData = async () => {
-        await getOrders();
-      };
-      fetchData();
-    }
-  }, [token, getOrders]);
+    const fetchData = async () => {
+      await getOrders();
+    };
+    fetchData();
+  }, [getOrders]);
 
   // 刪除一筆訂單api
   const delOrder = async (id) => {
@@ -78,7 +87,7 @@ function Order() {
       await delAdminOrderApi(id);
       getOrders();
     } catch (error) {
-      console.log(error);
+      showError(error.response.data.message);
     }
   };
 
@@ -86,7 +95,7 @@ function Order() {
     <>
       <div className="container">
         <div className="row">
-          <div className="col-12">
+          <div>
             <h2 className="h2 text-center">訂單列表</h2>
             <div className="text-end mt-4"></div>
 
@@ -119,14 +128,10 @@ function Order() {
                             aria-current="page"
                             onClick={() => {
                               openModal(item);
-                            }}
-                          >
+                            }}>
                             訂單內容
                           </a>
-                          <a
-                            className="btn btn-primary btn-sm"
-                            onClick={() => delOrder(item.id)}
-                          >
+                          <a className="btn btn-primary btn-sm" onClick={() => delOrder(item.id)}>
                             刪除
                           </a>
                         </div>
@@ -140,27 +145,14 @@ function Order() {
         </div>
       </div>
 
-      <div
-        className="modal fade"
-        id="orderModal"
-        tabIndex="-1"
-        aria-labelledby="orderModalLabel"
-        aria-hidden="true"
-        ref={orderModalRef}
-      >
+      <div className="modal fade" id="orderModal" tabIndex="-1" aria-labelledby="orderModalLabel" aria-hidden="true" ref={orderModalRef}>
         <div className="modal-dialog modal-xl">
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="orderModalLabel">
                 訂單內容
               </h1>
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-                onClick={closeModal}
-              ></button>
+              <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeModal}></button>
             </div>
 
             <div className="modal-body">
@@ -171,23 +163,15 @@ function Order() {
                       <p className="mb-0 fw-semibold">{tempOrder.id}</p>
                     </div>
                     <div className="col-md-3">
-                      <p className="mb-0">
-                        {formatUnixTime(tempOrder.create_at)}
-                      </p>
+                      <p className="mb-0">{formatUnixTime(tempOrder.create_at)}</p>
                     </div>
                     <div className="col-md-3">
                       <p className="mb-0">
-                        <span
-                          className={`badge ${tempOrder.is_paid ? "bg-success" : "bg-secondary"}`}
-                        >
-                          {tempOrder.is_paid ? "已付款" : "未付款"}
-                        </span>
+                        <span className={`badge ${tempOrder.is_paid ? "bg-success" : "bg-secondary"}`}>{tempOrder.is_paid ? "已付款" : "未付款"}</span>
                       </p>
                     </div>
                     <div className="col-md-3">
-                      <p className="mb-0 fw-bold">
-                        ${tempOrder.total?.toLocaleString()}
-                      </p>
+                      <p className="mb-0 fw-bold">${tempOrder.total?.toLocaleString()}</p>
                     </div>
                   </div>
                 ) : (
@@ -216,12 +200,8 @@ function Order() {
                             <td className="text-center">
                               {product.qty} {product.product?.unit}
                             </td>
-                            <td className="text-end">
-                              ${product.product?.price?.toLocaleString()}
-                            </td>
-                            <td className="text-end">
-                              ${product.final_total?.toLocaleString()}
-                            </td>
+                            <td className="text-end">${product.product?.price?.toLocaleString()}</td>
+                            <td className="text-end">${product.final_total?.toLocaleString()}</td>
                           </tr>
                         ))}
                     </tbody>
@@ -231,12 +211,7 @@ function Order() {
             </div>
 
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-bs-dismiss="modal"
-                onClick={closeModal}
-              >
+              <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={closeModal}>
                 Close
               </button>
             </div>

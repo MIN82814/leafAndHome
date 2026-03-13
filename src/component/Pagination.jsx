@@ -20,6 +20,7 @@ function Pagination({ pagination, onChangePage }) {
           {Array.from({ length: pagination.total_pages }, (_, index) => (
             <li className="page-item" key={`${index}_page`}>
               <button
+                type="button"
                 className={`btn page-square ${pagination.current_page === index + 1 ? "btn-primary-700" : "btn-outline-primary-700"}`}
                 onClick={(e) => {
                   handleClick(e, index + 1);

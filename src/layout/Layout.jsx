@@ -82,22 +82,22 @@ function Layout() {
                   <img src={personal} alt="購物車" className="icon-hover p-3 rounded-circle" />
                 </NavLink>
               )}
-              <button class="navbar-toggler border-0 shadow-none ms-3 d-block d-lg-none" type="button" onClick={handleToggle}>
-                <i class="bi bi-list px-4 py-3 icon-hover rounded-circle"></i>
+              <button className="navbar-toggler border-0 shadow-none ms-3 d-block d-lg-none" type="button" onClick={handleToggle}>
+                <i className="bi bi-list px-4 py-3 icon-hover rounded-circle"></i>
               </button>
-              <div class="collapse navbar-collapse position-absolute start-0 top-100 z-3 w-100" id="navbarToggler" ref={collapseElRef}>
-                <ul class="navbar-nav  text-center">
-                  <li class="nav-item bg-white">
+              <div className="collapse navbar-collapse position-absolute start-0 top-100 z-3 w-100" id="navbarToggler" ref={collapseElRef}>
+                <ul className="navbar-nav  text-center">
+                  <li className="nav-item bg-white">
                     <NavLink to="products" className="h6  py-6" onClick={handleToggle}>
                       <span className="text-underline">森活選物</span>
                     </NavLink>
                   </li>
-                  <li class="nav-item bg-white ">
+                  <li className="nav-item bg-white ">
                     <NavLink to="articles" className="h6 py-6" onClick={handleToggle}>
                       <span className="text-underline">森活日常誌</span>
                     </NavLink>
                   </li>
-                  {/* <li class="nav-item bg-white">
+                  {/* <li className="nav-item bg-white">
                     <NavLink to="about" className="h6  py-6" onClick={handleToggle}>
                       <span className="text-underline">關於觀葉森活</span>
                     </NavLink>

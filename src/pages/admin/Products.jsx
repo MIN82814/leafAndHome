@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
 import * as bootstrap from "bootstrap"; //引入 Bootstrap
-import Pagination from "../../component/adminPagination";
+import Pagination from "../../component/Pagination";
 import ProductModal from "../../component/ProductModal";
 import { getAdminProductsApi } from "../../services/product";
+import useMessage from "../../hooks/useMessage";
 
 function Products() {
   const INITIAL_TEMPLATE_DATA = {
@@ -34,17 +35,16 @@ function Products() {
 
   //分頁
   const [pagination, setPagination] = useState({});
-
+  const { showError } = useMessage();
   //API 取得產品列表
   const getProducts = async (page = 1) => {
     try {
       // const response = await axios.get(`${API_BASE}/api/${API_PATH}/admin/products?page=${page}`);
       const response = await getAdminProductsApi(page);
-      console.log(response.data.products);
       setProduct(response.data.products);
       setPagination(response.data.pagination);
     } catch (error) {
-      console.log(error.response.data.message);
+      showError(error.response.data.message);
     }
   };
 
@@ -64,13 +64,11 @@ function Products() {
   // 透過useRef控制 Modal
   const openModal = (type, product) => {
     //現有資料->寫入產品的資料
-    console.log(product);
     setTemplateData((prev) => ({
       ...prev,
       ...product,
     }));
     setModalType(type);
-    console.log(templateData);
     productModalRef.current.show();
   };
 
@@ -84,7 +82,7 @@ function Products() {
         <h1 className="h1 text-center p-4">後臺管理頁面</h1>
         <hr />
         <div className="row p-3 g-5">
-          <div className="col-12">
+          <div>
             <h2 className="h2 text-center">產品列表</h2>
             <div className="text-end mt-4">
               <button type="button" className="btn btn-primary mb-4" onClick={() => openModal("create", INITIAL_TEMPLATE_DATA)}>

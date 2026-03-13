@@ -11,7 +11,7 @@ const menuData = [
     id: "dashboard",
     title: "個人儀表板",
     icon: assignmentInd,
-    href:"/personal",
+    href: "/personal",
     children: [
       {
         id: "my-plants",
@@ -30,21 +30,16 @@ const Sidemenu = () => {
   const navigate = useNavigate();
 
   const toggleMenu = (id) => {
-    setOpenIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
-    );
+    setOpenIds((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));
   };
 
   return (
     <div className="row h-100">
-      <div className="col-12 col-md-6 ms-md-auto p-3">
+      <div className="col-md-6 ms-md-auto p-3">
         {/* 會員資訊 */}
         <div className="member-info d-flex align-items-center mb-4">
           <div className="avatar me-3">
-            <img
-              src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770724963092.png"
-              alt="Avatar"
-            />
+            <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770724963092.png" alt="Avatar" />
           </div>
           <div>
             <p className="h4 fw-bold text-primary-700">林沐森</p>
@@ -61,23 +56,18 @@ const Sidemenu = () => {
               return (
                 <li key={item.id} className="nav-item">
                   {/* 父項目 */}
-                  <div
-                    className={`nav-link-item ${hasChildren ? "has-children" : ""}`}
-                    onClick={() => item.href && navigate(item.href)}
-                    style={{ cursor: 'pointer' }}
-                  >
+                  <div className={`nav-link-item ${hasChildren ? "has-children" : ""}`} onClick={() => item.href && navigate(item.href)} style={{ cursor: "pointer" }}>
                     <div className="d-flex align-items-center">
-                      <img
-                        src={item.icon}
-                        alt="icon"
-                        className="menu-icon me-2"
-                      />
+                      <img src={item.icon} alt="icon" className="menu-icon me-2" />
                       <span className="fw-bold">{item.title}</span>
                     </div>
                     {hasChildren && (
-                      <span className={`arrow-icon ${isOpen ? "open" : ""}`}
-                    onClick={(e) =>{e.stopPropagation(); hasChildren && toggleMenu(item.id)}}
-                      >
+                      <span
+                        className={`arrow-icon ${isOpen ? "open" : ""}`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          hasChildren && toggleMenu(item.id);
+                        }}>
                         ▾
                       </span>
                     )}
@@ -88,17 +78,8 @@ const Sidemenu = () => {
                     <ul className="sub-menu nav flex-column ms-4 mt-1">
                       {item.children.map((child) => (
                         <li key={child.id} className="nav-item">
-                          <div
-                            className="nav-link sub-link d-flex align-items-center"
-                            role="button" 
-                            onClick={() => navigate(child.href)} 
-                          >
-                            <img
-                              src={child.icon}
-                              alt="icon"
-                              className="me-2"
-                              style={{ width: "16px" }}
-                            />
+                          <div className="nav-link sub-link d-flex align-items-center" role="button" onClick={() => navigate(child.href)}>
+                            <img src={child.icon} alt="icon" className="me-2" style={{ width: "16px" }} />
                             <span>{child.title}</span>
                           </div>
                         </li>

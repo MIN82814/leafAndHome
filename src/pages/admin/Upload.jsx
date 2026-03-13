@@ -1,11 +1,11 @@
-import { useOutletContext } from "react-router";
-import axios from "axios";
 import { useState } from "react";
+import { uploadImageApi } from "../../services/upload";
+import useMessage from "../../hooks/useMessage";
 
 function Update() {
-  const { token, API_BASE, API_PATH } = useOutletContext();
   const [fileData, setFileData] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
+  const { showError } = useMessage();
 
   const handleFileChange = (e) => {
     const file = e.target.files?.[0] || null;
@@ -19,11 +19,10 @@ function Update() {
     try {
       const formData = new FormData();
       formData.append("file-to-upload", fileData);
-      const response = await axios.post(`${API_BASE}/api/${API_PATH}/admin/upload`, formData, { headers: { Authorization: token } });
-      console.log(response);
+      const response = await uploadImageApi(formData);
       setImageUrl(response.data.imageUrl);
     } catch (error) {
-      console.log(error.message);
+      showError(error.response.data.message);
     }
   };
 

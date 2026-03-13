@@ -23,7 +23,7 @@ import MyPlants from "./pages/front/MyPlants.jsx";
 import AdminCoupon from "./pages/admin/Coupon.jsx";
 import AdminOrder from "./pages/admin/Order.jsx";
 import AdminProducts from "./pages/admin/Products.jsx";
-import AdminUpdate from "./pages/admin/Update.jsx";
+import AdminUpload from "./pages/admin/Upload.jsx";
 import AdminArticles from "./pages/admin/Articles.jsx";
 
 const routes = [
@@ -60,7 +60,7 @@ const routes = [
     path: "/admin",
     element: <AdminLayout />,
     children: [
-      { path: "update", element: <AdminUpdate /> },
+      { path: "upload", element: <AdminUpload /> },
       { path: "articles", element: <AdminArticles /> },
       { path: "coupon", element: <AdminCoupon /> },
       { path: "products", element: <AdminProducts /> },

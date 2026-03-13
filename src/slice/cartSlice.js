@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { createAsyncMessage } from "../slice/messageSlice";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
@@ -21,15 +22,21 @@ export const cartSlice = createSlice({
 })
 
 
+
+
 export const createAsyncGetCart = createAsyncThunk(
   'cart/createAsyncGetCart',
   async (_, { dispatch }) => {
     try {
       const response = await axios.get(`${API_BASE}/api/${API_PATH}/cart`);
-      console.log(response.data.data);
       dispatch(updateCart(response.data.data))
     } catch (error) {
-      console.log(error.response);
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: error.response.data.message,
+        })
+      );
     }
   }
 )
@@ -42,11 +49,21 @@ export const createAsyncAddCart = createAsyncThunk(
         product_id: id,
         qty,
       };
-      const response = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, { data });
-      console.log(response.data);
+      await axios.post(`${API_BASE}/api/${API_PATH}/cart`, { data });
+      dispatch(
+        createAsyncMessage({
+          success: true,
+          message: "加入購物車成功",
+        })
+      );
       dispatch(createAsyncGetCart());
     } catch (error) {
-      console.log(error.response);
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: error.response.data.message,
+        })
+      );
     }
   }
 )
@@ -54,17 +71,26 @@ export const createAsyncAddCart = createAsyncThunk(
 export const createAsyncUpdateCart = createAsyncThunk(
   'cart/createAsyncAddCart',
   async ({ cartId, productId, qty = 1 }, { dispatch }) => {
-    console.log(cartId, productId, qty)
     try {
       const data = {
         product_id: productId,
         qty,
       };
-      const response = await axios.put(`${API_BASE}/api/${API_PATH}/cart/${cartId}`, { data });
-      console.log(response.data);
+      await axios.put(`${API_BASE}/api/${API_PATH}/cart/${cartId}`, { data });
+      // dispatch(
+      //   createAsyncMessage({
+      //     success: true,
+      //     message: "更新產品數量成功",
+      //   })
+      // );
       dispatch(createAsyncGetCart());
     } catch (error) {
-      console.log(error.response);
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: error.response.data.message,
+        })
+      );
     }
   }
 )
@@ -77,9 +103,20 @@ export const createAsyncDelCart = createAsyncThunk(
   async (id, { dispatch }) => {
     try {
       await axios.delete(`${API_BASE}/api/${API_PATH}/cart/${id}`);
+      dispatch(
+        createAsyncMessage({
+          success: true,
+          message: "產品購物車刪除成功",
+        })
+      );
       dispatch(createAsyncGetCart());
     } catch (error) {
-      console.log(error.response);
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: error.response.data.message,
+        })
+      );
     }
   }
 )
@@ -90,9 +127,20 @@ export const createAsyncDelAllCart = createAsyncThunk(
   async (id, { dispatch }) => {
     try {
       await axios.delete(`${API_BASE}/api/${API_PATH}/carts`);
+      dispatch(
+        createAsyncMessage({
+          success: true,
+          message: "購物車清空成功",
+        })
+      );
       dispatch(createAsyncGetCart());
     } catch (error) {
-      console.log(error.response);
+      dispatch(
+        createAsyncMessage({
+          success: false,
+          message: error.response.data.message,
+        })
+      );
     }
   }
 )

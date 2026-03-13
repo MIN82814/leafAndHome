@@ -18,13 +18,13 @@ function TagsShare({ tags, handleShare }) {
           <div className="d-flex align-items-center">
             <span className=" text-neutral-900  me-3">分享</span>
             <div className="d-flex align-items-center gap-3">
-              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("fb")}>
+              <button type="button" className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("fb")}>
                 <FaceBook className="text-white" />
               </button>
-              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("line")}>
+              <button type="button" className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("line")}>
                 <Line className="text-white" />
               </button>
-              <button className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("copy")}>
+              <button type="button" className="btn rounded-circle share-btn btn-secondary-500 d-flex align-items-center" onClick={() => handleShare("copy")}>
                 <LinkIcon className="text-white" />
               </button>
             </div>
