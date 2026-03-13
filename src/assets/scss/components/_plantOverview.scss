@@ -24,15 +24,15 @@
   // 下方三等分狀態欄
   .status-grid-container {
     display: flex;
-    
+
     .status-item {
-      flex: 1; 
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 2.5rem 0;
-      
+
       .number {
         line-height: 1;
       }
@@ -48,32 +48,29 @@
     }
   }
 
-  @media (max-width: 991.98px) {
-    height: auto; 
+  @include tablet {
+    height: auto;
     padding-top: 0.5rem;
     gap: 0.75rem;
 
     .total-stats-card {
       padding: 1rem 1.25rem;
-      
     }
 
     .status-grid-container {
       .status-item {
-        padding: 1.5rem 0; 
-        
+        padding: 1.5rem 0;
       }
     }
   }
 }
 
-
 .card-stretch-wrapper {
   display: flex;
   flex-direction: column;
   height: 100%;
-  
+
   .card-body-content {
-    flex-grow: 1; 
+    flex-grow: 1;
   }
 }

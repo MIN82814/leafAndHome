@@ -4,6 +4,7 @@ import Pagination from "../../component/Pagination";
 import ProductModal from "../../component/ProductModal";
 import { getAdminProductsApi } from "../../services/product";
 import useMessage from "../../hooks/useMessage";
+import { currency } from "../../utils/filter";
 
 function Products() {
   const INITIAL_TEMPLATE_DATA = {
@@ -105,8 +106,8 @@ function Products() {
                   <tr key={item.id} className="text-center">
                     <td className="fw-bold">{item.category}</td>
                     <td className="fw-bold">{item.title}</td>
-                    <td>{item.origin_price}</td>
-                    <td>{item.price}</td>
+                    <td>{currency(item.origin_price)}</td>
+                    <td>{currency(item.price)}</td>
                     <td className={`fw-bold ${item.is_enabled && "text-success"}`}>{item.is_enabled ? "啟用" : "未啟用"}</td>
                     <td>
                       <div className="btn-group" role="group" aria-label="Basic example">

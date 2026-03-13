@@ -24,7 +24,7 @@ export default function Coupon() {
     const dd = String(date.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
-  const { showError } = useMessage();
+  const { showSuccess, showError, showDanger } = useMessage();
   const handleModalInputChange = (e) => {
     const { name, value, checked, type } = e.target;
     setModalData((pre) => ({
@@ -57,6 +57,7 @@ export default function Coupon() {
   const deleteCoupon = async (id) => {
     try {
       await deleteAdminCouponsApi(id);
+      showDanger("刪除成功");
       getAdminCoupon();
     } catch (error) {
       showError(error.response.data.message);
@@ -81,8 +82,10 @@ export default function Coupon() {
     try {
       if (modalType === "create") {
         await addAdminCouponsApi(data);
+        showSuccess("新增成功");
       } else {
         await updateAdminCouponsApi(modalData.id, data);
+        showSuccess("優惠券變更成功");
       }
       getAdminCoupon();
       closeModal();
@@ -116,7 +119,7 @@ export default function Coupon() {
                 openModal("create", INITIAL_MODAL_DATA);
               }}
               className="btn btn-primary">
-              新增優惠卷
+              新增優惠券
             </button>
           </div>
           <table className="table">
@@ -134,7 +137,7 @@ export default function Coupon() {
               {data.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="text-center">
-                    尚無優惠卷
+                    尚無優惠券
                   </td>
                 </tr>
               ) : (
@@ -177,7 +180,7 @@ export default function Coupon() {
           <div className="modal-content border-0">
             <div className="modal-header bg-dark text-white">
               <h5 id="productModalLabel" className="modal-title">
-                <span>{modalType === "edit" ? "編輯優惠卷" : "新增優惠卷"}</span>
+                <span>{modalType === "edit" ? "編輯優惠券" : "新增優惠券"}</span>
               </h5>
               <button type="button" className="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -235,14 +238,14 @@ export default function Coupon() {
               </div>
               <div className="mb-3">
                 <label htmlFor="code" className="form-label">
-                  優惠碼
+                  優惠券代碼
                 </label>
                 <input
                   name="code"
                   id="code"
                   type="text"
                   className="form-control"
-                  placeholder="請輸入優惠碼"
+                  placeholder="請輸入優惠券代碼"
                   value={modalData.code}
                   onChange={(e) => {
                     handleModalInputChange(e);

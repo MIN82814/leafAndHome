@@ -1,5 +1,5 @@
 import { NavLink } from "react-router";
-import { formatPlainTitle } from "../utils/articleHelpers";
+import { formatPlainTitle } from "../../utils/articleHelpers";
 
 function Card_article({ article, size }) {
   if (size === "s") {

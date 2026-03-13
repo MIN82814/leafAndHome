@@ -70,9 +70,9 @@ export default function Checkout() {
       if (res.data.success) {
         setCouponApplied(true);
         setTotalAfterCoupon(res.data.data.final_total);
-        showSuccess("優惠卷套用成功");
+        showSuccess("優惠券套用成功");
       } else {
-        showError("優惠卷無效或已過期");
+        showError("優惠券無效或已過期");
         setCouponApplied(false);
         setTotalAfterCoupon(total);
       }
@@ -370,11 +370,11 @@ export default function Checkout() {
                 </div>
                 <div className="card-body p-4">
                   <div className="d-flex  flex-column  align-items-start w-auto mb-6">
-                    <h6 style={{ color: "#3e5e4d" }}>優惠卷</h6>
+                    <h6 style={{ color: "#3e5e4d" }}>優惠券</h6>
                     <div className="input-group w-auto">
                       <input
                         type="text"
-                        placeholder="輸入優惠碼"
+                        placeholder="輸入優惠券代碼"
                         className={`form-control ${couponApplied ? "border-success bg-light text-success" : ""}`}
                         value={couponCode}
                         onChange={(e) => setCouponCode(e.target.value)}

@@ -6,6 +6,7 @@ const API_PATH = import.meta.env.VITE_API_PATH;
 import { useNavigate, useOutletContext } from "react-router";
 import { createAsyncDelAllCart, createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
 import useMessage from "../../hooks/useMessage";
+import { currency } from "../../utils/filter";
 
 export default function Cart() {
   //購物車內容初始由 CartLayout 傳入
@@ -55,9 +56,9 @@ export default function Cart() {
       if (res.data.success) {
         setCouponApplied(true);
         setTotalAfterCoupon(res.data.data.final_total);
-        showSuccess("優惠卷套用成功");
+        showSuccess("優惠券套用成功");
       } else {
-        showError("優惠卷無效或已過期");
+        showError("優惠券無效或已過期");
         setCouponApplied(false);
         setTotalAfterCoupon(total);
       }
@@ -117,7 +118,7 @@ export default function Cart() {
                               </div>
                             </div>
                           </td>
-                          <td className="align-middle price">NT $ {item.product.price}</td>
+                          <td className="align-middle price">NT $ {currency(item.product.price)}</td>
                           <td className="align-middle">
                             <div className="qty-input-group">
                               <button className="btn cart_btn" type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
@@ -141,7 +142,7 @@ export default function Cart() {
                               </button>
                             </div>
                           </td>
-                          <td className="align-middle total">NT $ {item.total}</td>
+                          <td className="align-middle total">NT $ {currency(item.total)}</td>
                           <td className="function">
                             <button type="button" className="btn btn-custom-link-dark">
                               加入收藏
@@ -186,7 +187,7 @@ export default function Cart() {
                         </div>
                         {/* 單價 */}
                         <div className="d-flex justify-content-end mb-2">
-                          <span>NT $ {item.product.price}</span>
+                          <span>NT $ {currency(item.product.price)}</span>
                         </div>
                         {/* 數量 */}
                         <div className="d-flex justify-content-between align-items-center mb-2">
@@ -225,7 +226,7 @@ export default function Cart() {
                           </div>
                           {/* 總價 */}
                           <div className="d-flex justify-content-between fw-bold">
-                            <span>NT $ {item.total}</span>
+                            <span>NT $ {currency(item.total)}</span>
                           </div>
                         </div>
                       </div>
@@ -671,11 +672,11 @@ export default function Cart() {
               </div>
               <div className="card-body p-4">
                 <div className="d-flex  flex-column  align-items-start w-auto mb-6">
-                  <h6 style={{ color: "#3e5e4d" }}>優惠卷</h6>
+                  <h6 style={{ color: "#3e5e4d" }}>優惠券</h6>
                   <div className="input-group w-auto">
                     <input
                       type="text"
-                      placeholder="輸入優惠碼"
+                      placeholder="輸入優惠券代碼"
                       className={`form-control ${couponApplied ? "border-success bg-light text-success" : ""}`}
                       value={couponCode}
                       onChange={(e) => setCouponCode(e.target.value)}
@@ -690,15 +691,15 @@ export default function Cart() {
                 <div className="orderBreakDown mb-6">
                   <div className="productPrice d-flex justify-content-between">
                     <h6 style={{ color: "#666666" }}>商品總金額</h6>
-                    <h6 style={{ color: "#222222" }}>${subtotal}</h6>
+                    <h6 style={{ color: "#222222" }}>${currency(subtotal)}</h6>
                   </div>
                   <div className="shipping d-flex justify-content-between">
                     <h6 style={{ color: "#666666" }}>運費總金額</h6>
-                    <h6 style={{ color: "#222222" }}>${shipping}</h6>
+                    <h6 style={{ color: "#222222" }}>${currency(shipping)}</h6>
                   </div>
                   <div className="orderPrice d-flex justify-content-between">
                     <h6 style={{ color: "#666666" }}>總付款金額</h6>
-                    <h6 style={{ color: "#222222" }}>${couponApplied ? totalAfterCoupon : total}</h6>
+                    <h6 style={{ color: "#222222" }}>${couponApplied ? currency(totalAfterCoupon) : currency(total)}</h6>
                   </div>
                 </div>
                 <button

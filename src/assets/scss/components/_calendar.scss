@@ -6,7 +6,7 @@
   padding: 16px;
   border-radius: 12px;
 
-  @media (max-width: 768px) {
+  @include mobile {
     grid-template-columns: repeat(2, 1fr);
     padding: 10px;
   }
