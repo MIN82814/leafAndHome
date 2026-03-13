@@ -8,6 +8,16 @@ export default function useMessage() {
     dispatch(
       createAsyncMessage({
         success: true,
+        color: true,
+        message,
+      }),
+    );
+  }
+  const showDanger = (message) => {
+    dispatch(
+      createAsyncMessage({
+        success: true,
+        color: false,
         message,
       }),
     );
@@ -16,12 +26,13 @@ export default function useMessage() {
     dispatch(
       createAsyncMessage({
         success: false,
+        color: false,
         message,
       }),
     );
   }
   //匯出方法
   return {
-    showError, showSuccess,
+    showError, showSuccess, showDanger,
   }
 }

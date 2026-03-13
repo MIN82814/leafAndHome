@@ -20,7 +20,7 @@ export const messageSlice = createSlice({
     createMessage(state, action) {
       state.push({
         id: action.payload.id,
-        type: action.payload.success ? 'success' : 'danger',  //狀態
+        type: action.payload.color ? 'success' : 'danger',  //狀態
         title: action.payload.success ? '成功' : '失敗',        //狀態
         text: action.payload.message,    //回傳的訊息
       })

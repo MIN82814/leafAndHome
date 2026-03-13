@@ -9,6 +9,7 @@ import Star from "../../component/Star";
 import { createAsyncAddCart } from "../../slice/cartSlice";
 import { useDispatch } from "react-redux";
 import useMessage from "../../hooks/useMessage";
+import { currency } from "../../utils/filter";
 
 function Product() {
   const { id } = useParams();
@@ -92,8 +93,8 @@ function Product() {
                 <div>
                   <p className="fs-5 mb-3">✦ 全館滿兩千免運 ✦</p>
                   <h4 className="text-neutral-900 h4">
-                    NT$ {product.price}
-                    <span className="text-neutral-500 fw-bold ms-4 fs-7 text-decoration-line-through">NT$ {product.origin_price}</span>
+                    NT$ {currency(product.price)}
+                    <span className="text-neutral-500 fw-bold ms-4 fs-7 text-decoration-line-through">NT$ {currency(product.origin_price)}</span>
                   </h4>
                 </div>
               </div>

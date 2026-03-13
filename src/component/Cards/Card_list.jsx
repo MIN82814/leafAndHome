@@ -1,4 +1,4 @@
-import Card_hor from "../component/Card_hor";
+import Card_hor from "../Cards/Card_hor";
 
 function Card_list({ title, subTitle, tag, color, products }) {
   return (

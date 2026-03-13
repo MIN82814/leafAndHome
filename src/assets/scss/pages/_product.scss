@@ -3,7 +3,7 @@
 }
 .product-image-selection {
   max-width: 80px;
-  @media (max-width: 768px) {
+  @include mobile {
     max-width: 100%;
   }
 }

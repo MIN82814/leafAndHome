@@ -29,10 +29,7 @@
 
 .cart-header {
   margin-bottom: 80px;
-}
-
-@media (max-width: 991.98px) {
-  .cart-header {
+  @include tablet {
     margin-bottom: 40px;
   }
 }

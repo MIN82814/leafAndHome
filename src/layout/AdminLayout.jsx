@@ -105,7 +105,7 @@ function AdminLayout() {
                   文章管理
                 </NavLink>
                 <NavLink to="coupon" className="px-4 py-2 h6">
-                  酷碰管理
+                  優惠券管理
                 </NavLink>
                 <NavLink to="order" className="px-4 py-2 h6">
                   訂單管理

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import iconStar from "/icons/iconStar.svg";
+import { currency } from "../../utils/filter";
 
 function Card_product({ product }) {
   //讀取評論數
@@ -22,7 +23,7 @@ function Card_product({ product }) {
                   {averageStars.toFixed(1)} ({reviews.length})
                 </span>
               </p>
-              <p className="h6">NT ${product.price}</p>
+              <p className="h6">NT ${currency(product.price)}</p>
             </div>
           </div>
         </div>

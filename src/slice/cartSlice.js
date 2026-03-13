@@ -34,6 +34,7 @@ export const createAsyncGetCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: false,
+          color: false,
           message: error.response.data.message,
         })
       );
@@ -53,6 +54,7 @@ export const createAsyncAddCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: true,
+          color: true,
           message: "加入購物車成功",
         })
       );
@@ -61,6 +63,7 @@ export const createAsyncAddCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: false,
+          color: false,
           message: error.response.data.message,
         })
       );
@@ -88,6 +91,7 @@ export const createAsyncUpdateCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: false,
+          color: false,
           message: error.response.data.message,
         })
       );
@@ -106,6 +110,7 @@ export const createAsyncDelCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: true,
+          color: false,
           message: "產品購物車刪除成功",
         })
       );
@@ -114,6 +119,7 @@ export const createAsyncDelCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: false,
+          color: false,
           message: error.response.data.message,
         })
       );
@@ -130,6 +136,7 @@ export const createAsyncDelAllCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: true,
+          color: false,
           message: "購物車清空成功",
         })
       );
@@ -138,6 +145,7 @@ export const createAsyncDelAllCart = createAsyncThunk(
       dispatch(
         createAsyncMessage({
           success: false,
+          color: false,
           message: error.response.data.message,
         })
       );

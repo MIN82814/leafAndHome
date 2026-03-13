@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { getProductsApi } from "../../services/product";
 import Pagination from "../../component/Pagination";
-import Card_product from "../../component/Card_product";
+import Card_product from "../../component/Cards/Card_product";
 import Loading from "../../component/Loading";
 import useMessage from "../../hooks/useMessage";
 

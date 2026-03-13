@@ -15,10 +15,10 @@ function Footer() {
           </div>
           <div className="col">
             <div className="d-flex gap-6">
-              <NavLink to="products" className="px-4 py-2 h6">
+              <NavLink to="/products" className="px-4 py-2 h6">
                 <span className="text-underline">森活選物</span>
               </NavLink>
-              <NavLink to="articles" className="px-4 py-2 h6">
+              <NavLink to="/articles" className="px-4 py-2 h6">
                 <span className="text-underline">森活日常誌</span>
               </NavLink>
               {/* <NavLink to="about" className="px-4 py-2 h6">

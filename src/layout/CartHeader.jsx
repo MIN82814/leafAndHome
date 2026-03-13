@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router";
-import mark from "../../public/mark.svg";
+import mark from "/mark.svg";
 
 export default function CartHeader() {
   const location = useLocation();

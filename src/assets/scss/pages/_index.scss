@@ -190,7 +190,7 @@
 .carousel-flex-image {
   height: 736px;
   object-fit: cover;
-  @media (max-width: 768px) {
+  @include mobile {
     width: 100%;
     height: 245px;
   }
@@ -214,7 +214,7 @@
   left: 80px;
   bottom: 34px;
   max-width: 500px;
-  @media (max-width: 768px) {
+  @include mobile {
     left: 12px;
     max-width: calc(100% - 24px);
   }

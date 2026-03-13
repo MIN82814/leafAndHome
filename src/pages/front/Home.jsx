@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 
-import Card_place from "../../component/Card_place";
-import Card_product from "../../component/Card_product";
-import Card_article from "../../component/Card_article";
+import Card_place from "../../component/Cards/Card_place";
+import Card_product from "../../component/Cards/Card_product";
+import Card_article from "../../component/Cards/Card_article";
 import Pill from "../../component/Pill";
-import Card_list from "../../component/Card_list";
+import Card_list from "../../component/Cards/Card_list";
 import Title from "../../component/Title";
 import { getProductsApi } from "../../services/product";
 import { getArticlesApi } from "../../services/article";
