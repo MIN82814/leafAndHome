@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import * as bootstrap from "bootstrap";
 import { addAdminCouponsApi, deleteAdminCouponsApi, getAdminCouponsApi, updateAdminCouponsApi } from "../../services/coupon";
+import useMessage from "../../hooks/useMessage";
 
 const INITIAL_MODAL_DATA = {
   title: "",
@@ -23,7 +24,7 @@ export default function Coupon() {
     const dd = String(date.getDate()).padStart(2, "0");
     return `${yyyy}-${mm}-${dd}`;
   };
-
+  const { showError } = useMessage();
   const handleModalInputChange = (e) => {
     const { name, value, checked, type } = e.target;
     setModalData((pre) => ({
@@ -38,8 +39,7 @@ export default function Coupon() {
       const response = await getAdminCouponsApi();
       setData(response.data.coupons);
     } catch (error) {
-      console.log(error.response);
-      alert("token無效或已過期");
+      showError(error.response.data.message);
     }
   };
 
@@ -59,7 +59,7 @@ export default function Coupon() {
       await deleteAdminCouponsApi(id);
       getAdminCoupon();
     } catch (error) {
-      alert(error.message);
+      showError(error.response.data.message);
     }
   };
 
@@ -87,12 +87,11 @@ export default function Coupon() {
       getAdminCoupon();
       closeModal();
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      showError(error.response.data.message);
     }
   };
 
   const openModal = (type, coupon) => {
-    // console.log("類型", type, "優惠卷", coupon);
     setModalType(type);
     setModalData((pre) => ({
       ...pre,
@@ -112,6 +111,7 @@ export default function Coupon() {
           <h1 className="text-center mb-5">優惠券列表</h1>
           <div className="d-flex justify-content-end">
             <button
+              type="button"
               onClick={() => {
                 openModal("create", INITIAL_MODAL_DATA);
               }}

@@ -5,20 +5,20 @@ import { useNavigate } from "react-router";
 import axios from "axios";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
+import useMessage from "../../hooks/useMessage";
 
 export default function OrderSuccess() {
   const { id } = useParams();
   const [orderData, setOrderData] = useState(null);
   const navigate = useNavigate();
-
+  const { showError } = useMessage();
   useEffect(() => {
     const fetchOrderData = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/${API_PATH}/order/${id}`);
-        console.log(res.data);
         setOrderData(res.data.order);
       } catch (error) {
-        console.log(error.message);
+        showError(error.response.data.message);
       }
     };
     fetchOrderData();
@@ -26,7 +26,7 @@ export default function OrderSuccess() {
   return (
     <div className=" container d-flex flex-column align-items-center gap-5 cart-table">
       {/* <div className="text-center"> */}
-      <img src="/leafAndHome/orderSuccess.png" alt="" style={{ height: "300px" }} />
+      <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1773400886148.png" alt="訂購成功" style={{ height: "300px" }} />
       {/* </div> */}
       <h3>付款成功！</h3>
       <h5>感謝您的消費</h5>
@@ -36,7 +36,7 @@ export default function OrderSuccess() {
       <div className="d-flex justify-content-start align-items-center bg-neutral-200 rounded-4 gap-2 px-4 py-6">
         <img
           src="/leafAndHome/icons/emailSent.png"
-          alt=""
+          alt="email"
           style={{
             height: "100px",
             width: "100px",

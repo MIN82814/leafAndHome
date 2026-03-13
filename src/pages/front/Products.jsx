@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { getProductsApi } from "../../services/product";
-import Pagination from "../../component/adminPagination";
+import Pagination from "../../component/Pagination";
 import Card_product from "../../component/Card_product";
 import Loading from "../../component/Loading";
+import useMessage from "../../hooks/useMessage";
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -11,15 +12,16 @@ function Products() {
   //分頁
   const [pagination, setPagination] = useState({});
 
+  const { showError } = useMessage();
+
   const getProducts = async (page = 1) => {
     setIsLoading(true);
     try {
       const response = await getProductsApi(page, "all");
-      console.log(response.data.products);
       setProducts(response.data.products);
       setPagination(response.data.pagination);
     } catch (error) {
-      console.log(error.response);
+      showError(error.response.data.message);
     } finally {
       setIsLoading(false);
     }
@@ -44,20 +46,6 @@ function Products() {
             {products.map((item) => (
               <div className="col-md-4 mb-6" key={item.id}>
                 <Card_product product={item} />
-                {/* <div className="card">
-                <img src={item.imageUrl} className="card-img-top" alt={item.title} />
-                <div className="card-body">
-                  <h5 className="card-title">{item.title}</h5>
-                  <p className="card-text">{item.description}</p>
-                  <p className="card-text">價格: {item.price}</p>
-                  <p className="card-text">
-                    <small className="text-body-secondary">{item.unit}</small>
-                  </p>
-                  <NavLink className="btn btn-primary" to={`/products/${item.id}`}>
-                    查看更多
-                  </NavLink>
-                </div>
-              </div> */}
               </div>
             ))}
           </div>

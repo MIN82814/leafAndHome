@@ -12,8 +12,6 @@ function Card_place({ image, title, content, icon, kind }) {
           <div className="position-absolute end-0 p-3 rounded-circle icon lh-1">
             <span className="material-symbols-outlined lh-1 fs-3">{icon}</span>
           </div>
-
-          {/* <img src={icon} alt="icon" className="position-absolute end-0 p-3 rounded-circle icon" /> */}
           <span className="text-primary-700 position-absolute tag px-4 py-1 rounded-3 fw-bold">{kind} 種植物</span>
         </div>
       </NavLink>

@@ -10,6 +10,7 @@ import { getProductsApi } from "../../services/product";
 import { getArticlesApi } from "../../services/article";
 import { useEffect, useState } from "react";
 import { formatPlainTitle } from "../../utils/articleHelpers";
+import useMessage from "../../hooks/useMessage";
 
 function Home() {
   const [products, setProducts] = useState([]);
@@ -18,25 +19,23 @@ function Home() {
   const [topB, setTopB] = useState([]);
   const [topC, setTopC] = useState([]);
   // const collapseRef = useRef(null);
-
+  const { showError } = useMessage();
   useEffect(() => {
     // collapseRef.current = new bootstrap.Collapse(document.querySelector(".collapse"));
     const getProducts = async () => {
       try {
         const response = await getProductsApi(1, "all");
-        console.log(response.data.products);
         setProducts(response.data.products);
       } catch (error) {
-        console.log(error.response);
+        showError(error.response.data.message);
       }
     };
     const getArticles = async () => {
       try {
         const response = await getArticlesApi(1);
-        console.log(response.data.articles);
         setArticles(response.data.articles);
       } catch (error) {
-        console.log(error.response);
+        showError(error.response.data.message);
       }
     };
 

@@ -1,10 +1,8 @@
 import { Outlet, NavLink, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
+import useMessage from "../hooks/useMessage";
 
-import axios from "axios";
-
-const API_BASE = import.meta.env.VITE_API_BASE;
-const API_PATH = import.meta.env.VITE_API_PATH;
+import { checkSignInApi, signInApi } from "../services/sign";
 
 function getCookie() {
   return document.cookie
@@ -17,7 +15,7 @@ function AdminLayout() {
   const [token, setToken] = useState(getCookie());
   const [isAuth, setIsAuth] = useState(false);
   const navigate = useNavigate();
-
+  const { showError } = useMessage();
   //登入表單
   const [formData, setFormData] = useState({
     username: "",
@@ -36,12 +34,13 @@ function AdminLayout() {
   const onSubmit = async (e) => {
     try {
       e.preventDefault();
-      const response = await axios.post(`${API_BASE}/admin/signin`, formData);
+      const response = await signInApi(formData);
       const { token, expired } = response.data;
+      //存入 cookie
       document.cookie = `hexTokenAPI=${token};expires=${new Date(expired)};`;
-      setToken(getCookie());
+      setToken(token);
     } catch (error) {
-      console.log(error);
+      showError(error.response.data.message);
     }
   };
 
@@ -58,14 +57,13 @@ function AdminLayout() {
     //如果取得token 則進行驗證
     const checkLogin = async () => {
       try {
-        axios.defaults.headers.common["Authorization"] = token;
-        const response = await axios.post(`${API_BASE}/api/user/check`);
-        console.log(response.data);
+        // axios.defaults.headers.common["Authorization"] = token;
+        await checkSignInApi();
         setIsAuth(true);
         navigate("products", { replace: true });
       } catch (error) {
         setIsAuth(false);
-        console.log(error);
+        showError(error.response.data.message);
       }
     };
     checkLogin();
@@ -112,13 +110,16 @@ function AdminLayout() {
                 <NavLink to="order" className="px-4 py-2 h6">
                   訂單管理
                 </NavLink>
-                <NavLink to="update" className="px-4 py-2 h6">
+                <NavLink to="upload" className="px-4 py-2 h6">
                   圖片管理
                 </NavLink>
+                <button type="button" className="btn btn-primary-500 text-white">
+                  登出
+                </button>
               </div>
             </div>
           </header>
-          <Outlet context={{ token, API_BASE, API_PATH }} />
+          <Outlet />
         </>
       )}
     </>

@@ -8,6 +8,7 @@ import CareGuide from "../../component/CareGuide";
 import Star from "../../component/Star";
 import { createAsyncAddCart } from "../../slice/cartSlice";
 import { useDispatch } from "react-redux";
+import useMessage from "../../hooks/useMessage";
 
 function Product() {
   const { id } = useParams();
@@ -16,18 +17,7 @@ function Product() {
   const dispatch = useDispatch();
   const [targetUrl, setTargetUrl] = useState();
 
-  // const addCart = async (id) => {
-  //   const data = {
-  //     product_id: id,
-  //     qty: 1,
-  //   };
-  //   try {
-  //     const response = await axios.post(`${API_BASE}/api/${API_PATH}/cart`, { data });
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log(error.response);
-  //   }
-  // };
+  const { showError } = useMessage();
 
   const handleAddCart = (id, qty) => {
     dispatch(createAsyncAddCart({ id, qty }));
@@ -41,7 +31,7 @@ function Product() {
         setProduct(response.data.product);
         setTargetUrl(response.data.product.imageUrl);
       } catch (error) {
-        console.log(error.response);
+        showError(error.response.data.message);
       }
     };
     getSingleProduct();
@@ -80,12 +70,13 @@ function Product() {
                   }}>
                   <img src={product.imageUrl} className="rounded-2" alt={product.title} />
                 </a>
-                {product?.imagesUrl?.map((image) => (
+                {product?.imagesUrl?.map((image, index) => (
                   <a
                     href="#"
                     onClick={(e) => {
                       changeTargetUrl(e);
-                    }}>
+                    }}
+                    key={`image-${index}`}>
                     <img src={image} className="rounded-2" alt={product.title} />
                   </a>
                 ))}
@@ -137,7 +128,7 @@ function Product() {
             <div className="col">
               <div className="d-flex justify-content-center gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <span class="material-symbols-outlined text-secondary-700 fs-2">package_2</span>
+                  <span className="material-symbols-outlined text-secondary-700 fs-2">package_2</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">七天到貨</h4>
@@ -148,7 +139,7 @@ function Product() {
             <div className="col">
               <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <span class="material-symbols-outlined text-secondary-700 fs-2">build</span>
+                  <span className="material-symbols-outlined text-secondary-700 fs-2">build</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">破損補寄</h4>
@@ -159,7 +150,7 @@ function Product() {
             <div className="col">
               <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <span class="material-symbols-outlined text-secondary-700 fs-2">replay</span>
+                  <span className="material-symbols-outlined text-secondary-700 fs-2">replay</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">七天鑑賞</h4>
@@ -170,7 +161,7 @@ function Product() {
             <div className="col">
               <div className="d-flex justify-content-center  gap-2 gap-md-4 align-items-center">
                 <div className="p-2 p-md-4 bg-white rounded-circle">
-                  <span class="material-symbols-outlined text-secondary-700 fs-2">support_agent</span>
+                  <span className="material-symbols-outlined text-secondary-700 fs-2">support_agent</span>
                 </div>
                 <div>
                   <h4 className="h4 text-background-100">專業客服</h4>
@@ -209,8 +200,10 @@ function Product() {
                 <h4 className="h4">植物特色</h4>
               </div>
               <div className="col-md-6">
-                {product?.detailedIntro?.features.map((item) => (
-                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
+                {product?.detailedIntro?.features.map((item, index) => (
+                  <p className="mb-2 text-neutral-700 fw-medium" key={`features-${index}`}>
+                    {item}
+                  </p>
                 ))}
               </div>
             </div>
@@ -219,8 +212,10 @@ function Product() {
                 <h4 className="h4">照顧注意事項</h4>
               </div>
               <div className="col-md-6">
-                {product?.detailedIntro?.careNotes.map((item) => (
-                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
+                {product?.detailedIntro?.careNotes.map((item, index) => (
+                  <p className="mb-2 text-neutral-700 fw-medium" key={`careNotes-${index}`}>
+                    {item}
+                  </p>
                 ))}
               </div>
             </div>
@@ -229,8 +224,10 @@ function Product() {
                 <h4 className="h4">為你帶來的好處</h4>
               </div>
               <div className="col-md-6">
-                {product?.detailedIntro?.benefits.map((item) => (
-                  <p className="mb-2 text-neutral-700 fw-medium">{item}</p>
+                {product?.detailedIntro?.benefits.map((item, index) => (
+                  <p className="mb-2 text-neutral-700 fw-medium" key={`benefit-${index}`}>
+                    {item}
+                  </p>
                 ))}
               </div>
             </div>
@@ -247,8 +244,8 @@ function Product() {
           </div>
           <div className="row">
             {product?.placementScenes?.map((scene, index) => (
-              <div className="col-md-4">
-                <div className="bg-white p-3 pb-4 rounded-4" key={`scene-${index}`}>
+              <div className="col-md-4" key={`scene-${index}`}>
+                <div className="bg-white p-3 pb-4 rounded-4">
                   <div className="position-relative mb-2">
                     <img src={product.imagesUrl[index]} alt={scene.scene} className="rounded-3" />
                     <span className="position-absolute scene-tag  px-4 py-1 bg-white fw-bold rounded-1">{scene.scene}</span>

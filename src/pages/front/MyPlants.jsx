@@ -72,13 +72,13 @@ const MyPlants = () => {
   return (
     <div className="container-fluid bg-neutral-100">
       <div className="row min-vh-100 pt-14 justify-content-center">
-        <aside className="sidemenu-container col-12 col-md-3 col-lg-4">
+        <aside className="sidemenu-container col-md-3 col-lg-4">
           <Sidemenu />
         </aside>
-        <main className="col-12 col-md-9 col-lg-8 mb-10">
+        <main className="col-md-9 col-lg-8 mb-10">
           <div className="p-4" style={{ maxWidth: "966px", width: "100%" }}>
             <div className="row g-4">
-              <div className="col-12">
+              <div>
                 <div className="d-flex align-items-center bg-secondary-100 p-2 px-4" style={{ borderRadius: "4px" }}>
                   <span className="me-4 small text-secondary-500 fw-bold">排序</span>
                   <div className="d-flex flex-grow-1 justify-content-between">
@@ -87,7 +87,7 @@ const MyPlants = () => {
                       { label: "狀態", key: "status" },
                       { label: "加入時間", key: "purchaseTime" },
                     ].map((item) => (
-                      <button key={item.key} className="btn btn-link p-0 text-secondary-700 fw-bold" onClick={() => handleSort(item.key)}>
+                      <button key={item.key} type="button" className="btn btn-link p-0 text-secondary-700 fw-bold" onClick={() => handleSort(item.key)}>
                         {item.label} {sortConfig.key === item.key ? (sortConfig.direction === "asc" ? "▲" : "▼") : "⇅"}
                       </button>
                     ))}
@@ -96,7 +96,7 @@ const MyPlants = () => {
               </div>
 
               {processedPlants.map((plant) => (
-                <div key={plant.id} className="col-12 col-xl-4 col-lg-6">
+                <div key={plant.id} className="col-xl-4 col-lg-6">
                   <div className="card h-100 rounded-2 p-1 ">
                     <div className="card-body p-2">
                       <div className="d-flex justify-content-between align-items-end mb-3 border-bottom border-neutral-700">
@@ -128,10 +128,10 @@ const MyPlants = () => {
                         </div>
                       </div>
                       <div className="d-flex gap-2 mt-4 px-1">
-                        <button className="btn btn-outline-success rounded-pill flex-grow-1 fw-bold py-1 border-2" onClick={() => updatePlantCare(plant.id, "water")}>
+                        <button type="button" className="btn btn-outline-success rounded-pill flex-grow-1 fw-bold py-1 border-2" onClick={() => updatePlantCare(plant.id, "water")}>
                           澆 水
                         </button>
-                        <button className="btn btn-outline-success rounded-pill flex-grow-1 fw-bold py-1 border-2" onClick={() => updatePlantCare(plant.id, "fertilize")}>
+                        <button type="button" className="btn btn-outline-success rounded-pill flex-grow-1 fw-bold py-1 border-2" onClick={() => updatePlantCare(plant.id, "fertilize")}>
                           施 肥
                         </button>
                       </div>

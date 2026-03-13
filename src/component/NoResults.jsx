@@ -13,11 +13,9 @@ function NoResults({ search, selectedTag, onReset }) {
         </span>
         相關文章
         <br />
-        {search
-          ? "園丁們正努力翻土播種，準備更多植物知識！請先試試其他關鍵字吧!"
-          : "園丁們正努力翻土播種，準備更多植物知識！請先試試其他標籤吧!"}
+        {search ? "園丁們正努力翻土播種，準備更多植物知識！請先試試其他關鍵字吧!" : "園丁們正努力翻土播種，準備更多植物知識！請先試試其他標籤吧!"}
       </p>
-      <button className="btn btn-primary-700" onClick={onReset}>
+      <button type="button" className="btn btn-primary-700" onClick={onReset}>
         回全部文章
       </button>
     </div>

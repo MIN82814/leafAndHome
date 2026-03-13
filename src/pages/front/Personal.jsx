@@ -27,18 +27,18 @@ function Personal() {
       <div className="container-fluid bg-neutral-100">
         <div className="row min-vh-100 pt-14 justify-content-center">
           {/* <!-- 左側 Side Menu --> */}
-          <aside className="sidemenu-container col-12 col-md-3 col-lg-4">
+          <aside className="sidemenu-container col-md-3 col-lg-4">
             <Sidemenu />
           </aside>
           {/* <!-- 右側 Main Dashboard --> */}
-          <main className="col-12 col-md-9 col-lg-8 mb-10">
+          <main className="col-md-9 col-lg-8 mb-10">
             <div className="p-4" style={{ maxWidth: "966px", width: "100%" }}>
               {/* <!-- 內部區塊包裝層 --> */}
               <div className="row g-4">
                 <div className="p-4 mx-auto">
                   {/* <!-- 歡迎區塊 --> */}
                   <div className="row g-4">
-                    <div className="col-12">
+                    <div>
                       <div className="d-flex flex-column shadow-sm rounded-4 overflow-hidden">
                         {/* 上方 Banner */}
                         <div
@@ -87,7 +87,7 @@ function Personal() {
                 </div>
 
                 {/* <!-- 行事曆區塊 --> */}
-                <div className="col-12">
+                <div>
                   <div className="rounded-4 overflow-hidden border-0">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
@@ -101,7 +101,7 @@ function Personal() {
                   </div>
                 </div>
                 {/* 本週照護區塊 */}
-                <div className="col-12 col-lg-8 mb-4">
+                <div className="col-lg-8 mb-4">
                   <div className="bg-white rounded-4 overflow-hidden  h-100 d-flex flex-column">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
@@ -116,7 +116,7 @@ function Personal() {
                 </div>
 
                 {/* <!-- 我的植物區塊 --> */}
-                <div className="col-12 col-lg-4 mb-4">
+                <div className="col-lg-4 mb-4">
                   <div className="bg-white rounded-4 overflow-hidden h-100 d-flex flex-column">
                     {/* Header */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
@@ -130,7 +130,7 @@ function Personal() {
                 </div>
 
                 {/* 森活解析區塊 */}
-                <div className="col-12">
+                <div>
                   <div className="rounded-4 overflow-hidden border-0">
                     {/* 1. Header  */}
                     <div className="px-4 py-3 d-flex justify-content-between align-items-center bg-secondary-100">
@@ -141,7 +141,7 @@ function Personal() {
                     <PlantAnalysis />
                   </div>
                 </div>
-                <div className="col-12 mx-auto text-center m-10">
+                <div className="mx-auto text-center m-10">
                   <a className="btn btn-primary-500 text-white" href="#" role="button">
                     查看更多解析 <span className="small">▶</span>
                   </a>

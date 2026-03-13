@@ -21,12 +21,12 @@ function Card_article({ article, size }) {
     <>
       <NavLink className="w-100 card-article-link" to={`/articles/${article.id}`}>
         <div className="card-article rounded-3 radius-top-right">
-          <img src={article.image} className="radius-top-right mb-6" alt="租屋小套房" />
+          <img src={article.image} className="radius-top-right mb-6" alt={article.title} />
           <div className="pb-4 px-4">
             <h4 className="h4 mb-2">{formatPlainTitle(article.title)}</h4>
             <h6 className="h6 mb-7 text-neutral-700">{formatPlainTitle(article.description)}</h6>
             <button type="button" className="btn btn-primary-500 text-white">
-              立即閱讀 <i class="bi bi-caret-right-fill"></i>
+              立即閱讀 <i className="bi bi-caret-right-fill"></i>
             </button>
           </div>
         </div>

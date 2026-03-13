@@ -4,6 +4,7 @@ import axios from "axios";
 import { createAdminProductsApi, updateAdminProductsApi } from "../services/product";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
+import useMessage from "../hooks/useMessage";
 
 function ProductModal({ modalType, templateData, closeModal, getProducts }) {
   // 處理Modal編輯內容。
@@ -66,6 +67,7 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
     name: "placementScenes",
   });
 
+  const { showError } = useMessage();
   // const {
   //   fields: imagesFields,
   //   append: appendImage,
@@ -109,12 +111,11 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
   // 刪除產品
   const deleteProduct = async (id) => {
     try {
-      const response = await axios.delete(`${API_BASE}/api/${API_PATH}/admin/product/${id}`);
-      console.log(response);
+      await axios.delete(`${API_BASE}/api/${API_PATH}/admin/product/${id}`);
       getProducts();
       closeModal();
     } catch (error) {
-      console.log(error.response.data.message);
+      showError(error.response.data.message);
     }
   };
 
@@ -129,18 +130,16 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
       },
     };
     try {
-      let response;
       if (modalType === "edit") {
-        response = await updateAdminProductsApi(productData);
+        await updateAdminProductsApi(productData);
       } else {
-        response = await createAdminProductsApi(productData);
+        await createAdminProductsApi(productData);
       }
 
-      console.log(response.data);
       getProducts();
       closeModal();
     } catch (error) {
-      console.log(error);
+      showError(error.response.data.message);
     }
   };
 
@@ -360,9 +359,9 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
                               </button>
                             </div>
                             {scenesFA.fields.map((field, index) => (
-                              <>
-                                <SceneItem key={field.id} index={index} control={control} register={register} removeScene={scenesFA.remove} disableRemoveScene={scenesFA.fields.length === 1} />
-                              </>
+                              <div key={field.id}>
+                                <SceneItem index={index} control={control} register={register} removeScene={scenesFA.remove} disableRemoveScene={scenesFA.fields.length === 1} />
+                              </div>
                             ))}
                           </div>
                         </div>
