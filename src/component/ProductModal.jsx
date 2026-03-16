@@ -8,6 +8,37 @@ import useMessage from "../hooks/useMessage";
 
 function ProductModal({ modalType, templateData, closeModal, getProducts }) {
   // 處理Modal編輯內容。
+  const emptyForm = {
+    id: "",
+    title: "",
+    titleEn: "",
+    category: "",
+    origin_price: "",
+    price: "",
+    unit: "",
+    description: "",
+    content: "",
+    is_enabled: false,
+    imageUrl: "",
+    imagesUrl: [""],
+    careGuide: {
+      light: "",
+      watering: "",
+      temperature: "",
+      humidity: "",
+      size: "",
+      petSafety: "",
+      supportRepotting: "",
+      difficulty: "",
+    },
+    detailedIntro: {
+      features: [""],
+      careNotes: [""],
+      benefits: [""],
+    },
+    placementScenes: [{ scene: "", phrases: [""] }],
+    customerReviews: [""],
+  };
 
   const {
     register, // 用來註冊表單元素
@@ -15,25 +46,9 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
     handleSubmit, // 用來處理表單提交
     reset,
   } = useForm({
-    defaultValues: {
-      id: "",
-      title: "",
-      titleEn: "",
-      category: "",
-      origin_price: "",
-      price: "",
-      unit: "",
-      description: "",
-      content: "",
-      is_enabled: false,
-      imageUrl: "",
-      imagesUrl: [""],
-      careGuide: {},
-      detailedIntro: { features: [""], careNotes: [""], benefits: [""] },
-      placementScenes: [{ scene: "", phrases: [""] }],
-      customerReviews: [""],
-    },
+    defaultValues: emptyForm,
   });
+
   const title = useWatch({ control, name: "title" });
   const imageUrl = useWatch({ control, name: "imageUrl" });
   const imagesUrl = useWatch({
@@ -79,12 +94,9 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
 
   //當點擊新的產品改變templateData後 需要重新設定Modal暫存值。
   useEffect(() => {
-    if (!templateData?.id) return;
+    if (!templateData?.id && modalType !== "create") return;
     if (modalType === "create") {
-      reset({
-        id: "",
-        title: "",
-      });
+      reset(emptyForm);
     } else {
       // 資料傳入後 重設表單
       reset({
@@ -106,7 +118,7 @@ function ProductModal({ modalType, templateData, closeModal, getProducts }) {
         customerReviews: templateData.customerReviews,
       });
     }
-  }, [templateData?.id, reset]);
+  }, [templateData, reset]);
 
   // 刪除產品
   const deleteProduct = async (id) => {

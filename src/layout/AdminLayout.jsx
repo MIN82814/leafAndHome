@@ -2,7 +2,7 @@ import { Outlet, NavLink, useNavigate } from "react-router";
 import { useState, useEffect } from "react";
 import useMessage from "../hooks/useMessage";
 
-import { checkSignInApi, signInApi } from "../services/sign";
+import { checkSignInApi, logOutApi, signInApi } from "../services/sign";
 
 function getCookie() {
   return document.cookie
@@ -37,7 +37,7 @@ function AdminLayout() {
       const response = await signInApi(formData);
       const { token, expired } = response.data;
       //存入 cookie
-      document.cookie = `hexTokenAPI=${token};expires=${new Date(expired)};`;
+      document.cookie = `hexTokenAPI=${token};expires=${new Date(expired)}; path=/;`;
       setToken(token);
     } catch (error) {
       showError(error.response.data.message);
@@ -68,6 +68,22 @@ function AdminLayout() {
     };
     checkLogin();
   }, [token, navigate, isAuth]);
+
+  const logOut = async () => {
+    try {
+      await logOutApi();
+      setIsAuth(false);
+      setToken(null);
+      //重設cookie 到期日
+      document.cookie = "hexTokenAPI=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+      //重置輸入欄位
+      setFormData({ username: "", password: "" });
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      setIsAuth(false);
+      showError(error.response.data.message);
+    }
+  };
 
   return (
     <>
@@ -113,7 +129,7 @@ function AdminLayout() {
                 <NavLink to="upload" className="px-4 py-2 h6">
                   圖片管理
                 </NavLink>
-                <button type="button" className="btn btn-primary-500 text-white">
+                <button type="button" className="btn btn-primary-500 text-white" onClick={logOut}>
                   登出
                 </button>
               </div>

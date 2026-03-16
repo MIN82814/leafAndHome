@@ -74,7 +74,12 @@ function Products() {
   };
 
   const closeModal = () => {
+    //重設資料
     productModalRef.current.hide();
+    setTemplateData((prev) => ({
+      ...prev,
+      ...product,
+    }));
   };
 
   return (

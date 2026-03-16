@@ -9,6 +9,9 @@ import DragDrop from "editorjs-drag-drop";
 // --- 🔗 引入自定義 API 服務 ---
 import { deleteAdminArticleApi, getAdminArticleIdApi, getAdminArticlesApi, getAllProductsApi, postAdminArticleApi, postAdminUploadApi, putAdminArticleApi } from "../../services/article";
 
+// --- 引入hook Toast
+import useMessage from "../../hooks/useMessage";
+
 // --- 📸 自定義圖片插件 ---
 class UrlImage {
   static get toolbox() {
@@ -52,7 +55,6 @@ class UrlImage {
           const res = await this.uploadFn(formData);
           if (res.data.success) this._showImage(res.data.imageUrl);
         } catch {
-          alert("上傳失敗");
           uploadBtn.innerText = "📁 重新上傳";
         }
       };
@@ -107,6 +109,8 @@ function Articles() {
   const editorRef = useRef(null);
 
   const TAG_OPTIONS = ["新手友善", "澆水技巧", "光線需求", "疑難雜症", "居家搭配"];
+
+  const { showSuccess, showError } = useMessage();
 
   // --- 1. 先宣告所有需要的 Callback ---
   const fetchArticles = useCallback(async () => {
@@ -187,7 +191,7 @@ function Articles() {
       const res = await postAdminUploadApi(data);
       if (res.data.success) callback(res.data.imageUrl);
     } catch {
-      alert("上傳失敗");
+      showError("上傳失敗");
     }
   };
 
@@ -241,11 +245,11 @@ function Articles() {
     try {
       if (editId) await putAdminArticleApi(editId, payload);
       else await postAdminArticleApi(payload);
-      alert("✅ 儲存成功！");
+      showSuccess("✅ 儲存成功！");
       resetForm();
       fetchArticles();
     } catch {
-      alert("儲存失敗");
+      showError("儲存失敗");
     }
   };
 
@@ -294,7 +298,7 @@ function Articles() {
       if (editorRef.current) await editorRef.current.render({ blocks: editorBlocks });
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch {
-      alert("讀取失敗");
+      showError("讀取失敗");
     }
   };
 

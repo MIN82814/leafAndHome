@@ -10,6 +10,7 @@ import { createAsyncAddCart } from "../../slice/cartSlice";
 import { useDispatch } from "react-redux";
 import useMessage from "../../hooks/useMessage";
 import { currency } from "../../utils/filter";
+import Loading from "../../component/Loading";
 
 function Product() {
   const { id } = useParams();
@@ -17,7 +18,7 @@ function Product() {
   const [cartQty, setCartQty] = useState(1);
   const dispatch = useDispatch();
   const [targetUrl, setTargetUrl] = useState();
-
+  const [isLoading, setIsLoading] = useState(true);
   const { showError } = useMessage();
 
   const handleAddCart = (id, qty) => {
@@ -27,12 +28,15 @@ function Product() {
 
   useEffect(() => {
     const getSingleProduct = async () => {
+      setIsLoading(true);
       try {
         const response = await getProductApi(id);
         setProduct(response.data.product);
         setTargetUrl(response.data.product.imageUrl);
       } catch (error) {
         showError(error.response.data.message);
+      } finally {
+        setIsLoading(false);
       }
     };
     getSingleProduct();
@@ -43,6 +47,9 @@ function Product() {
     e.preventDefault();
     setTargetUrl(e.target.src);
   };
+  if (isLoading) {
+    return <Loading text={"正在為您搬運植物..."} />;
+  }
 
   if (!product)
     return (

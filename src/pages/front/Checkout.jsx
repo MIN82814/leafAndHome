@@ -84,8 +84,8 @@ export default function Checkout() {
   };
   return (
     <>
-      <div className="container mb-5 cart-table">
-        <form id="checkout-form" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="container mb-5 cart-table">
           <div className="row d-flex justify-content-between">
             <div className="col-lg-9 ">
               <div className="section mb-4">
@@ -96,6 +96,7 @@ export default function Checkout() {
                   </button>
                 </div>
                 <div className="p-4 bg-white">
+                  {/* 桌機版 購物車 */}
                   <table className="table cart-table table-hover d-none d-lg-table">
                     <thead>
                       <tr>
@@ -133,7 +134,7 @@ export default function Checkout() {
                       })}
                     </tbody>
                   </table>
-                  {/*mobile DOM*/}
+                  {/* 手機版購物車*/}
                   <div className="d-block d-lg-none">
                     {carts.map((item) => {
                       return (
@@ -174,194 +175,193 @@ export default function Checkout() {
                   </div>
                 </div>
               </div>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="payment mb-5 section bg-white p-6">
-                  <div className="mb-3">
-                    <h4 style={{ color: "#74613e" }}>付款與發票</h4>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-6 d-flex flex-column mb-5">
-                      <div className="mb-2">
-                        <h5 style={{ color: "#3e5e4d" }}>付款:</h5>
-                      </div>
-                      <div className="d-flex flex-column">
-                        <label style={{ color: "#666666" }} htmlFor="payment">
-                          付款方式
-                        </label>
-                        <select name="" id="payment" className="form-select">
-                          <option value="貨到付款">貨到付款</option>
-                          <option value="線上刷卡">線上刷卡</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 d-flex flex-column">
-                      <div className="mb-2">
-                        <h5 style={{ color: "#3e5e4d" }}>電子發票:</h5>
-                      </div>
-                      <div className="d-flex flex-column mb-2">
-                        <label htmlFor="einvoice" style={{ color: "#666666" }}>
-                          電子發票類型
-                        </label>
-                        <select name="" id="einvoice" className="form-select">
-                          <option value="二聯電子發票">二聯電子發票</option>
-                          <option value="三聯電子發票">三聯電子發票</option>
-                        </select>
-                      </div>
-                      <div className="d-flex flex-column mb-2">
-                        <label htmlFor="email" style={{ color: "#666666" }}>
-                          email
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="example@plantlife.com"
-                          id="email"
-                          className="form-control"
-                          {...register("email", {
-                            required: "請輸入 Email",
-                          })}
-                        />
-                        {errors.email && <small className="text-danger">{errors.email.message}</small>}
-                      </div>
-                      <div className="carrier d-flex gap-4">
-                        <div className="type d-flex mb-2 gap-2">
-                          <div className="d-flex flex-column">
-                            <label htmlFor="carrier" style={{ color: "#666666" }}>
-                              載具類型
-                            </label>
-                            <select name="" id="carrier" defaultValue={""} className="h-100 form-select">
-                              <option value="" disabled>
-                                請選擇
-                              </option>
-                              <option value="手機條碼載具">手機條碼載具</option>
-                              <option value="會員載具">會員載具</option>
-                            </select>
-                          </div>
-                          <div className="code d-flex flex-column">
-                            <label htmlFor="barcode" style={{ color: "#666666" }}>
-                              載具條碼
-                            </label>
-                            <input type="text" placeholder="格式:/123-ABC(共8位字元)" id="barcode" className="form-control" />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="d-flex gap-1">
-                        <input type="checkbox" id="defaultCarrier" />
-                        <label htmlFor="defaultCarrier" style={{ color: "#222222" }}>
-                          設定為預設載具
-                        </label>
-                      </div>
-                    </div>
-                  </div>
+
+              <div className="payment mb-5 section bg-white p-6">
+                <div className="mb-3">
+                  <h4 className="text-secondary-700">付款與發票</h4>
                 </div>
-                <div className="shipping mb-5 section bg-white p-6">
-                  <div className="mb-3">
-                    <h4 style={{ color: "#74613e" }}>寄送資訊</h4>
-                  </div>
-                  <div className="row">
-                    <div className="col-lg-6 d-flex flex-column mb-5">
-                      <div className="mb-2 ">
-                        <h6>收件人資訊:</h6>
-                      </div>
-                      <div className="d-flex flex-column mb-2">
-                        <label htmlFor="name" style={{ color: "#666666" }}>
-                          全名
-                        </label>
-                        <input type="text" id="name" placeholder="請輸入您的姓名" className="form-control" {...register("name", { required: "請輸入姓名" })} />
-                        {errors.name && <small className="text-danger">{errors.name.message}</small>}
-                      </div>
-                      <div className="d-flex flex-column">
-                        <label htmlFor="tel" style={{ color: "#666666" }}>
-                          電話號碼
-                        </label>
-                        <input
-                          type="text"
-                          id="tel"
-                          placeholder="手機或市話"
-                          className="form-control"
-                          {...register("tel", {
-                            required: "請輸入電話",
-                            pattern: {
-                              value: /^[0-9\-+() ]+$/,
-                              message: "電話格式錯誤",
-                            },
-                          })}
-                        />
-                        {errors.tel && <small className="text-danger">{errors.tel.message}</small>}
-                      </div>
+                <div className="row">
+                  <div className="col-lg-6 d-flex flex-column mb-5">
+                    <div className="mb-2">
+                      <h5 className="text-primary-700">付款:</h5>
                     </div>
-                    <div className="col-lg-6 d-flex flex-column">
-                      <div className="mb-2">
-                        <h6>寄件地址:</h6>
-                      </div>
-                      <div className="d-flex gap-4 mb-2">
-                        <div className="code d-flex flex-column">
-                          <label htmlFor="city" style={{ color: "#666666" }}>
-                            城市
+                    <div className="d-flex flex-column">
+                      <label className="text-neutral-700" htmlFor="payment">
+                        付款方式
+                      </label>
+                      <select name="" id="payment" className="form-select">
+                        <option value="貨到付款">貨到付款</option>
+                        <option value="線上刷卡">線上刷卡</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-lg-6 d-flex flex-column">
+                    <div className="mb-2">
+                      <h5 className="text-primary-700">電子發票:</h5>
+                    </div>
+                    <div className="d-flex flex-column mb-2">
+                      <label htmlFor="einvoice" className="text-neutral-700">
+                        電子發票類型
+                      </label>
+                      <select name="" id="einvoice" className="form-select">
+                        <option value="二聯電子發票">二聯電子發票</option>
+                        <option value="三聯電子發票">三聯電子發票</option>
+                      </select>
+                    </div>
+                    <div className="d-flex flex-column mb-2">
+                      <label htmlFor="email" className="text-neutral-700">
+                        email
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="example@plantlife.com"
+                        id="email"
+                        className="form-control"
+                        {...register("email", {
+                          required: "請輸入 Email",
+                        })}
+                      />
+                      {errors.email && <small className="text-danger">{errors.email.message}</small>}
+                    </div>
+                    <div className="carrier d-flex gap-4">
+                      <div className="type d-flex mb-2 gap-2">
+                        <div className="d-flex flex-column">
+                          <label htmlFor="carrier" className="text-neutral-700">
+                            載具類型
                           </label>
-                          <input type="text" value="台北市" id="city" className="form-control" readOnly {...register("city")} />
-                        </div>
-                        <div className="type d-flex flex-column">
-                          <label htmlFor="section" style={{ color: "#666666" }}>
-                            區
-                          </label>
-                          <select name="" id="section" {...register("section")} className="h-100 form-select">
-                            <option value="內湖區">內湖區</option>
-                            <option value="大安區">大安區</option>
-                            <option value="文山區">文山區</option>
+                          <select name="" id="carrier" defaultValue={""} className="h-100 form-select">
+                            <option value="" disabled>
+                              請選擇
+                            </option>
+                            <option value="手機條碼載具">手機條碼載具</option>
+                            <option value="會員載具">會員載具</option>
                           </select>
                         </div>
-                      </div>
-                      <div className="d-flex flex-column mb-2">
-                        <label htmlFor="address" style={{ color: "#666666" }}>
-                          地址
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="街道、巷弄、門號、樓層"
-                          id="address"
-                          className="form-control"
-                          {...register("detailAddress", {
-                            required: "請輸入地址",
-                          })}
-                        />
-                        {errors.detailAddress && <small className="text-danger">{errors.detailAddress.message}</small>}
-                      </div>
-                      <div className="d-flex flex-column mb-2">
-                        <label htmlFor="postcode" style={{ color: "#666666" }}>
-                          郵遞區號
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="請輸入郵遞區號"
-                          id="postcode"
-                          className="form-control"
-                          {...register("postcode", {
-                            required: "請輸入郵遞區號",
-                          })}
-                        />
-                        {errors.postcode && <small className="text-danger">{errors.postcode.message}</small>}
-                      </div>
-                      <div className="d-flex gap-1">
-                        <input type="checkbox" id="defaultInfo" />
-                        <label htmlFor="defaultInfo" style={{ color: "#222222" }}>
-                          設定為預設結帳資訊
-                        </label>
+                        <div className="code d-flex flex-column">
+                          <label htmlFor="barcode" className="text-neutral-700">
+                            載具條碼
+                          </label>
+                          <input type="text" placeholder="格式:/123-ABC(共8位字元)" id="barcode" className="form-control" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <hr />
-                  <div className="row">
-                    <div className="col-lg-6">
-                      <div className="d-flex flex-column">
-                        <div className="mb-2">
-                          <h6>備注:</h6>
-                        </div>
-                        <textarea className="form-control" id="remark" rows="3" placeholder="管理室代收/電聯時間......" {...register("remark")}></textarea>
-                      </div>
+                    <div className="d-flex gap-1">
+                      <input type="checkbox" id="defaultCarrier" />
+                      <label htmlFor="defaultCarrier" className="text-neutral-900">
+                        設定為預設載具
+                      </label>
                     </div>
                   </div>
                 </div>
-              </form>
+              </div>
+              <div className="shipping mb-5 section bg-white p-6">
+                <div className="mb-3">
+                  <h4 className="text-secondary-700">寄送資訊</h4>
+                </div>
+                <div className="row">
+                  <div className="col-lg-6 d-flex flex-column mb-5">
+                    <div className="mb-2 ">
+                      <h6>收件人資訊:</h6>
+                    </div>
+                    <div className="d-flex flex-column mb-2">
+                      <label htmlFor="name" className="text-neutral-700">
+                        全名
+                      </label>
+                      <input type="text" id="name" placeholder="請輸入您的姓名" className="form-control" {...register("name", { required: "請輸入姓名" })} />
+                      {errors.name && <small className="text-danger">{errors.name.message}</small>}
+                    </div>
+                    <div className="d-flex flex-column">
+                      <label htmlFor="tel" className="text-neutral-700">
+                        電話號碼
+                      </label>
+                      <input
+                        type="tel"
+                        id="tel"
+                        placeholder="手機或市話"
+                        className="form-control"
+                        {...register("tel", {
+                          required: "請輸入電話",
+                          pattern: {
+                            value: /^[0-9\-+() ]+$/,
+                            message: "電話格式錯誤",
+                          },
+                        })}
+                      />
+                      {errors.tel && <small className="text-danger">{errors.tel.message}</small>}
+                    </div>
+                  </div>
+                  <div className="col-lg-6 d-flex flex-column">
+                    <div className="mb-2">
+                      <h6>寄件地址:</h6>
+                    </div>
+                    <div className="d-flex gap-4 mb-2">
+                      <div className="code d-flex flex-column">
+                        <label htmlFor="city" className="text-neutral-700">
+                          城市
+                        </label>
+                        <input type="text" value="台北市" id="city" className="form-control" readOnly {...register("city")} />
+                      </div>
+                      <div className="type d-flex flex-column">
+                        <label htmlFor="section" className="text-neutral-700">
+                          區
+                        </label>
+                        <select name="" id="section" {...register("section")} className="h-100 form-select">
+                          <option value="內湖區">內湖區</option>
+                          <option value="大安區">大安區</option>
+                          <option value="文山區">文山區</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="d-flex flex-column mb-2">
+                      <label htmlFor="address" className="text-neutral-700">
+                        地址
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="街道、巷弄、門號、樓層"
+                        id="address"
+                        className="form-control"
+                        {...register("detailAddress", {
+                          required: "請輸入地址",
+                        })}
+                      />
+                      {errors.detailAddress && <small className="text-danger">{errors.detailAddress.message}</small>}
+                    </div>
+                    <div className="d-flex flex-column mb-2">
+                      <label htmlFor="postcode" className="text-neutral-700">
+                        郵遞區號
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="請輸入郵遞區號"
+                        id="postcode"
+                        className="form-control"
+                        {...register("postcode", {
+                          required: "請輸入郵遞區號",
+                        })}
+                      />
+                      {errors.postcode && <small className="text-danger">{errors.postcode.message}</small>}
+                    </div>
+                    <div className="d-flex gap-1">
+                      <input type="checkbox" id="defaultInfo" />
+                      <label htmlFor="defaultInfo" className="text-neutral-900">
+                        設定為預設結帳資訊
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div className="row">
+                  <div className="col-lg-6">
+                    <div className="d-flex flex-column">
+                      <div className="mb-2">
+                        <h6>備注:</h6>
+                      </div>
+                      <textarea className="form-control" id="remark" rows="3" placeholder="管理室代收/電聯時間......" {...register("remark")}></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="col-lg-3">
               <div className="card shadow position-sticky section" style={{ top: "16px" }}>
@@ -370,7 +370,7 @@ export default function Checkout() {
                 </div>
                 <div className="card-body p-4">
                   <div className="d-flex  flex-column  align-items-start w-auto mb-6">
-                    <h6 style={{ color: "#3e5e4d" }}>優惠券</h6>
+                    <h6 className="text-primary-700">優惠券</h6>
                     <div className="input-group w-auto">
                       <input
                         type="text"
@@ -388,16 +388,16 @@ export default function Checkout() {
                   </div>
                   <div className="orderBreakDown mb-6">
                     <div className="productPrice d-flex justify-content-between">
-                      <h6 style={{ color: "#666666" }}>商品總金額</h6>
-                      <h6 style={{ color: "#222222" }}>${subtotal}</h6>
+                      <h6 className="text-neutral-700">商品總金額</h6>
+                      <h6 className="text-neutral-900">${subtotal}</h6>
                     </div>
                     <div className="shipping d-flex justify-content-between">
-                      <h6 style={{ color: "#666666" }}>運費總金額</h6>
-                      <h6 style={{ color: "#222222" }}>${shipping}</h6>
+                      <h6 className="text-neutral-700">運費總金額</h6>
+                      <h6 className="text-neutral-900">${shipping}</h6>
                     </div>
                     <div className="orderPrice d-flex justify-content-between">
-                      <h6 style={{ color: "#666666" }}>總付款金額</h6>
-                      <h6 style={{ color: "#222222" }}>${couponApplied ? totalAfterCoupon : total}</h6>
+                      <h6 className="text-neutral-700">總付款金額</h6>
+                      <h6 className="text-neutral-900">${couponApplied ? totalAfterCoupon : total}</h6>
                     </div>
                   </div>
                   <button type="submit" className="btn btn-primary-500 w-100 text-white mb-6">
@@ -414,7 +414,7 @@ export default function Checkout() {
                         <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
                           安心結帳
                         </span>
-                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                        <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                           SSL加密安全付款
                         </span>
                       </div>
@@ -426,10 +426,10 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div className="d-flex flex-column align-items-start">
-                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                        <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                           免運費
                         </span>
-                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                        <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                           全館消費滿$2,000免運費
                         </span>
                       </div>
@@ -441,10 +441,10 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div className="d-flex flex-column align-items-start">
-                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                        <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                           退貨保證
                         </span>
-                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                        <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                           7 天鑑賞期，無條件退貨
                         </span>
                       </div>
@@ -456,10 +456,10 @@ export default function Checkout() {
                         </span>
                       </div>
                       <div className="d-flex flex-column align-items-start">
-                        <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                        <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                           隱私保護
                         </span>
-                        <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                        <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                           個人資料全程保護
                         </span>
                       </div>
@@ -469,21 +469,21 @@ export default function Checkout() {
               </div>
             </div>
           </div>
-        </form>
-      </div>
-      {/* 🔥 Mobile Fixed Checkout Bar */}
-      <div className="mobile-checkout-bar d-md-none">
-        <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
-          <div className="w-100 d-flex justify-content-between align-items-center mb-4">
-            <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
-            <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
-          </div>
-
-          <button type="submit" form="checkout-form" className="btn btn-primary-500 text-white w-100">
-            完成付款
-          </button>
         </div>
-      </div>
+        {/* 🔥 Mobile Fixed Checkout Bar */}
+        <div className="mobile-checkout-bar d-md-none">
+          <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
+            <div className="w-100 d-flex justify-content-between align-items-center mb-4">
+              <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
+              <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
+            </div>
+
+            <button type="submit" form="checkout-form" className="btn btn-primary-500 text-white w-100">
+              完成付款
+            </button>
+          </div>
+        </div>
+      </form>
     </>
   );
 }
