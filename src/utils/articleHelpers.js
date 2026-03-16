@@ -40,7 +40,7 @@ export const handleShare = (type) => {
   } else if (type === "copy") {
     //網頁有權限存取系統的複製.貼上功能，將網址變成字串寫入使用者的電腦剪貼簿中
     navigator.clipboard.writeText(url);
-    alert("文章連結已複製！");
+    // alert("文章連結已複製！");
   }
 };
 
