@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import useMessage from "../hooks/useMessage";
 
 import { checkSignInApi, logOutApi, signInApi } from "../services/sign";
+import ScrollToTop from "../component/ScrollToTop";
 
 function getCookie() {
   return document.cookie
@@ -111,6 +112,7 @@ function AdminLayout() {
         </>
       ) : (
         <>
+          <ScrollToTop />
           <header>
             <div className="container">
               <div className="d-flex justify-content-between py-4">

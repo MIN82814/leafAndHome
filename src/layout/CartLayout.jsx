@@ -6,6 +6,7 @@ import { createAsyncGetCart } from "../slice/cartSlice";
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
+import ScrollToTop from "../component/ScrollToTop";
 
 function CartLayout() {
   const carts = useSelector((state) => state.cart.carts);
@@ -16,13 +17,16 @@ function CartLayout() {
   }, [dispatch]);
 
   return (
-    <div className="d-flex flex-column min-vh-100 bg-neutral-100">
-      <CartHeader />
-      <div className="flex-fill">
-        <Outlet context={{ carts }} />
+    <>
+      <ScrollToTop />
+      <div className="d-flex flex-column min-vh-100 bg-neutral-100">
+        <CartHeader />
+        <div className="flex-fill">
+          <Outlet context={{ carts }} />
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </>
   );
 }
 export default CartLayout;

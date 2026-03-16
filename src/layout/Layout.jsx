@@ -6,6 +6,7 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createAsyncGetCart } from "../slice/cartSlice";
 import * as bootstrap from "bootstrap"; //引入 Bootstrap
+import ScrollToTop from "../component/ScrollToTop";
 
 function Layout() {
   const { isAuth, setIsAuth } = useOutletContext();
@@ -34,6 +35,7 @@ function Layout() {
 
   return (
     <>
+      <ScrollToTop />
       <header className="position-relative">
         <div className="container">
           <div className="d-flex justify-content-between py-4  align-items-center">
