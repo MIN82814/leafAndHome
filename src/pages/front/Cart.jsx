@@ -1,12 +1,15 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 const API_BASE = import.meta.env.VITE_API_BASE;
 const API_PATH = import.meta.env.VITE_API_PATH;
 import { useNavigate, useOutletContext } from "react-router";
-import { createAsyncDelAllCart, createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
+import { createAsyncAddCart, createAsyncDelAllCart, createAsyncDelCart, createAsyncUpdateCart } from "../../slice/cartSlice";
 import useMessage from "../../hooks/useMessage";
 import { currency } from "../../utils/filter";
+// import { useDebounce } from "react-use";
+import * as bootstrap from "bootstrap"; //引入 Bootstrap
+import { getProductsApi } from "../../services/product";
 
 export default function Cart() {
   //購物車內容初始由 CartLayout 傳入
@@ -23,16 +26,58 @@ export default function Cart() {
   const [totalAfterCoupon, setTotalAfterCoupon] = useState(total); // 折扣後金額
   const navigate = useNavigate();
   const { showSuccess, showError } = useMessage();
-
   // const handleUpdateCart = (id, qty) => {
   //   dispatch(createAsyncAddCart({ id, qty }));
   //   setCartQty(1);
   // };
+  const [deleteProduct, setDeleteProduct] = useState({});
+  const deleteModalRef = useRef(null);
+  const [products, setProducts] = useState([]);
+  const [cartAddOnStack, setCartAddOnStack] = useState([]);
+
+  const handleAddCart = (id, qty) => {
+    dispatch(createAsyncAddCart({ id, qty }));
+  };
+
+  useEffect(() => {
+    const getProducts = async (page = 1) => {
+      try {
+        const response = await getProductsApi(page, "all");
+        setProducts(response.data.products);
+        setCartAddOnStack(Array(response.data.products.length).fill(1));
+      } catch (error) {
+        showError(error.response.data.message);
+      }
+    };
+    //設定初始陣列
+
+    deleteModalRef.current = new bootstrap.Modal("#deleteModal", { keyboard: false });
+
+    document.querySelector("#deleteModal").addEventListener("hide.bs.modal", () => {
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+    });
+    getProducts();
+  }, []);
+
+  // 透過useRef控制 Modal
+
+  const openModal = (product = null) => {
+    setDeleteProduct(product);
+    deleteModalRef.current.show();
+  };
+
+  const closeModal = () => {
+    //重設資料
+    deleteModalRef.current.hide();
+  };
 
   //移除購物車品項
   const handleRemoveCart = (e, id) => {
     e.preventDefault();
     dispatch(createAsyncDelCart(id));
+    closeModal();
   };
 
   //  //更新購物車數量
@@ -42,6 +87,7 @@ export default function Cart() {
 
   const handleDelAllCart = () => {
     dispatch(createAsyncDelAllCart());
+    closeModal();
   };
 
   //applyCoupon
@@ -81,8 +127,9 @@ export default function Cart() {
                   type="button"
                   className="btn btn-link text-primary-700 fw-bold text-decoration-underline"
                   onClick={() => {
-                    handleDelAllCart();
-                  }}>
+                    openModal();
+                  }}
+                  disabled={carts.length <= 0 ? "disabled" : ""}>
                   全部刪除
                 </button>
               </div>
@@ -121,34 +168,50 @@ export default function Cart() {
                           <td className="align-middle price">NT $ {currency(item.product.price)}</td>
                           <td className="align-middle">
                             <div className="qty-input-group">
-                              <button className="btn cart_btn" type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
+                              {/* <button className="btn cart_btn" type="button" id="btn-decrease" disabled={item.qty <= 1 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty - 1)}>
                                 －
                               </button>
                               <input
                                 type="number"
                                 className="form-control text-center "
-                                value={item.qty}
+                                defaultValue={item.qty}
                                 min="1"
                                 max="10"
                                 id="qtyInput"
                                 onChange={(e) => {
-                                  let val = parseInt(e.target.value);
-                                  if (isNaN(val) || val < 1) val = 1;
-                                  handleUpdateCart(item.id, item.product_id, val);
+                                  handleUpdateCart(item.id, item.product_id, Number(e.target.value));
                                 }}
                               />
                               <button className="btn cart_btn" type="button" id="btn-increase" disabled={item.qty >= 10 ? "disabled" : ""} onClick={() => handleUpdateCart(item.id, item.product_id, item.qty + 1)}>
                                 ＋
-                              </button>
+                              </button> */}
+                              <select
+                                className="form-select text-center"
+                                defaultValue={item.qty}
+                                onChange={(e) => {
+                                  handleUpdateCart(item.id, item.product_id, Number(e.target.value));
+                                }}>
+                                {Array.from({ length: 10 }, (_, index) => {
+                                  const qty = index + 1;
+                                  return (
+                                    <option key={qty} value={qty}>
+                                      {qty}
+                                    </option>
+                                  );
+                                })}
+                              </select>
                             </div>
                           </td>
                           <td className="align-middle total">NT $ {currency(item.total)}</td>
                           <td className="function">
-                            <button type="button" className="btn btn-custom-link-dark">
+                            {/* <button type="button" className="btn btn-custom-link-dark">
                               加入收藏
-                            </button>
-                            <button type="button" onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
+                            </button> */}
+                            {/* <button type="button" onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
                               刪除
+                            </button> */}
+                            <button type="button" onClick={() => openModal(item)} className="btn btn-custom-link-light">
+                              刪除品項
                             </button>
                           </td>
                         </tr>
@@ -164,9 +227,9 @@ export default function Cart() {
                       <div key={item.id} className="cart-card mb-3 p-3 rounded">
                         {/* 操作列 */}
                         <div className="d-flex gap-3 justify-content-end">
-                          <button className="btn btn-custom-link-dark">加入收藏</button>
+                          {/* <button className="btn btn-custom-link-dark">加入收藏</button> */}
                           <button type="button" onClick={(e) => handleRemoveCart(e, item.id)} className="btn btn-custom-link-light">
-                            刪除
+                            刪除品項
                           </button>
                         </div>
 
@@ -205,16 +268,13 @@ export default function Cart() {
                             <input
                               type="number"
                               className="form-control text-center"
-                              value={item.qty}
+                              defaultValue={item.qty}
                               min="1"
                               max="10"
                               onChange={(e) => {
-                                let val = parseInt(e.target.value);
-                                if (isNaN(val) || val < 1) val = 1;
-                                handleUpdateCart(item.id, item.product_id, val);
+                                handleUpdateCart(item.id, item.product_id, Number(e.target.value));
                               }}
                             />
-
                             <button
                               type="button"
                               className="btn"
@@ -235,7 +295,7 @@ export default function Cart() {
                 </div>
               </div>
             </div>
-            <div className="section mb-4">
+            {/* <div className="section mb-4">
               <div className="head d-flex gap-3 justify-content-start align-items-center py-4 px-6 bg-secondary-100">
                 <h4 className="text-secondary-700">加購服務</h4>
                 <span className="subHeading">常一起選購的加購服務</span>
@@ -353,11 +413,8 @@ export default function Cart() {
                     </tr>
                   </tbody>
                 </table>
-                {/* Mobile Addon DOM */}
                 <div className="d-block d-lg-none">
-                  {/* 到貨換盆 */}
                   <div className="addon-card rounded border p-3 mb-3 bg-white">
-                    {/* 上：商品資訊 */}
                     <div className="d-flex gap-3 mb-3">
                       <img
                         src="/leafAndHome/pot.png"
@@ -374,8 +431,6 @@ export default function Cart() {
                         <div className="titleEn">專業換盆服務，含優質培養土</div>
                       </div>
                     </div>
-
-                    {/* 中：qty + price */}
                     <div className="d-flex justify-content-between align-items-center mb-3">
                       <div className="qty-input-group">
                         <button type="button" className="btn">
@@ -391,16 +446,12 @@ export default function Cart() {
 
                       <div className="fw-bold">NT $ 150</div>
                     </div>
-
-                    {/* 下：CTA */}
                     <div className="d-flex justify-content-end">
                       <button type="button" className="btn btn-primary-500 text-white">
                         加入
                       </button>
                     </div>
                   </div>
-
-                  {/* 送禮包裝 */}
                   <div className="addon-card border rounded p-3 mb-3 bg-white">
                     <div className="d-flex gap-3 mb-3">
                       <img
@@ -441,8 +492,6 @@ export default function Cart() {
                       </button>
                     </div>
                   </div>
-
-                  {/* 新手照護卡 */}
                   <div className="addon-card border rounded p-3 mb-3 bg-white">
                     <div className="d-flex gap-3 mb-3">
                       <img
@@ -485,186 +534,129 @@ export default function Cart() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="section mb-4">
               <div className="d-flex justify-content-between bg-secondary-100">
                 <div className="head d-flex gap-3 justify-content-start align-items-center py-4 px-6 bg-secondary-100">
                   <h4 className="text-secondary-700">收藏清單</h4>
                   <span className="subHeading">那些您曾停下來看過的植物</span>
                 </div>
-                <button type="button" className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
+                {/* <button type="button" className="btn btn-link text-primary-700 fw-bold text-decoration-underline">
                   查看全部
-                </button>
+                </button> */}
               </div>
-              <div className="p-4 bg-white">
-                <table className="table cart-table table-hover d-none d-lg-table">
-                  <tbody>
-                    <tr>
-                      <td style={{ width: "400px" }}>
-                        <div className="d-flex align-items-center gap-2">
-                          <img
-                            src="/leafAndHome/spiderPlant.png"
-                            style={{
-                              height: "100px",
-                              width: "100px",
-                              objectFit: "cover",
-                            }}
-                          />
-                          <div className="d-flex flex-column">
-                            <span className="titleZh">吊蘭</span>
-                            <span className="titleEn">Spider Plant</span>
+              {products.length >= 1 ? (
+                <>
+                  <div className="p-4 bg-white">
+                    <table className="table cart-table table-hover d-none d-lg-table">
+                      <tbody>
+                        {products.map((product, index) => (
+                          <tr key={`productDesktop-${index}`}>
+                            <td style={{ width: "400px" }}>
+                              <div className="d-flex align-items-center gap-2">
+                                <img
+                                  src={product.imageUrl}
+                                  style={{
+                                    height: "100px",
+                                    width: "100px",
+                                    objectFit: "cover",
+                                  }}
+                                  alt={product.title}
+                                />
+                                <div className="d-flex flex-column">
+                                  <span className="titleZh">{product.title}</span>
+                                  <span className="titleEn">{product.titleEn}</span>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="align-middle price"></td>
+                            <td className="align-middle">
+                              <div className="qty-input-group">
+                                <button className="btn cart_btn" type="button" id="btn-decrease" onClick={() => setCartAddOnStack((pre) => pre.map((item, i) => (i === index ? item - 1 : item)))} disabled={cartAddOnStack[index] <= 1}>
+                                  －
+                                </button>
+                                <input type="number" className="form-control text-center" value={cartAddOnStack[index]} min="1" max="10" id="qtyInput" />
+                                <button className="btn cart_btn" type="button" id="btn-increase" onClick={() => setCartAddOnStack((pre) => pre.map((item, i) => (i === index ? item + 1 : item)))} disabled={cartAddOnStack[index] >= 10}>
+                                  ＋
+                                </button>
+                              </div>
+                            </td>
+                            <td className="align-middle total">NT $ {currency(product.price)}</td>
+                            <td className="function">
+                              <button
+                                type="button"
+                                className="btn btn-primary-500 text-white"
+                                onClick={() => {
+                                  //處理加入購物車
+                                  handleAddCart(products[index].id, cartAddOnStack[index]);
+                                  //重設為1
+                                  setCartAddOnStack((pre) => pre.map((item, i) => (i === index ? 1 : item)));
+                                  //畫面回到最上方讓使用者確認購物車品項
+                                  window.scrollTo(0, 0);
+                                }}>
+                                加入
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {/* Mobile Product DOM */}
+                    <div className="d-block d-lg-none">
+                      {products.map((product, index) => (
+                        <div className="addon-card border rounded p-3 mb-3 bg-white" key={`productMobile-${index}`}>
+                          {/* 上：商品資訊 */}
+                          <div className="d-flex gap-3 mb-3">
+                            <img
+                              src={product.imageUrl}
+                              style={{
+                                width: "64px",
+                                height: "64px",
+                                objectFit: "cover",
+                                borderRadius: "50%",
+                              }}
+                              alt={product.title}
+                            />
+                            <div>
+                              <div className="titleZh">{product.title}</div>
+                              <div className="titleEn">{product.titleEn}</div>
+                            </div>
+                          </div>
+
+                          {/* 中：qty + price */}
+                          <div className="d-flex justify-content-between align-items-center mb-3">
+                            <div className="qty-input-group d-flex align-items-center">
+                              <button type="button" className="btn">
+                                －
+                              </button>
+
+                              <input type="number" className="form-control text-center" defaultValue="1" min="1" style={{ width: "50px" }} />
+
+                              <button type="button" className="btn">
+                                ＋
+                              </button>
+                            </div>
+
+                            <div className="fw-bold">NT $ {currency(product.price)}</div>
+                          </div>
+
+                          {/* 下：CTA */}
+                          <div className="d-flex justify-content-end">
+                            <button type="button" className="btn btn-primary-500 text-white">
+                              加入
+                            </button>
                           </div>
                         </div>
-                      </td>
-                      <td className="align-middle price"></td>
-                      <td className="align-middle">
-                        <div className="qty-input-group">
-                          <button className="btn " type="button" id="btn-decrease">
-                            －
-                          </button>
-                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
-                          <button className="btn" type="button" id="btn-increase">
-                            ＋
-                          </button>
-                        </div>
-                      </td>
-                      <td className="align-middle total">NT $ 340 </td>
-                      <td className="function">
-                        <button type="button" className="btn btn-primary-500 text-white">
-                          加入
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style={{ width: "400px" }}>
-                        <div className="d-flex align-items-center gap-2">
-                          <img
-                            src="/leafAndHome/bostonFern.png"
-                            style={{
-                              height: "100px",
-                              width: "100px",
-                              objectFit: "cover",
-                            }}
-                          />
-                          <div className="d-flex flex-column">
-                            <span className="titleZh">波士頓蕨</span>
-                            <span className="titleEn">Boston Fern</span>
-                          </div>
-                        </div>
-                      </td>
-                      <td className="align-middle price"></td>
-                      <td className="align-middle">
-                        <div className="qty-input-group">
-                          <button className="btn " type="button" id="btn-decrease">
-                            －
-                          </button>
-                          <input type="number" className="form-control text-center " defaultValue="1" min="1" id="qtyInput" />
-                          <button className="btn" type="button" id="btn-increase">
-                            ＋
-                          </button>
-                        </div>
-                      </td>
-                      <td className="align-middle total">NT $ 350</td>
-                      <td className="function">
-                        <button type="button" className="btn btn-primary-500 text-white">
-                          加入
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                {/* Mobile Product DOM */}
-                <div className="d-block d-lg-none">
-                  {/* 商品卡片 1 */}
-                  <div className="addon-card border rounded p-3 mb-3 bg-white">
-                    {/* 上：商品資訊 */}
-                    <div className="d-flex gap-3 mb-3">
-                      <img
-                        src="/leafAndHome/spiderPlant.png"
-                        style={{
-                          width: "64px",
-                          height: "64px",
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                        }}
-                        alt="吊蘭"
-                      />
-                      <div>
-                        <div className="titleZh">吊蘭</div>
-                        <div className="titleEn">Spider Plant</div>
-                      </div>
-                    </div>
-
-                    {/* 中：qty + price */}
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <div className="qty-input-group d-flex align-items-center">
-                        <button type="button" className="btn">
-                          －
-                        </button>
-
-                        <input type="number" className="form-control text-center" defaultValue="1" min="1" style={{ width: "50px" }} />
-
-                        <button type="button" className="btn">
-                          ＋
-                        </button>
-                      </div>
-
-                      <div className="fw-bold">NT $ 340</div>
-                    </div>
-
-                    {/* 下：CTA */}
-                    <div className="d-flex justify-content-end">
-                      <button type="button" className="btn btn-primary-500 text-white">
-                        加入
-                      </button>
+                      ))}
                     </div>
                   </div>
-
-                  {/* 商品卡片 2 */}
-                  <div className="addon-card border rounded p-3 mb-3 bg-white">
-                    <div className="d-flex gap-3 mb-3">
-                      <img
-                        src="/leafAndHome/bostonFern.png"
-                        style={{
-                          width: "64px",
-                          height: "64px",
-                          objectFit: "cover",
-                          borderRadius: "50%",
-                        }}
-                        alt="波士頓蕨"
-                      />
-                      <div>
-                        <div className="titleZh">波士頓蕨</div>
-                        <div className="titleEn">Boston Fern</div>
-                      </div>
-                    </div>
-
-                    <div className="d-flex justify-content-between align-items-center mb-3">
-                      <div className="qty-input-group d-flex align-items-center">
-                        <button type="button" className="btn">
-                          －
-                        </button>
-
-                        <input type="number" className="form-control text-center" defaultValue="1" min="1" style={{ width: "50px" }} />
-
-                        <button type="button" className="btn">
-                          ＋
-                        </button>
-                      </div>
-
-                      <div className="fw-bold">NT $ 350</div>
-                    </div>
-
-                    <div className="d-flex justify-content-end">
-                      <button type="button" className="btn btn-primary-500 text-white">
-                        加入
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
+          {/* 右側選單 */}
           <div className="col-lg-3">
             <div className="card position-sticky shadow section" style={{ top: "16px" }}>
               <div className="card-head bg-primary-700 px-6 py-4">
@@ -672,7 +664,7 @@ export default function Cart() {
               </div>
               <div className="card-body p-4">
                 <div className="d-flex  flex-column  align-items-start w-auto mb-6">
-                  <h6 style={{ color: "#3e5e4d" }}>優惠券</h6>
+                  <h6 className="text-primary-700">優惠券</h6>
                   <div className="input-group w-auto">
                     <input
                       type="text"
@@ -690,16 +682,16 @@ export default function Cart() {
                 </div>
                 <div className="orderBreakDown mb-6">
                   <div className="productPrice d-flex justify-content-between">
-                    <h6 style={{ color: "#666666" }}>商品總金額</h6>
-                    <h6 style={{ color: "#222222" }}>${currency(subtotal)}</h6>
+                    <h6 className="text-neutral-700">商品總金額</h6>
+                    <h6 className="text-neutral-900">${currency(subtotal)}</h6>
                   </div>
                   <div className="shipping d-flex justify-content-between">
-                    <h6 style={{ color: "#666666" }}>運費總金額</h6>
-                    <h6 style={{ color: "#222222" }}>${currency(shipping)}</h6>
+                    <h6 className="text-neutral-700">運費總金額</h6>
+                    <h6 className="text-neutral-900">${currency(shipping)}</h6>
                   </div>
                   <div className="orderPrice d-flex justify-content-between">
-                    <h6 style={{ color: "#666666" }}>總付款金額</h6>
-                    <h6 style={{ color: "#222222" }}>${couponApplied ? currency(totalAfterCoupon) : currency(total)}</h6>
+                    <h6 className="text-neutral-700">總付款金額</h6>
+                    <h6 className="text-neutral-900">${couponApplied ? currency(totalAfterCoupon) : currency(total)}</h6>
                   </div>
                 </div>
                 <button
@@ -709,7 +701,8 @@ export default function Cart() {
                       state: { couponApplied, couponCode, totalAfterCoupon },
                     })
                   }
-                  className="btn btn-primary-500 w-100 text-white mb-6">
+                  className="btn btn-primary-500 w-100 text-white mb-6"
+                  disabled={carts.length <= 0 ? "disabled" : ""}>
                   繼續結帳
                 </button>
                 <div className="d-flex flex-column ">
@@ -720,10 +713,10 @@ export default function Cart() {
                       </span>
                     </div>
                     <div className="d-flex flex-column align-items-start">
-                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                      <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                         安心結帳
                       </span>
-                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                      <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                         SSL加密安全付款
                       </span>
                     </div>
@@ -735,10 +728,10 @@ export default function Cart() {
                       </span>
                     </div>
                     <div className="d-flex flex-column align-items-start">
-                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                      <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                         免運費
                       </span>
-                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                      <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                         全館消費滿$2,000免運費
                       </span>
                     </div>
@@ -750,10 +743,10 @@ export default function Cart() {
                       </span>
                     </div>
                     <div className="d-flex flex-column align-items-start">
-                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                      <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                         退貨保證
                       </span>
-                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                      <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                         7 天鑑賞期，無條件退貨
                       </span>
                     </div>
@@ -765,10 +758,10 @@ export default function Cart() {
                       </span>
                     </div>
                     <div className="d-flex flex-column align-items-start">
-                      <span className="card-text" style={{ color: "#222222", fontSize: "16px" }}>
+                      <span className="card-text text-neutral-900" style={{ fontSize: "16px" }}>
                         隱私保護
                       </span>
-                      <span className="card-text" style={{ color: "#74613e", fontSize: "12px" }}>
+                      <span className="card-text text-secondary-700" style={{ fontSize: "12px" }}>
                         個人資料全程保護
                       </span>
                     </div>
@@ -779,12 +772,13 @@ export default function Cart() {
           </div>
         </div>
       </div>
-      {/* 🔥 Mobile Fixed Checkout Bar */}
+
+      {/* 手機版置底結帳 */}
       <div className="mobile-checkout-bar d-md-none">
         <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
           <div className=" w-100 d-flex justify-content-between align-items-center mb-4">
             <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
-            <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
+            <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? currency(totalAfterCoupon) : currency(total)}</div>
           </div>
 
           <button
@@ -794,11 +788,58 @@ export default function Cart() {
               navigate("checkout", {
                 state: { couponApplied, couponCode, totalAfterCoupon },
               })
-            }>
+            }
+            disabled={carts.length <= 0 ? "disabled" : ""}>
             繼續結帳
           </button>
         </div>
       </div>
+      {/* 刪除用 Modal  */}
+      {deleteProduct ? (
+        <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header bg-danger">
+                <h2 className="modal-title fs-5 text-white" id="exampleModalLabel">
+                  刪除確認
+                </h2>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => closeModal()}></button>
+              </div>
+              <div className="modal-body h6 text-neutral-900">確定要將品項"{deleteProduct?.product?.title}"移出購物車嗎? </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-outline-primary-500" data-bs-dismiss="modal" onClick={() => closeModal()}>
+                  取消
+                </button>
+                <button type="button" className="btn btn-danger" onClick={(e) => handleRemoveCart(e, deleteProduct.id)}>
+                  確定
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="modal fade" id="deleteModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header  bg-danger">
+                <h2 className="modal-title fs-5  text-white" id="exampleModalLabel">
+                  刪除確認
+                </h2>
+                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => closeModal()}></button>
+              </div>
+              <div className="modal-body  h6 text-neutral-900">確定要清空購物車內容嗎？</div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-outline-primary-500" data-bs-dismiss="modal" onClick={() => closeModal()}>
+                  取消
+                </button>
+                <button type="button" className="btn btn-danger" onClick={() => handleDelAllCart()}>
+                  確定
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
