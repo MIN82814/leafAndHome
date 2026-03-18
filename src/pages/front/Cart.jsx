@@ -187,7 +187,7 @@ export default function Cart() {
                               </button> */}
                               <select
                                 className="form-select text-center"
-                                defaultValue={item.qty}
+                                value={item.qty}
                                 onChange={(e) => {
                                   handleUpdateCart(item.id, item.product_id, Number(e.target.value));
                                 }}>
