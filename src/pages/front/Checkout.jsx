@@ -6,6 +6,8 @@ import { useNavigate, useOutletContext } from "react-router";
 import { useLocation } from "react-router";
 import { useForm } from "react-hook-form";
 import useMessage from "../../hooks/useMessage";
+import { currency } from "../../utils/filter";
+import { emailValidation } from "../../utils/validation";
 
 export default function Checkout() {
   const { carts } = useOutletContext();
@@ -126,9 +128,9 @@ export default function Checkout() {
                                 </div>
                               </div>
                             </td>
-                            <td className="align-middle price">NT $ {item.product.price}</td>
+                            <td className="align-middle price">NT $ {currency(item.product.price)}</td>
                             <td className="align-middle">{item.qty}</td>
-                            <td className="align-middle total">NT $ {item.total}</td>
+                            <td className="align-middle total">NT $ {currency(item.total)}</td>
                           </tr>
                         );
                       })}
@@ -158,7 +160,7 @@ export default function Checkout() {
 
                           {/* 單價 */}
                           <div className="d-flex justify-content-end mb-2">
-                            <span>NT $ {item.product.price}</span>
+                            <span>NT $ {currency(item.product.price)}</span>
                           </div>
 
                           {/* 數量 */}
@@ -212,15 +214,7 @@ export default function Checkout() {
                       <label htmlFor="email" className="text-neutral-700">
                         email
                       </label>
-                      <input
-                        type="email"
-                        placeholder="example@plantlife.com"
-                        id="email"
-                        className="form-control"
-                        {...register("email", {
-                          required: "請輸入 Email",
-                        })}
-                      />
+                      <input type="email" placeholder="example@plantlife.com" id="email" className="form-control" {...register("email", emailValidation)} />
                       {errors.email && <small className="text-danger">{errors.email.message}</small>}
                     </div>
                     <div className="carrier d-flex gap-4">
@@ -267,7 +261,19 @@ export default function Checkout() {
                       <label htmlFor="name" className="text-neutral-700">
                         全名
                       </label>
-                      <input type="text" id="name" placeholder="請輸入您的姓名" className="form-control" {...register("name", { required: "請輸入姓名" })} />
+                      <input
+                        type="text"
+                        id="name"
+                        placeholder="請輸入您的姓名"
+                        className="form-control"
+                        {...register("name", {
+                          required: "請輸入姓名",
+                          minLength: {
+                            value: 2,
+                            message: "姓名最少 2 個字",
+                          },
+                        })}
+                      />
                       {errors.name && <small className="text-danger">{errors.name.message}</small>}
                     </div>
                     <div className="d-flex flex-column">
@@ -282,8 +288,12 @@ export default function Checkout() {
                         {...register("tel", {
                           required: "請輸入電話",
                           pattern: {
-                            value: /^[0-9\-+() ]+$/,
-                            message: "電話格式錯誤",
+                            value: /^\d+$/,
+                            message: "電話僅能輸入數字",
+                          },
+                          minLength: {
+                            value: 8,
+                            message: "電話至少 8 碼",
                           },
                         })}
                       />
@@ -365,7 +375,7 @@ export default function Checkout() {
             </div>
             <div className="col-lg-3">
               <div className="card shadow position-sticky section" style={{ top: "16px" }}>
-                <div className="card-head bg-primary-500 px-6 py-4">
+                <div className="card-head bg-primary-700 px-6 py-4">
                   <h4 className="card-title text-start text-neutral-100">訂單內容</h4>
                 </div>
                 <div className="card-body p-4">
@@ -389,15 +399,15 @@ export default function Checkout() {
                   <div className="orderBreakDown mb-6">
                     <div className="productPrice d-flex justify-content-between">
                       <h6 className="text-neutral-700">商品總金額</h6>
-                      <h6 className="text-neutral-900">${subtotal}</h6>
+                      <h6 className="text-neutral-900">${currency(subtotal)}</h6>
                     </div>
                     <div className="shipping d-flex justify-content-between">
                       <h6 className="text-neutral-700">運費總金額</h6>
-                      <h6 className="text-neutral-900">${shipping}</h6>
+                      <h6 className="text-neutral-900">${currency(shipping)}</h6>
                     </div>
                     <div className="orderPrice d-flex justify-content-between">
                       <h6 className="text-neutral-700">總付款金額</h6>
-                      <h6 className="text-neutral-900">${couponApplied ? totalAfterCoupon : total}</h6>
+                      <h6 className="text-neutral-900">${couponApplied ? currency(totalAfterCoupon) : currency(total)}</h6>
                     </div>
                   </div>
                   <button type="submit" className="btn btn-primary-500 w-100 text-white mb-6">
@@ -475,7 +485,7 @@ export default function Checkout() {
           <div className="d-flex flex-column justify-content-between align-items-start px-4 py-3 bg-white shadow-lg">
             <div className="w-100 d-flex justify-content-between align-items-center mb-4">
               <div className="text-neutral-700 fw-bold fs-6">總付款金額</div>
-              <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? totalAfterCoupon : total}</div>
+              <div className="fw-bold text-neutral-900 fs-4">${couponApplied ? currency(totalAfterCoupon) : currency(total)}</div>
             </div>
 
             <button type="submit" form="checkout-form" className="btn btn-primary-500 text-white w-100">
