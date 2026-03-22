@@ -88,21 +88,21 @@ function Home() {
               <div className="carousel-flex d-flex flex-column flex-md-row justify-content-between bg-neutral-100 position-relative">
                 <div className="carousel-flex-image-container position-relative">
                   <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770182996909.png" alt="玄關植物" className="carousel-flex-image" />
-                  <div className="d-none d-md-block  position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <div className="d-none d-md-flex  position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">低光</h4>
                     <p className="fs-7 text-neutral-900">適合玄關</p>
                   </div>
                 </div>
                 <div className="carousel-flex-image-container position-relative">
                   <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183024147.png" className="carousel-flex-image" alt="書桌植物" />
-                  <div className="d-none d-md-block position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <div className="d-none d-md-flex position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">中光</h4>
                     <p className="fs-7 text-neutral-900">適合書桌</p>
                   </div>
                 </div>
                 <div className="carousel-flex-image-container position-relative">
                   <img src="https://storage.googleapis.com/vue-course-api.appspot.com/leafandhome/1770183041746.png" className="carousel-flex-image" alt="窗邊植物" />
-                  <div className="d-none d-md-block position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 d-flex align-items-center justify-content-center flex-column rounded-circle">
+                  <div className="d-none d-md-flex position-absolute carousel-flex-image-text start-50 translate-middle  px-4 py-2 align-items-center justify-content-center flex-column rounded-circle">
                     <h4 className="text-neutral-900 mb-2 h4">高光</h4>
                     <p className="fs-7 text-neutral-900">適合窗邊</p>
                   </div>
