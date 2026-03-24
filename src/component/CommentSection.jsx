@@ -21,9 +21,9 @@ function CommentSection({
           </div>
           {/* --- 8. 留言輸入表單 (條件渲染) --- */}
           <div className="bg-white rounded-4">
-            {comments?.map((c) => (
+            {comments?.map((c, index) => (
               <div
-                key={c.create_at}
+                key={`${c.create_at}-${index}`}
                 className="border-bottom border-secondary-100 d-flex py-5 px-3 py-md-9 px-md-12"
               >
                 <div className="avatar-circle rounded-circle me-3 me-md-4">
