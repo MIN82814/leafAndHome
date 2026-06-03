@@ -25,11 +25,9 @@
 ## 📸 功能展示
 
 ### 文章列表
-
 ![文章列表](./docs/article-list.gif)
 
 ### 單一文章
-
 ![單一文章](./docs/article-detail.gif)
 
 ---
