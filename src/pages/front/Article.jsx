@@ -15,8 +15,6 @@ import { showErrorAlert } from "../../utils/alert";
 import { getArticlesApi, getArticleIdApi } from "../../services/article";
 
 function Article() {
-  // 💡 如果你是用路由 (Route)，這裡會用 useParams 取得網址上的 id
-  // 假設路由是 /article/:articleId
   //const { articleId } = useParams();
   // --- **狀態管理 (State)** ---
   const [article, setArticle] = useState(null);
@@ -72,11 +70,6 @@ function Article() {
   // --- **留言送出邏輯** ---
 
   const handleCommentSubmit = async () => {
-    // const token = document.cookie
-    //   .split("; ")
-    //   .find((row) => row.startsWith("hexTokenAPI="))
-    //   ?.split("=")[1];
-    //確定是否有內容才能送出
     if (!comment.trim()) {
       alert("請輸入留言內容喔！");
       return;
@@ -103,20 +96,6 @@ function Article() {
     //整筆資料更新進去
     //先展開原本article資料，把剛剛updatedBlocks新的資料，更新進contentBlocks區塊內
     const updatedData = { ...article, contentBlocks: updatedBlocks };
-    // try {
-    //   await axios.put(
-    //     `${API_BASE}/${API_PATH}/admin/article/${articleId}`,
-    //     { data: updatedData },
-    //     {
-    //       headers: { Authorization: token }, // 把抓到的 token 放這裡
-    //     },
-    //   );
-    //   setArticle(updatedData);
-    //   setComment(""); // 清空留言處文字
-    //   alert("留言成功！");
-    // } catch (err) {
-     //showErrorAlert("留言失敗", err, "留言失敗，請稍後再試");
-    // }
     setArticle(updatedData);
     setComment(""); // 清空留言處文字
   };
